@@ -23,9 +23,6 @@ var game = {
 
 };
 
-
-
-
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
 var makePicksTable = function() {
 
@@ -92,7 +89,6 @@ var makePicksTable = function() {
 
             }
         }
-        $("#picksContainer").html(tablePicks);
     });
 };
 
@@ -106,47 +102,6 @@ var showSignUpBox = function() {
     $("#profilePage").css("display","none");
     $("#homepage").css("display","block");
 
-    // THEN WE LISTEN TO WHAT THE USER DOES
-
-    // ACTIONS AFTER CLICKING ON THE SIGN UP BUTTON
-    $(document).on("click","#signUp", function(event) {
-
-        event.preventDefault();
-
-        // STORE INPUT VALUES INTO VARIABLES SO WE CAN USE LATER
-        game.email = $("#email").val();
-        game.name = $("#name").val();
-        game.teamName = $("#teamName").val();
-
-        firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
-            // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
-            usersRef.push({
-                email: game.email,
-                name: game.name,
-                teamName: game.teamName
-            });
-        }).catch(function(error) {
-
-            // HANDLE ERRORS HERE. COULD USE MODALS.
-            console.log(error.code);
-            console.log(error.message);
-            console.log(error)
-            // ...
-        });
-
-        $("#email").val("");
-        $("#pwd").val("");
-        $("#name").val("");
-        $("#teamName").val("");
-
-    });
-
-    // ACTIONS IF GO TO LOG IN BUTTON IS CLICKED
-    // TAKE THE USER  TO THE LOG IN PAGE
-    $(document).on("click","#goToLogIn", function(event) {
-        event.preventDefault();
-        showLoginBox();
-    });
 };
 
 
@@ -159,33 +114,14 @@ var showLoginBox = function() {
     $("#logInPage").css("display","block");
 
     // ACTION TAKEN WHEN CLICKING ON THE LOG IN BUTTON
-    $(document).on("click","#logIn",function(event) {
 
-        event.preventDefault();
-
-        firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#pwdLogIn").val()).then(function(){
-
-        }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-        });
-
-    });
 };
 
-// START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY SIGNED IN
+// START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY LOGGED IN
 
 ///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
-// CHECK IF THERE IS A USER LOGGED IN
 // IF THERE IS A USER LOGGED IN, TAKE HIM TO HIS PROFILE
 // IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
-
-// THIS LISTENER WILL FIRE TWICE EVERY TIME A USER STATUS CHANGES
-// IT ALSO RUNS THE CODE INSIDE IT FOR EVERY TIME IT WAS ALREADY CALLED
-/// FIX!!!!!!!///
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         usersRef.on("child_added",function(snapshot) {
@@ -211,44 +147,117 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
 });
 
+
+// WHAT HAPPENS WHEN A USER LOGS OUT
 $(document).on("click", "#logOut", function (event) {
 
     event.preventDefault();
     // var userLoggedOut = false;
     firebase.auth().signOut().then(function () {
-        // showSignUpBox();
         // Sign-out successful.
-        // userLoggedOut = true;
     }).catch(function (error) {
         console.log(error.code);// An error happened.
         console.log(error.message);// An error happened.
     });
 
-    // if(userLoggedOut === true){
-    //     showSignUpBox();
-    // }
+
 
 });
 
-// if(userIsLoggedIn === true){
-//     usersRef.on("child_added",function(snapshot) {
-//
-//         var keyId = snapshot.val();
-//
-//         if (keyId.email === currentUser.email) {
-//
-//
-//             $("#homepage").css("display", "none");
-//             $("#logInPage").css("display", "none");
-//             $("#profilePage").css("display", "block");
-//
-//             $("#welcome").text("Hello " + keyId.name + "!!");
-//
-//             makePicksTable();
-//
-//         }
-//     });
-// }
+
+// WHAT HAPPENS WHEN THE USER LOGS IN
+$(document).on("click","#logIn",function(event) {
+
+    event.preventDefault();
+
+    firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#pwdLogIn").val()).then(function(){
+
+    }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+    });
+
+});
+
+// WHAT HAPPENS WHEN THE USER REGISTERS
+
+$(document).on("click","#signUp", function(event) {
+
+    event.preventDefault();
+
+    // STORE INPUT VALUES INTO VARIABLES SO WE CAN USE LATER
+    game.email = $("#email").val();
+    game.name = $("#name").val();
+    game.teamName = $("#teamName").val();
+
+    firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
+        // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
+        usersRef.push({
+            email: game.email,
+            name: game.name,
+            teamName: game.teamName
+        });
+    }).catch(function(error) {
+
+        // HANDLE ERRORS HERE. COULD USE MODALS.
+        console.log(error.code);
+        console.log(error.message);
+        console.log(error)
+        // ...
+    });
+
+    $("#email").val("");
+    $("#pwd").val("");
+    $("#name").val("");
+    $("#teamName").val("");
+
+});
+
+// WHAT HAPPENS WHEN THE USER WANTS TO GO TO THE LOG IN AREA
+// TAKE THE USER  TO THE LOG IN PAGE
+
+$(document).on("click","#goToLogIn", function(event) {
+    event.preventDefault();
+    showLoginBox();
+});
+
+// WHAT HAPPENS WHEN THE USER REGISTERS BY CLICKING THE SIGNUP BUTTON
+
+$(document).on("click","#signUp", function(event) {
+
+    event.preventDefault();
+
+    // STORE INPUT VALUES INTO VARIABLES SO WE CAN USE LATER
+    game.email = $("#email").val();
+    game.name = $("#name").val();
+    game.teamName = $("#teamName").val();
+
+    firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
+        // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
+        usersRef.push({
+            email: game.email,
+            name: game.name,
+            teamName: game.teamName
+        });
+    }).catch(function(error) {
+
+        // HANDLE ERRORS HERE. COULD USE MODALS.
+        console.log(error.code);
+        console.log(error.message);
+        console.log(error)
+        // ...
+    });
+
+    $("#email").val("");
+    $("#pwd").val("");
+    $("#name").val("");
+    $("#teamName").val("");
+
+});
+
 
 // IGNORE THE STUFF BELOW FOR NOW, ITS STILL ON THE WORKS
 
