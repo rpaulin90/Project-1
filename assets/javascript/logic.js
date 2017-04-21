@@ -15,6 +15,7 @@ var database = firebase.database();
 var usersRef = database.ref().child("users");
 
 // OUR GAME OBJECT, WHERE WE STORE INFORMATION FROM THE USER
+// THIS INFORMATION WILL LATER BE PUSHED INTO FIREBASE
 var game = {
     email:"",
     name:"",
@@ -23,176 +24,14 @@ var game = {
 };
 
 
-// FUNCTION THAT DYNAMICALLY CREATES THE HOMEPAGE (SIGNUP PAGE) HTML/CSS
-var makeSignUpPage = function(){
-
-    // EMPTY THE PAGE AND START BUILDING IT
-    $(".container").empty();
-
-    // THE PAGE HAS A FORM WITH EMAIL, NAME, PASSWORD, TEAM NAME
-
-    var form = $("<form>").addClass("panel-body");
-
-    var formGroupEmail = $("<div>").addClass("form-group");
-
-    var labelEmail = $("<label>").addClass("form-group").attr("for","email").text("Email Address: ");
-
-    var inputEmail = $("<input>").addClass("form-control");
-
-    inputEmail.attr({
-        "type": "email",
-        "id": "email"
-    });
-
-    var formGroupName = $("<div>").addClass("form-group");
-
-    var labelName = $("<label>").addClass("form-group").text("Name: ");
-
-    var inputName = $("<input>").addClass("form-control");
-
-    inputName.attr({
-        "type": "text",
-        "id": "name"
-    });
-
-    var formGroupTeamName = $("<div>").addClass("form-group");
-
-    var labelTeamName = $("<label>").addClass("form-group").text("Team Name: ");
-
-    var inputTeamName = $("<input>").addClass("form-control");
-
-    inputTeamName.attr({
-        "type": "text",
-        "id": "teamName"
-    });
-
-
-    var formGroupPwd = $("<div>").addClass("form-group");
-
-    var labelPwd = $("<label>").addClass("form-group").attr("for","pwd").text("Password: ");
-
-    var inputPwd = $("<input>").addClass("form-control");
-
-    inputPwd.attr({
-        "type": "password",
-        "id": "pwd"
-    });
-
-    var signUpBtn = $("<button>").addClass("btn btn-default").text("Sign Up");
-
-    signUpBtn.attr({
-        "type": "submit",
-        "id": "signUp"
-    });
-
-    // THIS BUTTON WILL CHANGE THE FORM INTO "LOG IN" MODE
-    var logInBtn = $("<button>").addClass("btn btn-default").text("Go to Log In");
-
-    logInBtn.attr({
-        "type": "submit",
-        "id": "goToLogIn"
-    });
-
-    formGroupEmail.append(labelEmail);
-    formGroupEmail.append(inputEmail);
-    formGroupPwd.append(labelPwd);
-    formGroupPwd.append(inputPwd);
-    formGroupName.append(labelName);
-    formGroupName.append(inputName);
-    formGroupTeamName.append(labelTeamName);
-    formGroupTeamName.append(inputTeamName);
-
-
-    form.append(formGroupEmail);
-    form.append(formGroupPwd);
-    form.append(formGroupName);
-    form.append(formGroupTeamName);
-    form.append(signUpBtn);
-    form.append(logInBtn);
-
-    $(".container").append(form);
-
-};
-
-
-// THIS FUNCTION DYNAMICALLY CREATES THE LOG IN PAGE HTML/CSS
-var makeLogInPage = function(){
-
-    $(".container").empty();
-
-    var form = $("<form>").addClass("panel-body");
-
-    var formGroupEmail = $("<div>").addClass("form-group");
-
-    var labelEmail = $("<label>").addClass("form-group").attr("for","email").text("Email Address: ");
-
-    var inputEmail = $("<input>").addClass("form-control");
-
-    inputEmail.attr({
-        "type": "email",
-        "id": "email"
-    });
-
-
-    var formGroupPwd = $("<div>").addClass("form-group");
-
-    var labelPwd = $("<label>").addClass("form-group").attr("for","pwd").text("Password: ");
-
-    var inputPwd = $("<input>").addClass("form-control");
-
-    inputPwd.attr({
-        "type": "password",
-        "id": "pwd"
-    });
-
-    var logInBtn = $("<button>").addClass("btn btn-default").text("log In");
-
-    logInBtn.attr({
-        "type": "submit",
-        "id": "logIn"
-    });
-
-    formGroupEmail.append(labelEmail);
-    formGroupEmail.append(inputEmail);
-    formGroupPwd.append(labelPwd);
-    formGroupPwd.append(inputPwd);
-
-    form.append(formGroupEmail);
-    form.append(formGroupPwd);
-    form.append(logInBtn);
-
-    $(".container").append(form);
-
-};
-
-// THIS FUNCTION DYNAMICALLY CREATES THE USER PROFILE PAGE AFTER LOGGING IN
-// var makeProfilePage = function(){
-//     $(".container").empty();
-//
-//     var welcomeDiv = $("<div>").text("Hello " + keyId.name + "!!");
-//     welcomeDiv.attr("id", "welcome");
-//
-//     var formLogOut = $("<form>").addClass("panel-body");
-//
-//     // THIS BUTTON WILL TAKE THE USER OUT OF THE PROFILE AND INTO THE HOMEPAGE
-//     var logOutBtn = $("<button>").addClass("btn btn-default").text("Log Out");
-//
-//     logOutBtn.attr({
-//         "type": "submit",
-//         "id": "logOut"
-//     });
-//
-//     formLogOut.append(logOutBtn);
-//
-//     $(".container").append(formLogOut);
-// };
-
 ///// USER REGISTRATION LOGIC
 
 var showSignUpBox = function() {
 
     // FIRST WE CREATE THE SIGN UP PAGE/HOMEPAGE
-    makeSignUpPage();
+    $("#logInPage").css("display","none");
+    $("#profilePage").css("display","none");
+    $("#homepage").css("display","block");
 
     // THEN WE LISTEN TO WHAT THE USER DOES
 
@@ -206,18 +45,20 @@ var showSignUpBox = function() {
         game.name = $("#name").val();
         game.teamName = $("#teamName").val();
 
-        firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).catch(function(error) {
-            // Handle Errors here.
+        firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
+            // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
+            usersRef.push({
+                email: game.email,
+                name: game.name,
+                teamName: game.teamName
+            });
+        }).catch(function(error) {
+
+            // HANDLE ERRORS HERE. COULD USE MODALS.
             console.log(error.code);
             console.log(error.message);
+            console.log(error)
             // ...
-        });
-
-        // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
-        usersRef.push({
-            email: game.email,
-            name: game.name,
-            teamName: game.teamName
         });
 
         $("#email").val("");
@@ -236,148 +77,139 @@ var showSignUpBox = function() {
 };
 
 ///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
-//// HAD TO COPY PASTE THE ENTIRE FUNCTION IN EACH PLACE FOR NOW.
-//// HAVING ISSUES WITH VARIABLES BEING UNDEFINED
+// CHECK IF THERE IS A USER LOGGED IN
+// IF THERE IS A USER LOGGED IN, TAKE HIM TO HIS PROFILE
+// IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
 
-// var showLoggedInBox = function() {
-//
-//     // FIRST, CREATE THE PAGE
-//     // makeProfilePage();
-//     $(document).on("click", "#logOut", function (event) {
-//
-//         event.preventDefault();
-//
-//         firebase.auth().signOut().then(function() {
-//             showSignUpBox();// Sign-out successful.
-//         }).catch(function(error) {
-//             console.log(error.code);// An error happened.
-//             console.log(error.message);// An error happened.
-//         });
-//     });
-// };
+var showProfilePage = function() {
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            usersRef.on("child_added",function(snapshot){
+
+                var keyId = snapshot.val();
+
+
+                if(keyId.email === user.email){
+
+
+                    $("#homepage").css("display","none");
+                    $("#logInPage").css("display","none");
+                    $("#profilePage").css("display","block");
+
+                    $("#welcome").text("Hello " + keyId.name + "!!");
+
+                    $(document).on("click", "#logOut", function (event) {
+
+                        event.preventDefault();
+
+                        firebase.auth().signOut().then(function() {
+                            showSignUpBox();// Sign-out successful.
+                        }).catch(function(error) {
+                            console.log(error.code);// An error happened.
+                            console.log(error.message);// An error happened.
+                        });
+
+                    });
+                }
+
+            });
+
+        }else{
+            // User is not signed in.
+            showSignUpBox();
+        }
+    });
+
+
+};
+
 
 ///// USER LOG IN LOGIC
 
 var showLoginBox = function() {
     // FIRST, CREATE THE LOG IN FORM/PAGE
-    makeLogInPage();
+    $("#homepage").css("display","none");
+    $("#profilePage").css("display","none");
+    $("#logInPage").css("display","block");
 
     // ACTION TAKEN WHEN CLICKING ON THE LOG IN BUTTON
     $(document).on("click","#logIn",function(event) {
 
         event.preventDefault();
 
-        firebase.auth().signInWithEmailAndPassword($("#email").val(), $("#pwd").val()).catch(function(error) {
+        firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#pwdLogIn").val()).then(function(){
+
+            //If sign if was successful
+            showProfilePage();
+
+        }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
-            // ...
         });
 
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                usersRef.on("child_added",function(snapshot){
-
-                    var keyId = snapshot.val();
-
-
-                    if(keyId.email === user.email){
-
-                        $(".container").empty();
-
-                        var welcomeDiv = $("<div>").text("Hello " + keyId.name + "!!");
-                        welcomeDiv.attr("id", "welcome");
-
-                        var formLogOut = $("<form>").addClass("panel-body");
-
-                        // THIS BUTTON WILL TAKE THE USER OUT OF THE PROFILE AND INTO THE HOMEPAGE
-                        var logOutBtn = $("<button>").addClass("btn btn-default").text("Log Out");
-
-                        logOutBtn.attr({
-                            "type": "submit",
-                            "id": "logOut"
-                        });
-
-                        formLogOut.append(welcomeDiv);
-                        formLogOut.append(logOutBtn);
-
-                        $(".container").append(formLogOut);
-
-                        $(document).on("click", "#logOut", function (event) {
-
-                            event.preventDefault();
-
-                            firebase.auth().signOut().then(function() {
-                                showSignUpBox();// Sign-out successful.
-                            }).catch(function(error) {
-                                console.log(error.code);// An error happened.
-                                console.log(error.message);// An error happened.
-                            });
-                        });
-
-                        // showLoggedInBox();
-                        // User is signed in.
-                    }
-
-
-                });
-
-            }
-        });
 
     });
 };
 
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        usersRef.on("child_added",function(snapshot){
+// START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY SIGNED IN
 
-            var keyId = snapshot.val();
+showProfilePage();
 
+// IGNORE THE STUFF BELOW FOR NOW, ITS STILL ON THE WORKS
 
-            if(keyId.email === user.email){
+// CREATING A RANKING TABLE WITH ALL THE USERS
 
-                $(".container").empty();
+// var createRankingTable = function(){
+//     usersRef.on("child_added",function(snapshot){
+//         var row = $("<tr>");
+//         var week = $("<td>");
+//         var ranking = $("<td>");
+//         var team_name = $("<td>");
+//         var teamOwner = $("<td>");
+//         var gamesPlayed = $("<td>");
+//         var won = $("<td>");
+//         var lost = $("<td>");
+//         var points = $("<td>");
+//         var totalPoints = $("<td>");
+//
+//         week.html(snapshot.val().week);
+//         ranking.html(snapshot.val().ranking);
+//         team_name.html(snapshot.val().team_name);
+//         teamOwner.html(snapshot.val().teamOwner);
+//         gamesPlayed.html(snapshot.val().gamesPlayed);
+//         won.html(snapshot.val().won);
+//         lost.html(snapshot.val().lost);
+//         points.html(snapshot.val().points);
+//         totalPoints.html(snapshot.val().totalPoints);
+//
+//         row.append(week);
+//         row.append(ranking);
+//         row.append(team_name);
+//         row.append(teamOwner);
+//         row.append(gamesPlayed);
+//         row.append(won);
+//         row.append(lost);
+//         row.append(points);
+//         row.append(totalPoints);
+//
+//         $(".rankings").append(row)
+//     });
+// }
 
-                var welcomeDiv = $("<div>").text("Hello " + keyId.name + "!!");
-                welcomeDiv.attr("id", "welcome");
+// $.ajax({
+//     headers: { 'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d' },
+//     url: 'https://api.football-data.org/v1/competitions/426/fixtures',
+//     dataType: 'json',
+//     type: 'GET'
+// }).done(function(response) {
+//     for (var x = 0; x < response.fixtures.length; x++) {
+//
+//     }
+//
+// });
 
-                var formLogOut = $("<form>").addClass("panel-body");
-
-                // THIS BUTTON WILL TAKE THE USER OUT OF THE PROFILE AND INTO THE HOMEPAGE
-                var logOutBtn = $("<button>").addClass("btn btn-default").text("Log Out");
-
-                logOutBtn.attr({
-                    "type": "submit",
-                    "id": "logOut"
-                });
-
-                formLogOut.append(welcomeDiv);
-                formLogOut.append(logOutBtn);
-
-                $(".container").append(formLogOut);
-
-                $(document).on("click", "#logOut", function (event) {
-
-                    event.preventDefault();
-
-                    firebase.auth().signOut().then(function() {
-                        showSignUpBox();// Sign-out successful.
-                    }).catch(function(error) {
-                        console.log(error.code);// An error happened.
-                        console.log(error.message);// An error happened.
-                    });
-                });
-                // showLoggedInBox();
-                // User is signed in.
-            }
-
-
-        });
-
-    }else{
-        showSignUpBox();
-    }
-});
