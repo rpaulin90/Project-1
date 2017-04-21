@@ -149,46 +149,6 @@ var showSignUpBox = function() {
     });
 };
 
-///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
-// CHECK IF THERE IS A USER LOGGED IN
-// IF THERE IS A USER LOGGED IN, TAKE HIM TO HIS PROFILE
-// IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
-
-
-
-var showProfilePage = function() {
-
-    // THIS LISTENER WILL FIRE TWICE EVERY TIME A USER STATUS CHANGES
-    // IT ALSO RUNS THE CODE INSIDE IT FOR EVERY TIME IT WAS ALREADY CALLED
-    /// FIX!!!!!!!///
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            usersRef.on("child_added",function(snapshot) {
-
-                var keyId = snapshot.val();
-
-                if (keyId.email === user.email) {
-
-
-                    $("#homepage").css("display", "none");
-                    $("#logInPage").css("display", "none");
-                    $("#profilePage").css("display", "block");
-
-                    $("#welcome").text("Hello " + keyId.name + "!!");
-
-                    makePicksTable();
-
-                }
-            });
-            console.log("I'm being checked");
-        } else {
-            showSignUpBox();
-            // No user is signed in.
-        }
-    });
-
-};
-
 
 ///// USER LOG IN LOGIC
 
@@ -202,10 +162,9 @@ var showLoginBox = function() {
     $(document).on("click","#logIn",function(event) {
 
         event.preventDefault();
-        var userIsSignedIn = false;
 
         firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#pwdLogIn").val()).then(function(){
-            userIsSignedIn = true;
+
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
@@ -214,15 +173,43 @@ var showLoginBox = function() {
             console.log(errorMessage);
         });
 
-        if(userIsSignedIn === true) {
-            showProfilePage();
-        }
     });
 };
 
 // START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY SIGNED IN
 
-showProfilePage();
+///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
+// CHECK IF THERE IS A USER LOGGED IN
+// IF THERE IS A USER LOGGED IN, TAKE HIM TO HIS PROFILE
+// IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
+
+// THIS LISTENER WILL FIRE TWICE EVERY TIME A USER STATUS CHANGES
+// IT ALSO RUNS THE CODE INSIDE IT FOR EVERY TIME IT WAS ALREADY CALLED
+/// FIX!!!!!!!///
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        usersRef.on("child_added",function(snapshot) {
+
+            var keyId = snapshot.val();
+
+            if (keyId.email === user.email) {
+
+                $("#homepage").css("display", "none");
+                $("#logInPage").css("display", "none");
+                $("#profilePage").css("display", "block");
+
+                $("#welcome").text("Hello " + keyId.name + "!!");
+
+                makePicksTable();
+
+            }
+        });
+        console.log("I'm being checked");
+    } else {
+        showSignUpBox();
+        // No user is signed in.
+    }
+});
 
 $(document).on("click", "#logOut", function (event) {
 
