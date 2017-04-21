@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>EPL Pool</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <style type="text/css"></style>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
@@ -55,6 +55,15 @@
 <div class="container" id="profilePage" style="display: none">
     <form class="panel-body">
         <div id="welcome"></div>
+        <div id="picksContainer">
+            <!--<table id="picks">-->
+                <!--<tr>-->
+                    <!--<th>Home Team</th>-->
+                    <!--<th>Draw</th>-->
+                    <!--<th>Away Team</th>-->
+                <!--</tr>-->
+            <!--</table>-->
+        </div>
         <button class="btn btn-default" id="logOut" type="submit">Log Out</button>
     </form>
 </div>
@@ -62,15 +71,18 @@
 <div class="rankingsDiv" style="display: none">
     <table class="rankings">
         <tr>
-            <th>Week</th>
-            <th>Position</th>
-            <th>Team Name</th>
-            <th>Team Owner</th>
-            <th>Played</th>
-            <th>Won</th>
-            <th>Lost</th>
-            <th>Points This Week</th>
-            <th>Total Points</th>
+            <th>Week</th>    <!-- CAN GET FROM API -->
+            <th>Position</th> <!-- WILL NEED TO FIND OUT HOW TO SORT A TABLE (SORT TABLE BY NUMBER OF POINTS) -->
+            <th>Team Name</th> <!-- CAN GET FROM FIREBASE -->
+            <th>Team Owner</th> <!-- CAN GET FROM FIREBASE -->
+            <th>Played</th> <!-- WILL NEED TO HAVE A COUNTER IN EACH FIREBASE NODE TO KEEP TRACK OF GAMES PLAYED -->
+            <th>Won</th> <!-- WILL NEED TO HAVE A COUNTER IN EACH FIREBASE NODE TO KEEP TRACK OF CORRECT GUESSES -->
+            <th>Lost</th> <!-- WILL NEED TO HAVE A COUNTER IN EACH FIREBASE NODE TO KEEP TRACK OF WRONG GUESSES -->
+            <th>Points This Week</th> <!-- WILL NEED TO HAVE A COUNTER IN EACH FIREBASE NODE TO KEEP TRACK OF CORRECT
+             GUESSES ON CURRENT WEEK -->
+            <th>Total Points</th> <!-- WILL NEED TO HAVE A COUNTER IN EACH FIREBASE NODE TO KEEP ADDING POINTS EVERY
+            WEEK
+             -->
         </tr>
     </table>
 </div>

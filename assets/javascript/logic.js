@@ -24,6 +24,79 @@ var game = {
 };
 
 
+
+
+// THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
+var makePicksTable = function() {
+
+    $("#picksContainer").empty();
+    $("#tablePicks").empty();
+
+    var tablePicks = $("<table>");
+    tablePicks.attr("id","tablePicks");
+    var rowTitle = $("<tr>");
+    var headerHome = $("<th>");
+    var headerDraw = $("<th>");
+    var headerAway = $("<th>");
+    headerHome.text("Home Team");
+    headerDraw.text("Draw");
+    headerAway.text("Away Team");
+    rowTitle.append(headerHome);
+    rowTitle.append(headerDraw);
+    rowTitle.append(headerAway);
+    tablePicks.append(rowTitle);
+    $("#picksContainer").html(tablePicks);
+
+    $.ajax({
+        headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
+        url: 'https://api.football-data.org/v1/competitions/426/fixtures',
+        dataType: 'json',
+        type: 'GET'
+    }).done(function (response) {
+
+        for (var x = 0; x < response.fixtures.length; x++) {
+
+            if (response.fixtures[x].matchday === 34 && response.fixtures[x].status === "TIMED") {
+
+
+                var row = $("<tr>");
+                var home = $("<td>");
+                var draw = $("<td>");
+                var away = $("<td>");
+
+
+                var buttonHome = $("<input type='radio'>");
+                buttonHome.attr("value", response.fixtures[x].result.goalsHomeTeam);
+                buttonHome.addClass("homeTeam");
+
+                var buttonAway = $("<input type='radio'>");
+                buttonAway.attr("value", response.fixtures[x].result.goalsAwayTeam);
+                buttonAway.addClass("awayTeam");
+
+                var buttonDraw = $("<input type='radio'>");
+                buttonDraw.addClass("drawBtn");
+
+                home.text(response.fixtures[x].homeTeamName + " ");
+                home.append(buttonHome);
+                away.text(response.fixtures[x].awayTeamName + " ");
+                away.append(buttonAway);
+                draw.text("Draw ");
+                draw.append(buttonDraw);
+
+                row.append(home);
+                row.append(draw);
+                row.append(away);
+
+                $("#tablePicks").append(row);
+
+
+            }
+        }
+        $("#picksContainer").html(tablePicks);
+    });
+};
+
+
 ///// USER REGISTRATION LOGIC
 
 var showSignUpBox = function() {
@@ -81,47 +154,38 @@ var showSignUpBox = function() {
 // IF THERE IS A USER LOGGED IN, TAKE HIM TO HIS PROFILE
 // IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
 
+
+
 var showProfilePage = function() {
 
+    // THIS LISTENER WILL FIRE TWICE EVERY TIME A USER STATUS CHANGES
+    // IT ALSO RUNS THE CODE INSIDE IT FOR EVERY TIME IT WAS ALREADY CALLED
+    /// FIX!!!!!!!///
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-            // User is signed in.
-            usersRef.on("child_added",function(snapshot){
+            usersRef.on("child_added",function(snapshot) {
 
                 var keyId = snapshot.val();
 
+                if (keyId.email === user.email) {
 
-                if(keyId.email === user.email){
 
-
-                    $("#homepage").css("display","none");
-                    $("#logInPage").css("display","none");
-                    $("#profilePage").css("display","block");
+                    $("#homepage").css("display", "none");
+                    $("#logInPage").css("display", "none");
+                    $("#profilePage").css("display", "block");
 
                     $("#welcome").text("Hello " + keyId.name + "!!");
 
-                    $(document).on("click", "#logOut", function (event) {
+                    makePicksTable();
 
-                        event.preventDefault();
-
-                        firebase.auth().signOut().then(function() {
-                            showSignUpBox();// Sign-out successful.
-                        }).catch(function(error) {
-                            console.log(error.code);// An error happened.
-                            console.log(error.message);// An error happened.
-                        });
-
-                    });
                 }
-
             });
-
-        }else{
-            // User is not signed in.
+            console.log("I'm being checked");
+        } else {
             showSignUpBox();
+            // No user is signed in.
         }
     });
-
 
 };
 
@@ -138,12 +202,10 @@ var showLoginBox = function() {
     $(document).on("click","#logIn",function(event) {
 
         event.preventDefault();
+        var userIsSignedIn = false;
 
         firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#pwdLogIn").val()).then(function(){
-
-            //If sign if was successful
-            showProfilePage();
-
+            userIsSignedIn = true;
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
@@ -152,13 +214,54 @@ var showLoginBox = function() {
             console.log(errorMessage);
         });
 
-
+        if(userIsSignedIn === true) {
+            showProfilePage();
+        }
     });
 };
 
 // START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY SIGNED IN
 
 showProfilePage();
+
+$(document).on("click", "#logOut", function (event) {
+
+    event.preventDefault();
+    // var userLoggedOut = false;
+    firebase.auth().signOut().then(function () {
+        // showSignUpBox();
+        // Sign-out successful.
+        // userLoggedOut = true;
+    }).catch(function (error) {
+        console.log(error.code);// An error happened.
+        console.log(error.message);// An error happened.
+    });
+
+    // if(userLoggedOut === true){
+    //     showSignUpBox();
+    // }
+
+});
+
+// if(userIsLoggedIn === true){
+//     usersRef.on("child_added",function(snapshot) {
+//
+//         var keyId = snapshot.val();
+//
+//         if (keyId.email === currentUser.email) {
+//
+//
+//             $("#homepage").css("display", "none");
+//             $("#logInPage").css("display", "none");
+//             $("#profilePage").css("display", "block");
+//
+//             $("#welcome").text("Hello " + keyId.name + "!!");
+//
+//             makePicksTable();
+//
+//         }
+//     });
+// }
 
 // IGNORE THE STUFF BELOW FOR NOW, ITS STILL ON THE WORKS
 
@@ -201,15 +304,4 @@ showProfilePage();
 //     });
 // }
 
-// $.ajax({
-//     headers: { 'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d' },
-//     url: 'https://api.football-data.org/v1/competitions/426/fixtures',
-//     dataType: 'json',
-//     type: 'GET'
-// }).done(function(response) {
-//     for (var x = 0; x < response.fixtures.length; x++) {
-//
-//     }
-//
-// });
 
