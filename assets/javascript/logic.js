@@ -25,81 +25,107 @@ var game = {
 
 };
 
-var nextMatchday;
+///////// DOMINGO'S CODE //////////
+
+var GWArray = ["04/19/2017", "04/23/2017", "04/25/2017", "04/30/2017"];
+
+currentDate = moment().format('LT');
+currentTime = moment().format('l');
+
+//console.log(currentDate);
+
+var displayTeams = function(teamHolder, index) {
+    newLabel = $("<label>");
+    newLabel.addClass("radio-inline");
+    newLabel.html(teamHolder);
+    newInput = $("<input>");
+    newInput.attr("type", "radio");
+    newInput.attr("name", "optradio");
+    newInput.attr("value", teamHolder);
+    newInput.attr("name", index);
+
+    newLabel.prepend(newInput);
+    newDiv.append(newLabel);
+}
+
+var x = 0;
+var convertedDate = moment(new Date(GWArray[x]));
+
+while (moment(convertedDate).diff(moment(), "days") <= 0) {
+    x += 2;
+    convertedDate = moment(new Date(GWArray[x]));
+}
+
+var gameWeek = 34 + (x/2);
+var startTime;
+var deadLine = false;
+var selectedTeams = [];
+
+var incompleteSelection = false;
+
+///////// DOMINGO'S CODE //////////
 
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
 var makePicksTable = function() {
-
+console.log("makePicksTable");
     $("#picksContainer").empty();
-    $("#tablePicks").empty();
 
-    var tablePicks = $("<table>");
-    tablePicks.attr("id","tablePicks");
-    var rowTitle = $("<tr>");
-    var headerHome = $("<th>");
-    var headerDraw = $("<th>");
-    var headerAway = $("<th>");
-    headerHome.text("Home Team");
-    headerDraw.text("Draw");
-    headerAway.text("Away Team");
-    rowTitle.append(headerHome);
-    rowTitle.append(headerDraw);
-    rowTitle.append(headerAway);
-    tablePicks.append(rowTitle);
-    $("#picksContainer").html(tablePicks);
-
+///////// DOMINGO'S CODE //////////
     $.ajax({
         headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
         url: 'https://api.football-data.org/v1/competitions/426/fixtures',
         dataType: 'json',
         type: 'GET'
     }).done(function (response) {
-        var gameCounter = 1;
-
+        // console.log(response);
+        var matchHolder = [];
+        newForm = $("<form>");
+        newForm.addClass("mainForm");
+        newForm.attr("name", "formSelection");
+        var index = 0;
         for (var i = 0; i < response.fixtures.length; i++) {
-            if (response.fixtures[i].matchday === 34 && response.fixtures[i].status === "TIMED") {
+            if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
 
+                matchHolder.push(i);
 
-                var row = $("<tr>");
-                var home = $("<td>");
-                var draw = $("<td>");
-                var away = $("<td>");
+                //Output
+                newDiv = $("<div>");
 
+                //var indexHome = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
 
-                var buttonHome = $("<input type='radio'>");
-                buttonHome.attr("value", response.fixtures[i].result.goalsHomeTeam);
-                buttonHome.addClass("homeTeam");
-                buttonHome.addClass("game" + gameCounter);
+                displayTeams(response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName, index);
+                displayTeams("DRAW", index);
+                displayTeams(response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName, index);
 
-                var buttonAway = $("<input type='radio'>");
-                buttonAway.attr("value", response.fixtures[i].result.goalsAwayTeam);
-                buttonAway.addClass("awayTeam");
-                buttonAway.addClass("game" + gameCounter);
+                selectedTeams.push(matchHolder.length - 1);
+                index++;
 
-                var buttonDraw = $("<input type='radio'>");
-                buttonDraw.addClass("drawBtn");
-                buttonDraw.addClass("game" + gameCounter);
-
-                home.text(response.fixtures[i].homeTeamName + " ");
-                home.append(buttonHome);
-                away.text(response.fixtures[i].awayTeamName + " ");
-                away.append(buttonAway);
-                draw.text("Draw ");
-                draw.append(buttonDraw);
-
-                row.append(home);
-                row.append(draw);
-                row.append(away);
-
-                $("#tablePicks").append(row);
-
-                gameCounter++;
-
-
+                newForm.append(newDiv);
             }
         }
 
+        $("#picksContainer").append(newForm);
+
+        startTime = moment(new Date(response.fixtures[matchHolder[0]].date));
+        startTime = moment(new Date("04/22/2017 05:33 PM"));
+
+        //console.log(response.fixtures[matchHolder[0]].date);
+        //console.log(startTime);
+
+        timeDiff = moment(startTime).diff(moment(), "hours");
+
+        console.log(timeDiff);
+
+        if (timeDiff < 2) {
+            deadLine = true;
+            console.log(deadLine);
+        }
+        else {
+            $("#picksContainer").prepend("Time remaining: " + timeDiff);
+            deadLine = false;
+        }
     });
+///////// DOMINGO'S CODE //////////
 };
 
 
@@ -138,7 +164,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         var currentUser = firebase.auth().currentUser;
         game.currentUserUid = currentUser.uid;
 
-        database.ref().orderByKey().equalTo(game.currentUserUid).on("value",function(snapshot){
+        database.ref().orderByKey().equalTo(game.currentUserUid).once("value",function(snapshot){
 
             snapshot.forEach(function (childSnapshot) {
 
@@ -153,7 +179,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                 $("#homepage").css("display", "none");
                 $("#logInPage").css("display", "none");
                 $("#profilePage").css("display", "block");
-
+                selectedTeams = [];
                 makePicksTable();
 
         });
@@ -327,7 +353,19 @@ $("#submitPicks").on("click",function(event){
         currentUserUid: game.currentUserUid,
         picks: "pick submitted"
 
-    })
+    });
+////// DOMINGO'S CODE //////
+    for (var r = 0; r < (selectedTeams.length); r++) {
+        selectedTeams[r] = ($("input[name='"+ r + "']:checked").val());
+        if (selectedTeams[r] === undefined) {
+            alert("undefined bruh");
+            incompleteSelection = true;
+            break;
+        }
+    }
+
+    console.log(selectedTeams);
+////// DOMINGO'S CODE //////
 
 });
 
