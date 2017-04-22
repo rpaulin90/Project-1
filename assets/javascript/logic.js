@@ -118,7 +118,7 @@ var showLoginBox = function() {
 };
 
 // START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY LOGGED IN
-
+showSignUpBox();
 ///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
 // IF THERE IS A USER LOGGED IN, TAKE HIM TO HIS PROFILE
 // IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
@@ -209,10 +209,10 @@ $(document).on("click","#signUp", function(event) {
         // ...
     });
 
-    $("#email").val("");
-    $("#pwd").val("");
-    $("#name").val("");
-    $("#teamName").val("");
+    // $("#email").val("");
+    // $("#pwd").val("");
+    // $("#name").val("");
+    // $("#teamName").val("");
 
 });
 
