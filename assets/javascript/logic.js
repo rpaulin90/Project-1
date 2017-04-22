@@ -171,7 +171,10 @@ $(document).on("click", "#logOut", function (event) {
     event.preventDefault();
     // var userLoggedOut = false;
     firebase.auth().signOut().then(function () {
-        localStorage.clear();// Sign-out successful.
+        game.email = "",
+        game.name = "",
+        game.teamName = "",
+        game.currentUserUid = ""// Sign-out successful.
     }).catch(function (error) {
         console.log(error.code);// An error happened.
         console.log(error.message);// An error happened.
@@ -212,6 +215,9 @@ $(document).on("click","#signUp", function(event) {
 
     firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
         // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
+        // EACH NODE'S KEY WILL BE THEIR REGISTRATION KEY.
+        // THIS ALLOWS US TO NOT HAVE TO LOOP THROUGH THE OBJECTS, WE JUST DO A SIMPLE QUERY
+        // FOR THE USER'S NUMBER
         var currentUser = firebase.auth().currentUser;
         game.currentUserUid = currentUser.uid;
         database.ref().child(game.currentUserUid).set({
@@ -313,12 +319,12 @@ $("#submitPicks").on("click",function(event){
 
     event.preventDefault();
 
-    database.ref().child("users").child(game.currentUserKeyNode).update({
+    database.ref().child(game.currentUserUid).update({
 
         email: game.email,
         name: game.name,
         teamName: game.teamName,
-        userKeyNode: game.currentUserKeyNode,
+        currentUserUid: game.currentUserUid,
         picks: "pick submitted"
 
     })
