@@ -205,14 +205,13 @@ $(document).on("click","#signUp", function(event) {
         // HANDLE ERRORS HERE. COULD USE MODALS.
         console.log(error.code);
         console.log(error.message);
-        console.log(error)
-        // ...
+        $("#email").val("");
+        $("#pwd").val("");
+        $("#name").val("");
+        $("#teamName").val("");
+
     });
 
-    // $("#email").val("");
-    // $("#pwd").val("");
-    // $("#name").val("");
-    // $("#teamName").val("");
 
 });
 
@@ -222,40 +221,6 @@ $(document).on("click","#signUp", function(event) {
 $(document).on("click","#goToLogIn", function(event) {
     event.preventDefault();
     showLoginBox();
-});
-
-// WHAT HAPPENS WHEN THE USER REGISTERS BY CLICKING THE SIGNUP BUTTON
-
-$(document).on("click","#signUp", function(event) {
-
-    event.preventDefault();
-
-    // STORE INPUT VALUES INTO VARIABLES SO WE CAN USE LATER
-    game.email = $("#email").val();
-    game.name = $("#name").val();
-    game.teamName = $("#teamName").val();
-
-    firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
-        // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
-        usersRef.push({
-            email: game.email,
-            name: game.name,
-            teamName: game.teamName
-        });
-    }).catch(function(error) {
-
-        // HANDLE ERRORS HERE. COULD USE MODALS.
-        console.log(error.code);
-        console.log(error.message);
-        console.log(error)
-        // ...
-    });
-
-    $("#email").val("");
-    $("#pwd").val("");
-    $("#name").val("");
-    $("#teamName").val("");
-
 });
 
 
