@@ -107,7 +107,7 @@ console.log("makePicksTable");
         $("#picksContainer").append(newForm);
 
         startTime = moment(new Date(response.fixtures[matchHolder[0]].date));
-        startTime = moment(new Date("04/22/2017 05:33 PM"));
+        // startTime = moment(new Date("04/22/2017 05:33 PM"));
 
         //console.log(response.fixtures[matchHolder[0]].date);
         //console.log(startTime);
@@ -121,7 +121,7 @@ console.log("makePicksTable");
             console.log(deadLine);
         }
         else {
-            $("#picksContainer").prepend("Time remaining: " + timeDiff);
+            $("#picksContainer").prepend("Time remaining: " + timeDiff + " hours");
             deadLine = false;
         }
     });
@@ -345,15 +345,6 @@ $("#submitPicks").on("click",function(event){
 
     event.preventDefault();
 
-    database.ref().child(game.currentUserUid).update({
-
-        email: game.email,
-        name: game.name,
-        teamName: game.teamName,
-        currentUserUid: game.currentUserUid,
-        picks: "pick submitted"
-
-    });
 ////// DOMINGO'S CODE //////
     for (var r = 0; r < (selectedTeams.length); r++) {
         selectedTeams[r] = ($("input[name='"+ r + "']:checked").val());
@@ -363,10 +354,17 @@ $("#submitPicks").on("click",function(event){
             break;
         }
     }
-
     console.log(selectedTeams);
 ////// DOMINGO'S CODE //////
 
+    database.ref().child(game.currentUserUid).update({
+
+        email: game.email,
+        name: game.name,
+        teamName: game.teamName,
+        picks: selectedTeams
+
+    });
 });
 
 
