@@ -20,7 +20,8 @@ var game = {
     email:"",
     name:"",
     teamName:"",
-    currentUserKeyNode:""
+    userKeyNode:"",
+    currentUserUid:""
 
 };
 
@@ -126,45 +127,6 @@ var showLoginBox = function() {
 
 };
 
-// var getPoints = function(){
-//
-//     var homeTeam1 = $(".game1").attr("class","homeTeam");
-//     var awayTeam1 = $(".game1").attr("class","awayTeam");
-//
-//     var homeTeam2 = $(".game2").attr("class","homeTeam");
-//     var awayTeam2 = $(".game2").attr("class","awayTeam");
-//
-//     var homeTeam3 = $(".game3").attr("class","homeTeam");
-//     var awayTeam3 = $(".game3").attr("class","awayTeam");
-//
-//     var homeTeam4 = $(".game4").attr("class","homeTeam");
-//     var awayTeam4 = $(".game4").attr("class","awayTeam");
-//
-//     var homeTeam5 = $(".game5").attr("class","homeTeam");
-//     var awayTeam5 = $(".game5").attr("class","awayTeam");
-//
-//     var homeTeam6 = $(".game6").attr("class","homeTeam");
-//     var awayTeam6 = $(".game6").attr("class","awayTeam");
-//
-//     var homeTeam7 = $(".game7").attr("class","homeTeam");
-//     var awayTeam7 = $(".game7").attr("class","awayTeam");
-//
-//     var homeTeam8 = $(".game8").attr("class","homeTeam");
-//     var awayTeam8 = $(".game8").attr("class","awayTeam");
-//
-//     var homeTeam9 = $(".game9").attr("class","homeTeam");
-//     var awayTeam9 = $(".game9").attr("class","awayTeam");
-//
-//     var homeTeam10 = $(".game10").attr("class","homeTeam");
-//     var awayTeam10 = $(".game10").attr("class","awayTeam");
-//
-//     if(homeTeam1.attr("value") > awayTeam1.attr("value")){
-//
-//     }
-//
-//
-//
-// };
 
 // START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY LOGGED IN
 showSignUpBox();
@@ -173,28 +135,27 @@ showSignUpBox();
 // IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
+        var currentUser = firebase.auth().currentUser;
+        game.currentUserUid = currentUser.uid;
 
-        usersRef.on("child_added",function(snapshot) {
+        database.ref().orderByKey().equalTo(game.currentUserUid).on("value",function(snapshot){
 
-            var keyId = snapshot.val();
-            console.log(keyId);
-            if (keyId.email === user.email) {
+            snapshot.forEach(function (childSnapshot) {
 
+                var keyId = childSnapshot.val();
+                console.log(keyId);
+                game.email = keyId.email;
+                game.name = keyId.name;
+                game.teamName = keyId.teamName;
+                $("#welcome").text("Hello " + keyId.name + "!!");
+            });
 
                 $("#homepage").css("display", "none");
                 $("#logInPage").css("display", "none");
                 $("#profilePage").css("display", "block");
 
-                game.email = keyId.email;
-                game.name = keyId.name;
-                game.teamName = keyId.teamName;
-                game.currentUserKeyNode = snapshot.key;
-
-                $("#welcome").text("Hello " + keyId.name + "!!");
-
                 makePicksTable();
 
-            }
         });
         console.log("I'm being checked");
     } else {
@@ -251,21 +212,14 @@ $(document).on("click","#signUp", function(event) {
 
     firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
         // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
-        localStorage.userKey = usersRef.push({
-            email: game.email,
-            name: game.name,
-            teamName: game.teamName
-
-        }).key;
-
-        game.currentUserKeyNode = localStorage.userKey
-
-        database.ref().child("users").child(game.currentUserKeyNode).update({
+        var currentUser = firebase.auth().currentUser;
+        game.currentUserUid = currentUser.uid;
+        database.ref().child(game.currentUserUid).set({
 
             email: game.email,
             name: game.name,
             teamName: game.teamName,
-            currentUserKeyNode: game.currentUserKeyNode
+            userUid: game.currentUserUid
 
         });
 
@@ -291,6 +245,9 @@ $(document).on("click","#goToLogIn", function(event) {
     event.preventDefault();
     showLoginBox();
 });
+
+
+
 
 $(document).on("click",".game1",function(){
 
@@ -361,7 +318,7 @@ $("#submitPicks").on("click",function(event){
         email: game.email,
         name: game.name,
         teamName: game.teamName,
-        currentUserKeyNode: game.currentUserKeyNode,
+        userKeyNode: game.currentUserKeyNode,
         picks: "pick submitted"
 
     })
@@ -370,6 +327,45 @@ $("#submitPicks").on("click",function(event){
 
 
 // IGNORE THE STUFF BELOW FOR NOW, ITS STILL ON THE WORKS
+
+// A FUNCTION TO DETERMINE HOW MANY POINTS A USER HAS MADE THROUGH GETTING RIGHT GUESSES
+
+// var getPoints = function(){
+//
+//     var homeTeam1 = $(".game1").attr("class","homeTeam");
+//     var awayTeam1 = $(".game1").attr("class","awayTeam");
+//
+//     var homeTeam2 = $(".game2").attr("class","homeTeam");
+//     var awayTeam2 = $(".game2").attr("class","awayTeam");
+//
+//     var homeTeam3 = $(".game3").attr("class","homeTeam");
+//     var awayTeam3 = $(".game3").attr("class","awayTeam");
+//
+//     var homeTeam4 = $(".game4").attr("class","homeTeam");
+//     var awayTeam4 = $(".game4").attr("class","awayTeam");
+//
+//     var homeTeam5 = $(".game5").attr("class","homeTeam");
+//     var awayTeam5 = $(".game5").attr("class","awayTeam");
+//
+//     var homeTeam6 = $(".game6").attr("class","homeTeam");
+//     var awayTeam6 = $(".game6").attr("class","awayTeam");
+//
+//     var homeTeam7 = $(".game7").attr("class","homeTeam");
+//     var awayTeam7 = $(".game7").attr("class","awayTeam");
+//
+//     var homeTeam8 = $(".game8").attr("class","homeTeam");
+//     var awayTeam8 = $(".game8").attr("class","awayTeam");
+//
+//     var homeTeam9 = $(".game9").attr("class","homeTeam");
+//     var awayTeam9 = $(".game9").attr("class","awayTeam");
+//
+//     var homeTeam10 = $(".game10").attr("class","homeTeam");
+//     var awayTeam10 = $(".game10").attr("class","awayTeam");
+//
+//     if(homeTeam1.attr("value") > awayTeam1.attr("value")){
+//
+//     }
+// };
 
 // CREATING A RANKING TABLE WITH ALL THE USERS
 
