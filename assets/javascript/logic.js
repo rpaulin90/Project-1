@@ -19,9 +19,12 @@ var usersRef = database.ref().child("users");
 var game = {
     email:"",
     name:"",
-    teamName:""
+    teamName:"",
+    currentUserKeyNode:""
 
 };
+
+var nextMatchday;
 
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
 var makePicksTable = function() {
@@ -50,10 +53,10 @@ var makePicksTable = function() {
         dataType: 'json',
         type: 'GET'
     }).done(function (response) {
+        var gameCounter = 1;
 
-        for (var x = 0; x < response.fixtures.length; x++) {
-
-            if (response.fixtures[x].matchday === 34 && response.fixtures[x].status === "TIMED") {
+        for (var i = 0; i < response.fixtures.length; i++) {
+            if (response.fixtures[i].matchday === 34 && response.fixtures[i].status === "TIMED") {
 
 
                 var row = $("<tr>");
@@ -63,19 +66,22 @@ var makePicksTable = function() {
 
 
                 var buttonHome = $("<input type='radio'>");
-                buttonHome.attr("value", response.fixtures[x].result.goalsHomeTeam);
+                buttonHome.attr("value", response.fixtures[i].result.goalsHomeTeam);
                 buttonHome.addClass("homeTeam");
+                buttonHome.addClass("game" + gameCounter);
 
                 var buttonAway = $("<input type='radio'>");
-                buttonAway.attr("value", response.fixtures[x].result.goalsAwayTeam);
+                buttonAway.attr("value", response.fixtures[i].result.goalsAwayTeam);
                 buttonAway.addClass("awayTeam");
+                buttonAway.addClass("game" + gameCounter);
 
                 var buttonDraw = $("<input type='radio'>");
                 buttonDraw.addClass("drawBtn");
+                buttonDraw.addClass("game" + gameCounter);
 
-                home.text(response.fixtures[x].homeTeamName + " ");
+                home.text(response.fixtures[i].homeTeamName + " ");
                 home.append(buttonHome);
-                away.text(response.fixtures[x].awayTeamName + " ");
+                away.text(response.fixtures[i].awayTeamName + " ");
                 away.append(buttonAway);
                 draw.text("Draw ");
                 draw.append(buttonDraw);
@@ -86,9 +92,12 @@ var makePicksTable = function() {
 
                 $("#tablePicks").append(row);
 
+                gameCounter++;
+
 
             }
         }
+
     });
 };
 
@@ -117,6 +126,46 @@ var showLoginBox = function() {
 
 };
 
+// var getPoints = function(){
+//
+//     var homeTeam1 = $(".game1").attr("class","homeTeam");
+//     var awayTeam1 = $(".game1").attr("class","awayTeam");
+//
+//     var homeTeam2 = $(".game2").attr("class","homeTeam");
+//     var awayTeam2 = $(".game2").attr("class","awayTeam");
+//
+//     var homeTeam3 = $(".game3").attr("class","homeTeam");
+//     var awayTeam3 = $(".game3").attr("class","awayTeam");
+//
+//     var homeTeam4 = $(".game4").attr("class","homeTeam");
+//     var awayTeam4 = $(".game4").attr("class","awayTeam");
+//
+//     var homeTeam5 = $(".game5").attr("class","homeTeam");
+//     var awayTeam5 = $(".game5").attr("class","awayTeam");
+//
+//     var homeTeam6 = $(".game6").attr("class","homeTeam");
+//     var awayTeam6 = $(".game6").attr("class","awayTeam");
+//
+//     var homeTeam7 = $(".game7").attr("class","homeTeam");
+//     var awayTeam7 = $(".game7").attr("class","awayTeam");
+//
+//     var homeTeam8 = $(".game8").attr("class","homeTeam");
+//     var awayTeam8 = $(".game8").attr("class","awayTeam");
+//
+//     var homeTeam9 = $(".game9").attr("class","homeTeam");
+//     var awayTeam9 = $(".game9").attr("class","awayTeam");
+//
+//     var homeTeam10 = $(".game10").attr("class","homeTeam");
+//     var awayTeam10 = $(".game10").attr("class","awayTeam");
+//
+//     if(homeTeam1.attr("value") > awayTeam1.attr("value")){
+//
+//     }
+//
+//
+//
+// };
+
 // START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY LOGGED IN
 showSignUpBox();
 ///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
@@ -124,15 +173,22 @@ showSignUpBox();
 // IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
+
         usersRef.on("child_added",function(snapshot) {
 
             var keyId = snapshot.val();
-
+            console.log(keyId);
             if (keyId.email === user.email) {
+
 
                 $("#homepage").css("display", "none");
                 $("#logInPage").css("display", "none");
                 $("#profilePage").css("display", "block");
+
+                game.email = keyId.email;
+                game.name = keyId.name;
+                game.teamName = keyId.teamName;
+                game.currentUserKeyNode = snapshot.key;
 
                 $("#welcome").text("Hello " + keyId.name + "!!");
 
@@ -154,7 +210,7 @@ $(document).on("click", "#logOut", function (event) {
     event.preventDefault();
     // var userLoggedOut = false;
     firebase.auth().signOut().then(function () {
-        // Sign-out successful.
+        localStorage.clear();// Sign-out successful.
     }).catch(function (error) {
         console.log(error.code);// An error happened.
         console.log(error.message);// An error happened.
@@ -195,11 +251,24 @@ $(document).on("click","#signUp", function(event) {
 
     firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function(){
         // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
-        usersRef.push({
+        localStorage.userKey = usersRef.push({
             email: game.email,
             name: game.name,
             teamName: game.teamName
+
+        }).key;
+
+        game.currentUserKeyNode = localStorage.userKey
+
+        database.ref().child("users").child(game.currentUserKeyNode).update({
+
+            email: game.email,
+            name: game.name,
+            teamName: game.teamName,
+            currentUserKeyNode: game.currentUserKeyNode
+
         });
+
     }).catch(function(error) {
 
         // HANDLE ERRORS HERE. COULD USE MODALS.
@@ -221,6 +290,82 @@ $(document).on("click","#signUp", function(event) {
 $(document).on("click","#goToLogIn", function(event) {
     event.preventDefault();
     showLoginBox();
+});
+
+$(document).on("click",".game1",function(){
+
+    $(".game1").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game2",function(){
+
+    $(".game2").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game3",function(){
+
+    $(".game3").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game4",function(){
+
+    $(".game4").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game5",function(){
+
+    $(".game5").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game6",function(){
+
+    $(".game6").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game7",function(){
+
+    $(".game7").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game8",function(){
+
+    $(".game8").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game9",function(){
+
+    $(".game9").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$(document).on("click",".game10",function(){
+
+    $(".game10").prop("checked",false);
+    $(this).prop("checked",true);
+});
+
+$("#submitPicks").on("click",function(event){
+
+    event.preventDefault();
+
+    database.ref().child("users").child(game.currentUserKeyNode).update({
+
+        email: game.email,
+        name: game.name,
+        teamName: game.teamName,
+        currentUserKeyNode: game.currentUserKeyNode,
+        picks: "pick submitted"
+
+    })
+
 });
 
 
