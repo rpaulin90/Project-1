@@ -28,7 +28,9 @@ $(document).ready(function() {
         currentUserUid: "",
         lastWeeksPicks: "",
         lastWeeksResults: "",
-        weeklyPoints: 0
+        weeklyPoints: 0,
+        weeklyPointsArray:[],
+        totalPoints: 0
 
     };
 
@@ -91,7 +93,7 @@ $(document).ready(function() {
             newForm.attr("name", "formSelection");
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
-                 if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
+                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
 
                     matchHolder.push(i);
 
@@ -134,7 +136,7 @@ $(document).ready(function() {
             var resultsLastWeek = [];
             // OBTAINING RESULTS FROM LAST WEEK
             for (var f = 0; f < response.fixtures.length; f++) {
-                if (response.fixtures[f].matchday === gameWeek - 1 && response.fixtures[f].status === "FINISHED") {
+                if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
 
                     // IF HOME TEAM WON
                     if (response.fixtures[f].result.goalsHomeTeam > response.fixtures[f].result.goalsAwayTeam) {
@@ -160,10 +162,10 @@ $(document).ready(function() {
             });
 
 
-            if (game.lastWeeksPicks !== null) {
+            if (gameWeek !== 1) { // IN GAMEWEEK 1, THERE IS NO LAST WEEK RESULTS
 
                 var lastGameWeek = (gameWeek - 1).toString();
-
+                var databaseLastGameWeek = (gameWeek - 2).toString();
 
                 resultsRef.orderByKey().equalTo(lastGameWeek).once("value", function (snapshot) {
 
@@ -181,20 +183,33 @@ $(document).ready(function() {
 
                     snapshot.forEach(function (childSnapshot) {
 
-                        var picksId = childSnapshot.val().picks;
+                        var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
+                        var pointsId = childSnapshot.val().pointsPerGameWeek;
+                        game.lastWeeksPicks = picksId[databaseLastGameWeek];
 
-                        game.lastWeeksPicks = picksId[lastGameWeek];
-
-                        for (var f = 0; f < game.lastWeeksPicks.length; f++) {
+                        for(var f = 0; f < game.lastWeeksPicks.length; f++) {
                             if (game.lastWeeksPicks[f] === game.lastWeeksResults[f]) {
                                 game.weeklyPoints++
                             }
                         }
 
+                        usersRef.child(game.currentUserUid).child("pointsPerGameWeek").update({
+
+                            [databaseLastGameWeek]: game.weeklyPoints
+
+                        });
+
+                        // UPDATING THE USER'S TOTAL POINTS
+                        game.weeklyPointsArray = pointsId;
+                        game.totalPoints = 0;
+
+                        for(var t = 0; t < game.weeklyPointsArray.length; t++){
+                            game.totalPoints += game.weeklyPointsArray[t];
+                        }
+
                         usersRef.child(game.currentUserUid).update({
 
-                            weeklyPoints: game.weeklyPoints
-
+                            totalPoints: game.totalPoints
 
                         });
 
@@ -332,15 +347,36 @@ $(document).ready(function() {
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
             game.lastWeeksPicks = null;
+            var picksArray = [];
+            var picksPerGameWeek = [];
+
+            for(var z = 0; z < 10; z++){
+                picksPerGameWeek.push("undefined");
+            }
+
+            for(var p = 0; p < 38; p++){
+
+                picksArray.push(picksPerGameWeek);
+
+            }
+
+            var pointsArray = [];
+            for(var a = 0; a < 38; a++){
+                pointsArray.push(0)
+            }
+
             usersRef.child(game.currentUserUid).set({
 
                 email: game.email,
                 name: game.name,
                 teamName: game.teamName,
                 userUid: game.currentUserUid,
-                weeklyPoints: 0
+                picksPerGameWeek: picksArray, //// picksArray = [[undefined,undefined,...,undefined],[undefined,undefined,...,undefined], etc]
+                pointsPerGameWeek: pointsArray, //// pointsArray = [0,0,0,0,...,0] 38 gameweeks, so 38 weekly points
+                totalPoints: 0
 
             });
+
 
         }).catch(function (error) {
 
@@ -381,13 +417,13 @@ $(document).ready(function() {
         }
         console.log(selectedTeams);
 ////// DOMINGO'S CODE //////
-
-        usersRef.child(game.currentUserUid).child("picks").update({
+        var databaseGameWeek = (gameWeek-1).toString();
+        usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
 
             // email: game.email,
             // name: game.name,
             // teamName: game.teamName,
-            [gameWeek]: selectedTeams
+            [databaseGameWeek]: selectedTeams
 
 
         });
@@ -475,5 +511,4 @@ $(document).ready(function() {
 //         $(".rankings").append(row)
 //     });
 // }
-
 
