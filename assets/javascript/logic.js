@@ -26,10 +26,7 @@ $(document).ready(function() {
         teamName: "",
         userKeyNode: "",
         currentUserUid: "",
-        lastWeeksPicks: "",
         lastWeeksResults: "",
-        weeklyPoints: 0,
-        weeklyPointsArray:[],
         totalPoints: 0
 
     };
@@ -179,42 +176,42 @@ $(document).ready(function() {
                 });
 
 
-                usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-
+                usersRef.orderByKey().once("value", function (snapshot) {
                     snapshot.forEach(function (childSnapshot) {
-
+                       console.log(childSnapshot.key);
                         var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
                         var pointsId = childSnapshot.val().pointsPerGameWeek;
-                        game.lastWeeksPicks = picksId[databaseLastGameWeek];
+                        var lastWeeksPicks = picksId[databaseLastGameWeek];
+                        var weeklyPoints = 0;
+                        var totalPoints = 0;
+                        var weeklyPointsArray = pointsId;
 
-                        for(var f = 0; f < game.lastWeeksPicks.length; f++) {
-                            if (game.lastWeeksPicks[f] === game.lastWeeksResults[f]) {
-                                game.weeklyPoints++
+                        for(var f = 0; f < lastWeeksPicks.length; f++) {
+                            if (lastWeeksPicks[f] === game.lastWeeksResults[f]) {
+                                weeklyPoints++
                             }
                         }
 
-                        usersRef.child(game.currentUserUid).child("pointsPerGameWeek").update({
+                        usersRef.child(childSnapshot.key).child("pointsPerGameWeek").update({
 
-                            [databaseLastGameWeek]: game.weeklyPoints
+                            [databaseLastGameWeek]: weeklyPoints
 
                         });
 
                         // UPDATING THE USER'S TOTAL POINTS
-                        game.weeklyPointsArray = pointsId;
-                        game.totalPoints = 0;
 
-                        for(var t = 0; t < game.weeklyPointsArray.length; t++){
-                            game.totalPoints += game.weeklyPointsArray[t];
+
+                        for(var t = 0; t < weeklyPointsArray.length; t++){
+                            totalPoints += weeklyPointsArray[t];
                         }
 
-                        usersRef.child(game.currentUserUid).update({
+                        usersRef.child(childSnapshot.key).update({
 
-                            totalPoints: game.totalPoints
+                            totalPoints: totalPoints
 
                         });
 
                     });
-
                 });
             }
 
@@ -280,6 +277,8 @@ $(document).ready(function() {
             });
             console.log("I'm being checked");
 
+            // usersRef.orderByChild("totalPoints").once("value",function)
+
         } else {
             showSignUpBox();
             // No user is signed in.
@@ -297,9 +296,9 @@ $(document).ready(function() {
             game.name = "";
             game.teamName = "";
             game.currentUserUid = "";
-            game.lastWeeksPicks = "";
+            lastWeeksPicks = "";
             game.lastWeeksResults = "";
-            game.weeklyPoints = 0;
+            weeklyPoints = 0;
 
             // Sign-out successful.
         }).catch(function (error) {
@@ -346,7 +345,6 @@ $(document).ready(function() {
             // FOR THE USER'S NUMBER
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
-            game.lastWeeksPicks = null;
             var picksArray = [];
             var picksPerGameWeek = [];
 
