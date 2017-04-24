@@ -314,6 +314,108 @@ $(document).ready(function() {
         }
     };
 
+    ////////////// NEED A SPECIAL UPDATE FUNCTION FOR REGISTRATION ////////////////////
+
+    var updateDatabaseRegistration = function(){
+        if (gameWeek !== 1) { // IN GAMEWEEK 1, THERE IS NO LAST WEEK RESULTS
+            console.log("updateDatabase");
+
+            var lastGameWeek = (gameWeek - 1).toString();
+            var databaseLastGameWeek = (gameWeek - 2).toString();
+
+            resultsRef.orderByKey().equalTo(lastGameWeek).once("value", function (snapshot) {
+
+                snapshot.forEach(function (childSnapshot) {
+
+                    game.lastWeeksResults = childSnapshot.val();
+
+
+                });
+
+            });
+
+
+            usersRef.orderByKey().once("value", function (snapshot) {
+                console.log("on value");
+                snapshot.forEach(function (childSnapshot) {
+                    // console.log(childSnapshot.key);
+                    var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
+                    var pointsId = childSnapshot.val().pointsPerGameWeek;
+                    var gamesPlayedId = childSnapshot.val().gamesPlayedPerWeek;
+                    var lastWeeksPicks = picksId[databaseLastGameWeek];
+                    var weeklyPoints = 0;
+                    var totalPoints = 0;
+                    var totalGamesPlayed = 0;
+                    var weeklyGamesPlayed = 0;
+                    var weeklyPointsArray = pointsId;
+                    var weeklyGamesPlayedArray = gamesPlayedId;
+
+
+                    for(var f = 0; f < lastWeeksPicks.length; f++) {
+                        if(lastWeeksPicks[f]!=="undefined"){
+                            weeklyGamesPlayed++}
+                        if (lastWeeksPicks[f] === game.lastWeeksResults[f]) {
+                            weeklyPoints++
+                        }
+                    }
+
+                    // UPDATING THE USER'S TOTAL POINTS
+
+
+                    for(var t = 0; t < weeklyPointsArray.length; t++){
+                        totalPoints += weeklyPointsArray[t];
+                        totalGamesPlayed += weeklyGamesPlayedArray[t];
+                    }
+
+                    usersRef.child(childSnapshot.key).child("pointsPerGameWeek").update({
+
+                        [databaseLastGameWeek]: weeklyPoints
+
+                    });
+
+                    usersRef.child(childSnapshot.key).child("gamesPlayedPerWeek").update({
+
+                        [databaseLastGameWeek]: weeklyGamesPlayed
+
+                    });
+
+
+                    usersRef.child(childSnapshot.key).update({
+
+                        totalGamesPlayed: totalGamesPlayed
+
+                    });
+                    usersRef.child(childSnapshot.key).update({
+
+                        totalPointsNegative: -totalPoints
+
+                    });
+                    usersRef.child(childSnapshot.key).update({
+
+                        totalPoints: totalPoints
+
+                    });
+
+                    if(childSnapshot.val().totalPoints == 0){
+                        usersRef.child(childSnapshot.key).update({
+
+                            totalPoints: totalPoints,
+                            totalPointsNegative: 1000,
+                            totalGamesPlayed: totalGamesPlayed
+
+                        });
+                    }
+
+                });
+            });
+
+        }
+    };
+
+    ////////////// NEED A SPECIAL UPDATE FUNCTION FOR REGISTRATION ////////////////////
+
+
+
     var makeRankingsTable = function(){
         $(".rankings").empty();
 
@@ -535,6 +637,8 @@ $(document).ready(function() {
                 totalGamesPlayed: 0
 
             });
+
+            updateDatabaseRegistration();
 
 
         }).catch(function (error) {
