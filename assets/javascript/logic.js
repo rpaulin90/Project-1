@@ -27,7 +27,8 @@ $(document).ready(function() {
         userKeyNode: "",
         currentUserUid: "",
         lastWeeksResults: "",
-        totalPoints: 0
+        totalPoints: 0,
+        newRegistration: false
 
     };
 
@@ -334,7 +335,6 @@ $(document).ready(function() {
 
             });
 
-
             usersRef.orderByKey().once("value", function (snapshot) {
                 console.log("on value");
                 snapshot.forEach(function (childSnapshot) {
@@ -507,6 +507,7 @@ $(document).ready(function() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+
             console.log("hello")
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
@@ -530,7 +531,12 @@ $(document).ready(function() {
                 $("#lastWeekInfo").css("display","block");
                 selectedTeams = [];
                 makePicksTable();
-                updateDatabase();
+                if(game.newRegistration){
+                    updateDatabaseRegistration();
+                }else{
+                    updateDatabase();
+                }
+
 
 
             });
@@ -604,6 +610,7 @@ $(document).ready(function() {
             // EACH NODE'S KEY WILL BE THEIR REGISTRATION KEY.
             // THIS ALLOWS US TO NOT HAVE TO LOOP THROUGH THE OBJECTS, WE JUST DO A SIMPLE QUERY
             // FOR THE USER'S NUMBER
+            game.newRegistration = true;
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
             var picksArray = [];
@@ -637,8 +644,6 @@ $(document).ready(function() {
                 totalGamesPlayed: 0
 
             });
-
-            updateDatabaseRegistration();
 
 
         }).catch(function (error) {
