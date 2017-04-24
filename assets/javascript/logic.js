@@ -455,6 +455,7 @@ $(document).ready(function() {
             game.lastWeeksResults = "";
             weeklyPoints = 0;
             $(".rankingsDiv").css("display", "none");
+            $("#lastWeekInfo").css("display","none");
             // Sign-out successful.
         }).catch(function (error) {
             console.log(error.code);// An error happened.
