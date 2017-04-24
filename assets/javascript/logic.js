@@ -238,7 +238,7 @@ $(document).ready(function() {
             });
 
 
-            usersRef.orderByKey().on("value", function (snapshot) {
+            usersRef.orderByKey().once("value", function (snapshot) {
                 console.log("on value");
                 snapshot.forEach(function (childSnapshot) {
                     // console.log(childSnapshot.key);
@@ -335,7 +335,7 @@ $(document).ready(function() {
 
             });
 
-            usersRef.orderByKey().once("value", function (snapshot) {
+            usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
                 console.log("on value");
                 snapshot.forEach(function (childSnapshot) {
                     // console.log(childSnapshot.key);
@@ -562,6 +562,7 @@ $(document).ready(function() {
             lastWeeksPicks = "";
             game.lastWeeksResults = "";
             weeklyPoints = 0;
+            game.newRegistration = false;
             $(".rankingsDiv").css("display", "none");
             $("#lastWeekInfo").css("display","none");
             // Sign-out successful.
