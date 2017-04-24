@@ -83,7 +83,7 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
-            // console.log(response);
+            console.log("ajax call");
             var matchHolder = [];
             newForm = $("<form>");
             newForm.addClass("mainForm");
@@ -120,11 +120,11 @@ $(document).ready(function() {
 
             timeDiff = moment(startTime).diff(moment(), "hours");
 
-            console.log(timeDiff);
+            // console.log(timeDiff);
 
             if (timeDiff < 2) {
                 deadLine = true;
-                console.log(deadLine);
+                // console.log(deadLine);
             }
             else {
                 $("#picksContainer").prepend("Time remaining: " + timeDiff + " hours");
@@ -178,15 +178,22 @@ $(document).ready(function() {
 
                 usersRef.orderByKey().once("value", function (snapshot) {
                     snapshot.forEach(function (childSnapshot) {
-                       console.log(childSnapshot.key);
+                       // console.log(childSnapshot.key);
                         var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
                         var pointsId = childSnapshot.val().pointsPerGameWeek;
+                        var gamesPlayedId = childSnapshot.val().gamesPlayedPerWeek;
                         var lastWeeksPicks = picksId[databaseLastGameWeek];
                         var weeklyPoints = 0;
                         var totalPoints = 0;
+                        var totalGamesPlayed = 0;
+                        var weeklyGamesPlayed = 0;
                         var weeklyPointsArray = pointsId;
+                        var weeklyGamesPlayedArray = gamesPlayedId;
+
 
                         for(var f = 0; f < lastWeeksPicks.length; f++) {
+                            if(lastWeeksPicks[f]!=="undefined"){
+                                weeklyGamesPlayed++}
                             if (lastWeeksPicks[f] === game.lastWeeksResults[f]) {
                                 weeklyPoints++
                             }
@@ -198,16 +205,26 @@ $(document).ready(function() {
 
                         });
 
+                        usersRef.child(childSnapshot.key).child("gamesPlayedPerWeek").update({
+
+                            [databaseLastGameWeek]: weeklyGamesPlayed
+
+                        });
+
                         // UPDATING THE USER'S TOTAL POINTS
 
 
                         for(var t = 0; t < weeklyPointsArray.length; t++){
                             totalPoints += weeklyPointsArray[t];
+                            totalGamesPlayed += weeklyGamesPlayedArray[t];
                         }
+
 
                         usersRef.child(childSnapshot.key).update({
 
-                            totalPoints: totalPoints
+                            totalPoints: totalPoints,
+                            totalPointsNegative: -totalPoints,
+                            totalGamesPlayed: totalGamesPlayed
 
                         });
 
@@ -217,6 +234,65 @@ $(document).ready(function() {
 
         });
 ///////// DOMINGO'S CODE //////////
+    };
+
+    var makeRankingsTable = function(){
+        $(".rankings").empty();
+
+        var rowTH = $("<tr>");
+        var weekTH = $("<td>").text("Week");
+        var team_nameTH = $("<td>").text("Team Name");
+        var teamOwnerTH = $("<td>").text("Team Owner");
+        var guessesSubmittedTH = $("<td>").text("Guesses Submitted");
+        var totalCorrectTH = $("<td>").text("Total Points");
+        var correctThisWeekTH = $("<td>").text("Points This Week");
+
+        rowTH.append(weekTH);
+        rowTH.append(team_nameTH);
+        rowTH.append(teamOwnerTH);
+        rowTH.append(guessesSubmittedTH);
+        rowTH.append(correctThisWeekTH);
+        rowTH.append(totalCorrectTH);
+
+        $(".rankings").append(rowTH);
+
+        usersRef.orderByChild("totalPointsNegative").once("value",function(snapshot){
+            snapshot.forEach(function (childSnapshot) {
+
+                var userID = childSnapshot.val();
+                console.log(userID.email);
+
+                var row = $("<tr>");
+                var week = $("<td>");
+                //var ranking = $("<td>");
+                var team_name = $("<td>");
+                var teamOwner = $("<td>");
+                var guessesSubmitted = $("<td>");
+                var totalCorrect = $("<td>");
+                var correctThisWeek = $("<td>");
+
+                week.append(gameWeek-1);
+                team_name.append(userID.teamName);
+                teamOwner.append(userID.name);
+                guessesSubmitted.append(userID.totalGamesPlayed);
+                // totalIncorrectArray.push(userID.totalGamesPlayed-userID.totalPoints);
+                correctThisWeek.append(userID.pointsPerGameWeek[gameWeek-2]);
+                // totalPointsArray.push(userID);
+                totalCorrect.append(userID.totalPoints);
+
+                row.append(week);
+                //row.append(ranking);
+                row.append(team_name);
+                row.append(teamOwner);
+                row.append(guessesSubmitted);
+                row.append(correctThisWeek);
+                row.append(totalCorrect);
+                $(".rankings").append(row);
+            });
+
+        });
+
+        $(".rankingsDiv").css("display", "block");
     };
 
 
@@ -261,7 +337,7 @@ $(document).ready(function() {
                 snapshot.forEach(function (childSnapshot) {
 
                     var keyId = childSnapshot.val();
-                    console.log(keyId);
+
                     game.email = keyId.email;
                     game.name = keyId.name;
                     game.teamName = keyId.teamName;
@@ -273,11 +349,10 @@ $(document).ready(function() {
                 $("#profilePage").css("display", "block");
                 selectedTeams = [];
                 makePicksTable();
+                makeRankingsTable();
 
             });
-            console.log("I'm being checked");
 
-            // usersRef.orderByChild("totalPoints").once("value",function)
 
         } else {
             showSignUpBox();
@@ -299,7 +374,7 @@ $(document).ready(function() {
             lastWeeksPicks = "";
             game.lastWeeksResults = "";
             weeklyPoints = 0;
-
+            $(".rankingsDiv").css("display", "none");
             // Sign-out successful.
         }).catch(function (error) {
             console.log(error.code);// An error happened.
@@ -362,7 +437,7 @@ $(document).ready(function() {
             for(var a = 0; a < 38; a++){
                 pointsArray.push(0)
             }
-
+            var gamesPlayedArray = pointsArray;
             usersRef.child(game.currentUserUid).set({
 
                 email: game.email,
@@ -371,7 +446,9 @@ $(document).ready(function() {
                 userUid: game.currentUserUid,
                 picksPerGameWeek: picksArray, //// picksArray = [[undefined,undefined,...,undefined],[undefined,undefined,...,undefined], etc]
                 pointsPerGameWeek: pointsArray, //// pointsArray = [0,0,0,0,...,0] 38 gameweeks, so 38 weekly points
-                totalPoints: 0
+                gamesPlayedPerWeek: gamesPlayedArray, //// TO COUNT HOW MANY GAMES A USER HAS PLAYED
+                totalPoints: 0,
+                totalGamesPlayed: 0
 
             });
 
@@ -413,7 +490,7 @@ $(document).ready(function() {
                 break;
             }
         }
-        console.log(selectedTeams);
+        // console.log(selectedTeams);
 ////// DOMINGO'S CODE //////
         var databaseGameWeek = (gameWeek-1).toString();
         usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
@@ -425,6 +502,7 @@ $(document).ready(function() {
 
 
         });
+
     });
 
 });
