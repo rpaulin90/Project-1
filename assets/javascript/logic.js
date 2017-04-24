@@ -78,6 +78,8 @@ $(document).ready(function() {
     var makePicksTable = function () {
         console.log("makePicksTable");
         $("#picksContainer").empty();
+        $("#gameResults").empty();
+        $("#yourPicks").empty();
 
 ///////// DOMINGO'S CODE //////////
         $.ajax({
@@ -109,7 +111,65 @@ $(document).ready(function() {
 
                     newForm.append(newDiv);
                 }
+
             }
+
+            // making the last week's results and picks info section
+
+            var rowH = $("<tr>")
+            var homeH = $("<th>").text("Home Team");
+            var resultH = $("<th>").text("Goals");
+            var awayH = $("<th>").text("Away Team");
+            rowH.append(homeH);
+            rowH.append(resultH);
+            rowH.append(awayH);
+            $("#gameResults").append(rowH);
+
+            for (var e = 0; e < response.fixtures.length; e++) {
+                if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
+
+                    var row = $("<tr>");
+                    var home = $("<td>");
+                    var result = $("<td>");
+                    var away = $("<td>");
+                    home.html(response.fixtures[e].homeTeamName);
+                    away.html(response.fixtures[e].awayTeamName);
+                    result.html(response.fixtures[e].result.goalsHomeTeam + "-" + response.fixtures[e].result.goalsAwayTeam);
+
+
+                    row.append(home);
+                    row.append(result);
+                    row.append(away);
+                    $("#gameResults").append(row);
+
+                }
+            }
+
+            var rowHP = $("<tr>")
+            var homeHP = $("<th>").text("Your Picks");
+            rowHP.append(homeHP);
+            $("#yourPicks").append(rowHP);
+
+            usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
+
+                snapshot.forEach(function (childSnapshot) {
+                    var keyId = childSnapshot.val();
+                    for(var l = 0; l < keyId.picksPerGameWeek[gameWeek-2].length; l++){
+
+                        var row = $("<tr>");
+                        var picks = $("<td>");
+
+                        picks.html(keyId.picksPerGameWeek[gameWeek-2][l]);
+
+                        row.append(picks);
+                        $("#yourPicks").append(row);
+
+                    }
+
+                });
+            });
+
+
 
             $("#picksContainer").append(newForm);
 
@@ -152,7 +212,6 @@ $(document).ready(function() {
                 [gameWeek - 1]: resultsLastWeek
 
             });
-
 
 
         });
@@ -346,6 +405,7 @@ $(document).ready(function() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+            console.log("hello")
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
 
@@ -365,6 +425,7 @@ $(document).ready(function() {
                 $("#logInPage").css("display", "none");
                 $("#profilePage").css("display", "block");
                 $("#rankingsTable").css("display","block");
+                $("#lastWeekInfo").css("display","block");
                 selectedTeams = [];
                 makePicksTable();
                 updateDatabase();

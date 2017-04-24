@@ -69,11 +69,29 @@
     </form>
 </div>
 
-<div class="rankingsDiv" style="display: none">
-    <table class="rankings"></table>
+<div class="container" style="display: none" id="lastWeekInfo">
+    <div class="row">
+        <div class="col-xs-6">
+            <table id="gameResults"></table>
+        </div>
+        <div class="col-xs-6">
+            <table id="yourPicks"></table>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin: 10px 0 10px 0">
+        <div class="rankingsDiv col-xs-12" style="display: none">
+            <table class="rankings"></table>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col-xs-12 text-center">
+            <button id="rankingsTable" style="display: none">Current Rankings</button>
+        </div>
+    </div>
 </div>
 
-<button id="rankingsTable" style="display: none">Current Rankings</button>
 
 <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
