@@ -33,7 +33,7 @@ $(document).ready(function() {
 
 ///////// DOMINGO'S CODE //////////
 
-    var GWArray = ["04/19/2017", "04/23/2017", "04/25/2017", "04/30/2017"];
+    var GWArray = ["04/22/2017", "04/23/2017", "04/29/2017", "05/01/2017", "05/05/2017", "05/08/2017", "05/10/2017", "05/14/2017", "05/15/2017", "05/21/2017"];
 
     currentDate = moment().format('LT');
     currentTime = moment().format('l');
@@ -112,7 +112,7 @@ $(document).ready(function() {
 
             $("#picksContainer").append(newForm);
 
-            startTime = moment(new Date(response.fixtures[matchHolder[0]].date));
+            startTime = moment(new Date(GWArray[x]));
             // startTime = moment(new Date("04/22/2017 05:33 PM"));
 
             //console.log(response.fixtures[matchHolder[0]].date);
@@ -228,6 +228,15 @@ $(document).ready(function() {
 
                         });
 
+                        if(childSnapshot.val().totalPoints == 0){
+                            usersRef.child(childSnapshot.key).update({
+
+                                totalPointsNegative: 1000
+
+                            });
+                        }
+
+
                     });
                 });
             }
@@ -261,7 +270,6 @@ $(document).ready(function() {
 
                 var userID = childSnapshot.val();
                 console.log(userID.email);
-
                 var row = $("<tr>");
                 var week = $("<td>");
                 //var ranking = $("<td>");
