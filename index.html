@@ -5,65 +5,51 @@
     <meta charset="utf-8">
     <title>EPL Pool</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/css/iziModal.min.css">
+    <link rel="stylesheet" href="assets/css/plugin_CSS.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
 
+<!-- IZIMODAL -->
 
-<div class="container" id="homepage" style="display: none">
+<button class="trigger-custom" data-izimodal-open="modal-custom" id="registrationBtn">Login/Register</button>
 
-    <form class="panel-body">
-        <div class="form-group">
-            <label class="form-group" for="email">Email Address: </label>
-            <input class="form-control" type="email" id="email">
-        </div>
-        <div class="form-group">
-            <label class="form-group" for="pwd">Password: </label>
-            <input class="form-control" type="password" id="pwd">
-        </div>
-        <div class="form-group">
-            <label class="form-group">Name: </label>
-            <input class="form-control" type="text" id="name">
-        </div>
-        <div class="form-group">
-            <label class="form-group">Team Name: </label>
-            <input class="form-control" type="text" id="teamName">
-        </div>
-        <button class="btn btn-default" type="submit" id="signUp">Sign Up</button>
-        <button class="btn btn-default" type="submit" id="goToLogIn">Go to Log In</button>
-    </form>
-
+<div id="modal-custom" data-iziModal-group="grupo1">
+    <button data-iziModal-close class="icon-close">x</button>
+    <header>
+        <a href="" id="signin">Sign in</a>
+        <a href="" class="active" id="goToLogIn">New Account</a>
+    </header>
+    <section class="hide">
+        <input type="text" placeholder="Email" id="emailLogIn">
+        <input type="password" placeholder="Password" id="passwordLogIn">
+        <footer>
+            <button data-iziModal-close>Cancel</button>
+            <button class="submit" id="logIn">Log in</button>
+        </footer>
+    </section>
+    <section>
+        <input type="text" placeholder="Name" id="name">
+        <input type="text" placeholder="Team Name" id="teamName">
+        <input type="text" placeholder="Email" id="emailRegistration">
+        <input type="password" placeholder="Password" id="passwordRegistration">
+        <footer>
+            <button data-iziModal-close>Cancel</button>
+            <button class="submit" id="signUp">Create Account</button>
+        </footer>
+    </section>
 </div>
 
-<div class="container" id="logInPage" style="display: none">
+<!-- IZIMODAL -->
 
-    <form class="panel-body">
-        <div class="form-group">
-            <label class="form-group" for="email">Email Address: </label>
-            <input class="form-control" type="email" id="emailLogIn">
-        </div>
-        <div class="form-group">
-            <label class="form-group" for="pwd">Password: </label>
-            <input class="form-control" type="password" id="pwdLogIn">
-        </div>
-        <button class="btn btn-default" type="submit" id="logIn">Sign Up</button>
-    </form>
 
-</div>
 
 <div class="container" id="profilePage" style="display: none">
     <form class="panel-body">
         <div id="welcome"></div>
-        <div id="picksContainer">
-            <!--<table id="picks">-->
-                <!--<tr>-->
-                    <!--<th>Home Team</th>-->
-                    <!--<th>Draw</th>-->
-                    <!--<th>Away Team</th>-->
-                <!--</tr>-->
-            <!--</table>-->
-        </div>
+        <div id="picksContainer"></div>
         <button class="btn btn-default" id="logOut" type="submit">Log Out</button>
         <button class="btn btn-default" id="submitPicks" type="submit">Submit Picks</button>
     </form>
@@ -96,6 +82,7 @@
 <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/js/iziModal.js"></script>
 <script type="text/javascript" src="assets/javascript/logic.js">
 
 

@@ -27,8 +27,7 @@ $(document).ready(function() {
         userKeyNode: "",
         currentUserUid: "",
         lastWeeksResults: "",
-        totalPoints: 0,
-        newRegistration: false
+        totalPoints: 0
 
     };
 
@@ -79,8 +78,6 @@ $(document).ready(function() {
     var makePicksTable = function () {
         console.log("makePicksTable");
         $("#picksContainer").empty();
-        $("#gameResults").empty();
-        $("#yourPicks").empty();
 
 ///////// DOMINGO'S CODE //////////
         $.ajax({
@@ -103,6 +100,8 @@ $(document).ready(function() {
                     //Output
                     newDiv = $("<div>");
 
+                    //var indexHome = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
+
                     displayTeams(response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName, index);
                     displayTeams("DRAW", index);
                     displayTeams(response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName, index);
@@ -112,75 +111,23 @@ $(document).ready(function() {
 
                     newForm.append(newDiv);
                 }
-
             }
-
-            // making the last week's results and picks info section
-
-            var rowH = $("<tr>")
-            var homeH = $("<th>").text("Home Team");
-            var resultH = $("<th>").text("Goals");
-            var awayH = $("<th>").text("Away Team");
-            rowH.append(homeH);
-            rowH.append(resultH);
-            rowH.append(awayH);
-            $("#gameResults").append(rowH);
-
-            for (var e = 0; e < response.fixtures.length; e++) {
-                if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
-
-                    var row = $("<tr>");
-                    var home = $("<td>");
-                    var result = $("<td>");
-                    var away = $("<td>");
-                    home.html(response.fixtures[e].homeTeamName);
-                    away.html(response.fixtures[e].awayTeamName);
-                    result.html(response.fixtures[e].result.goalsHomeTeam + "-" + response.fixtures[e].result.goalsAwayTeam);
-
-
-                    row.append(home);
-                    row.append(result);
-                    row.append(away);
-                    $("#gameResults").append(row);
-
-                }
-            }
-
-            var rowHP = $("<tr>")
-            var homeHP = $("<th>").text("Your Picks");
-            rowHP.append(homeHP);
-            $("#yourPicks").append(rowHP);
-
-            usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-
-                snapshot.forEach(function (childSnapshot) {
-                    var keyId = childSnapshot.val();
-                    for(var l = 0; l < keyId.picksPerGameWeek[gameWeek-2].length; l++){
-
-                        var row = $("<tr>");
-                        var picks = $("<td>");
-
-                        picks.html(keyId.picksPerGameWeek[gameWeek-2][l]);
-
-                        row.append(picks);
-                        $("#yourPicks").append(row);
-
-                    }
-
-                });
-            });
-
-
 
             $("#picksContainer").append(newForm);
 
             startTime = moment(new Date(GWArray[x]));
+            // startTime = moment(new Date("04/22/2017 05:33 PM"));
+
+            //console.log(response.fixtures[matchHolder[0]].date);
+            //console.log(startTime);
 
             timeDiff = moment(startTime).diff(moment(), "hours");
 
+            // console.log(timeDiff);
+
             if (timeDiff < 2) {
                 deadLine = true;
-
+                // console.log(deadLine);
             }
             else {
                 $("#picksContainer").prepend("Time remaining: " + timeDiff + " hours");
@@ -215,6 +162,7 @@ $(document).ready(function() {
             });
 
 
+
         });
 ///////// DOMINGO'S CODE //////////
     };
@@ -238,7 +186,7 @@ $(document).ready(function() {
             });
 
 
-            usersRef.orderByKey().once("value", function (snapshot) {
+            usersRef.orderByKey().on("value", function (snapshot) {
                 console.log("on value");
                 snapshot.forEach(function (childSnapshot) {
                     // console.log(childSnapshot.key);
@@ -314,107 +262,6 @@ $(document).ready(function() {
 
         }
     };
-
-    ////////////// NEED A SPECIAL UPDATE FUNCTION FOR REGISTRATION ////////////////////
-
-    var updateDatabaseRegistration = function(){
-        if (gameWeek !== 1) { // IN GAMEWEEK 1, THERE IS NO LAST WEEK RESULTS
-            console.log("updateDatabase");
-
-            var lastGameWeek = (gameWeek - 1).toString();
-            var databaseLastGameWeek = (gameWeek - 2).toString();
-
-            resultsRef.orderByKey().equalTo(lastGameWeek).once("value", function (snapshot) {
-
-                snapshot.forEach(function (childSnapshot) {
-
-                    game.lastWeeksResults = childSnapshot.val();
-
-
-                });
-
-            });
-
-            usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-                console.log("on value");
-                snapshot.forEach(function (childSnapshot) {
-                    // console.log(childSnapshot.key);
-                    var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
-                    var pointsId = childSnapshot.val().pointsPerGameWeek;
-                    var gamesPlayedId = childSnapshot.val().gamesPlayedPerWeek;
-                    var lastWeeksPicks = picksId[databaseLastGameWeek];
-                    var weeklyPoints = 0;
-                    var totalPoints = 0;
-                    var totalGamesPlayed = 0;
-                    var weeklyGamesPlayed = 0;
-                    var weeklyPointsArray = pointsId;
-                    var weeklyGamesPlayedArray = gamesPlayedId;
-
-
-                    for(var f = 0; f < lastWeeksPicks.length; f++) {
-                        if(lastWeeksPicks[f]!=="undefined"){
-                            weeklyGamesPlayed++}
-                        if (lastWeeksPicks[f] === game.lastWeeksResults[f]) {
-                            weeklyPoints++
-                        }
-                    }
-
-                    // UPDATING THE USER'S TOTAL POINTS
-
-
-                    for(var t = 0; t < weeklyPointsArray.length; t++){
-                        totalPoints += weeklyPointsArray[t];
-                        totalGamesPlayed += weeklyGamesPlayedArray[t];
-                    }
-
-                    usersRef.child(childSnapshot.key).child("pointsPerGameWeek").update({
-
-                        [databaseLastGameWeek]: weeklyPoints
-
-                    });
-
-                    usersRef.child(childSnapshot.key).child("gamesPlayedPerWeek").update({
-
-                        [databaseLastGameWeek]: weeklyGamesPlayed
-
-                    });
-
-
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalGamesPlayed: totalGamesPlayed
-
-                    });
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalPointsNegative: -totalPoints
-
-                    });
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalPoints: totalPoints
-
-                    });
-
-                    if(childSnapshot.val().totalPoints == 0){
-                        usersRef.child(childSnapshot.key).update({
-
-                            totalPoints: totalPoints,
-                            totalPointsNegative: 1000,
-                            totalGamesPlayed: totalGamesPlayed
-
-                        });
-                    }
-
-                });
-            });
-
-        }
-    };
-
-    ////////////// NEED A SPECIAL UPDATE FUNCTION FOR REGISTRATION ////////////////////
-
-
 
     var makeRankingsTable = function(){
         $(".rankings").empty();
@@ -443,6 +290,7 @@ $(document).ready(function() {
                 console.log(userID.email);
                 var row = $("<tr>");
                 var week = $("<td>");
+                //var ranking = $("<td>");
                 var team_name = $("<td>");
                 var teamOwner = $("<td>");
                 var guessesSubmitted = $("<td>");
@@ -453,11 +301,13 @@ $(document).ready(function() {
                 team_name.append(userID.teamName);
                 teamOwner.append(userID.name);
                 guessesSubmitted.append(userID.totalGamesPlayed);
+                // totalIncorrectArray.push(userID.totalGamesPlayed-userID.totalPoints);
                 correctThisWeek.append(userID.pointsPerGameWeek[gameWeek-2]);
+                // totalPointsArray.push(userID);
                 totalCorrect.append(userID.totalPoints);
 
                 row.append(week);
-
+                //row.append(ranking);
                 row.append(team_name);
                 row.append(teamOwner);
                 row.append(guessesSubmitted);
@@ -481,8 +331,20 @@ $(document).ready(function() {
         $("#logInPage").css("display", "none");
         $("#profilePage").css("display", "none");
         $("#rankingsTable").css("display","none");
-        $("#registrationBtn").css("display, block");
         $("#homepage").css("display", "block");
+
+    };
+
+
+///// USER LOG IN LOGIC
+
+    var showLoginBox = function () {
+        // FIRST, CREATE THE LOG IN FORM/PAGE
+        $("#homepage").css("display", "none");
+        $("#profilePage").css("display", "none");
+        $("#logInPage").css("display", "block");
+
+        // ACTION TAKEN WHEN CLICKING ON THE LOG IN BUTTON
 
     };
 
@@ -495,8 +357,6 @@ $(document).ready(function() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-
-            console.log("hello")
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
 
@@ -516,15 +376,9 @@ $(document).ready(function() {
                 $("#logInPage").css("display", "none");
                 $("#profilePage").css("display", "block");
                 $("#rankingsTable").css("display","block");
-                $("#lastWeekInfo").css("display","block");
                 selectedTeams = [];
                 makePicksTable();
-                if(game.newRegistration){
-                    updateDatabaseRegistration();
-                }else{
-                    updateDatabase();
-                }
-
+                updateDatabase();
 
 
             });
@@ -540,7 +394,7 @@ $(document).ready(function() {
     $(document).on("click", "#logOut", function (event) {
 
         event.preventDefault();
-
+        // var userLoggedOut = false;
         firebase.auth().signOut().then(function () {
             usersRef.off("value");
             game.email = "";
@@ -550,9 +404,7 @@ $(document).ready(function() {
             lastWeeksPicks = "";
             game.lastWeeksResults = "";
             weeklyPoints = 0;
-            game.newRegistration = false;
             $(".rankingsDiv").css("display", "none");
-            $("#lastWeekInfo").css("display","none");
             // Sign-out successful.
         }).catch(function (error) {
             console.log(error.code);// An error happened.
@@ -566,91 +418,39 @@ $(document).ready(function() {
         makeRankingsTable();
     });
 
-    $("#submitPicks").on("click", function (event) {
+// WHAT HAPPENS WHEN THE USER LOGS IN
+    $(document).on("click", "#logIn", function (event) {
 
         event.preventDefault();
 
-////// DOMINGO'S CODE //////
-        for (var r = 0; r < (selectedTeams.length); r++) {
-            selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
-            if (selectedTeams[r] === undefined) {
-                alert("undefined bruh");
-                incompleteSelection = true;
-                break;
-            }
-        }
+        firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#pwdLogIn").val()).then(function () {
 
-////// DOMINGO'S CODE //////
-        var databaseGameWeek = (gameWeek-1).toString();
-        usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
-            // email: game.email,
-            // name: game.name,
-            // teamName: game.teamName,
-            [databaseGameWeek]: selectedTeams
-
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
         });
 
-        updateDatabase();
-
     });
 
-    ////////////////// IZIMODAL ///////////////////////
+// WHAT HAPPENS WHEN THE USER REGISTERS
 
-    $("#modal-custom").iziModal({
-        overlayClose: false,
-        width: 600,
-        autoOpen: false,
-        overlayColor: 'rgba(0, 0, 0, 0.6)',
-        onOpened: function() {
-            console.log('onOpened');
-        },
-        onClosed: function() {
-            console.log('onClosed');
-        }
-    });
+    $(document).on("click", "#signUp", function (event) {
 
-
-    /* JS inside the modal */
-
-    $("#modal-custom").on('click', 'header a', function(event) {
-        event.preventDefault();
-        var index = $(this).index();
-        $(this).addClass('active').siblings('a').removeClass('active');
-        $(this).parents("div").find("section").eq(index).removeClass('hide').siblings('section').addClass('hide');
-
-        if( $(this).index() === 0 ){
-            $("#modal-custom .iziModal-content .icon-close").css('background', '#ddd');
-        } else {
-            $("#modal-custom .iziModal-content .icon-close").attr('style', '');
-        }
-    });
-
-    $("#modal-custom").on('click', "#signUp", function(event) {
         event.preventDefault();
 
         // STORE INPUT VALUES INTO VARIABLES SO WE CAN USE LATER
-        game.email = $("#emailRegistration").val();
+        game.email = $("#email").val();
         game.name = $("#name").val();
         game.teamName = $("#teamName").val();
 
-        if(game.email === "" || game.name === "" || game.teamName === "" || $("#passwordRegistration").val() === "") {
-            var fx = "wobble",  //wobble shake
-                $modal = $(this).closest('.iziModal');
-
-            if (!$modal.hasClass(fx)) {
-                $modal.addClass(fx);
-                setTimeout(function () {
-                    $modal.removeClass(fx);
-                }, 1500);
-            }
-        }
-
-        firebase.auth().createUserWithEmailAndPassword(game.email, $("#passwordRegistration").val()).then(function () {
+        firebase.auth().createUserWithEmailAndPassword(game.email, $("#pwd").val()).then(function () {
             // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
             // EACH NODE'S KEY WILL BE THEIR REGISTRATION KEY.
             // THIS ALLOWS US TO NOT HAVE TO LOOP THROUGH THE OBJECTS, WE JUST DO A SIMPLE QUERY
             // FOR THE USER'S NUMBER
-            game.newRegistration = true;
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
             var picksArray = [];
@@ -685,8 +485,10 @@ $(document).ready(function() {
 
             });
 
+
         }).catch(function (error) {
 
+            // HANDLE ERRORS HERE. COULD USE MODALS.
             console.log(error.code);
             console.log(error.message);
             $("#email").val("");
@@ -697,48 +499,125 @@ $(document).ready(function() {
         });
 
 
-
     });
 
-// WHAT HAPPENS WHEN THE USER LOGS IN
+// WHAT HAPPENS WHEN THE USER WANTS TO GO TO THE LOG IN AREA
+// TAKE THE USER  TO THE LOG IN PAGE
 
-    $("#modal-custom").on('click', "#logIn", function(event) {
+    $(document).on("click", "#goToLogIn", function (event) {
+        event.preventDefault();
+        showLoginBox();
+    });
+
+
+    $("#submitPicks").on("click", function (event) {
+
         event.preventDefault();
 
-        if($("#emailLogIn").val() === "" || $("#passwordLogIn") === "") {
-            var fx = "wobble",  //wobble shake
-                $modal = $(this).closest('.iziModal');
-
-            if (!$modal.hasClass(fx)) {
-                $modal.addClass(fx);
-                setTimeout(function () {
-                    $modal.removeClass(fx);
-                }, 1500);
+////// DOMINGO'S CODE //////
+        for (var r = 0; r < (selectedTeams.length); r++) {
+            selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
+            if (selectedTeams[r] === undefined) {
+                alert("undefined bruh");
+                incompleteSelection = true;
+                break;
             }
         }
+        // console.log(selectedTeams);
+////// DOMINGO'S CODE //////
+        var databaseGameWeek = (gameWeek-1).toString();
+        usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
+            // email: game.email,
+            // name: game.name,
+            // teamName: game.teamName,
+            [databaseGameWeek]: selectedTeams
 
-        firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#passwordLogIn").val()).then(function () {
-
-        }).catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
         });
+
+        updateDatabase();
+
     });
-
-
-////////////////////////////////////////////////////////
-
-
 
 });
 
 
+// IGNORE THE STUFF BELOW FOR NOW, ITS STILL ON THE WORKS
 
+// A FUNCTION TO DETERMINE HOW MANY POINTS A USER HAS MADE THROUGH GETTING RIGHT GUESSES
 
+// var getPoints = function(){
+//
+//     var homeTeam1 = $(".game1").attr("class","homeTeam");
+//     var awayTeam1 = $(".game1").attr("class","awayTeam");
+//
+//     var homeTeam2 = $(".game2").attr("class","homeTeam");
+//     var awayTeam2 = $(".game2").attr("class","awayTeam");
+//
+//     var homeTeam3 = $(".game3").attr("class","homeTeam");
+//     var awayTeam3 = $(".game3").attr("class","awayTeam");
+//
+//     var homeTeam4 = $(".game4").attr("class","homeTeam");
+//     var awayTeam4 = $(".game4").attr("class","awayTeam");
+//
+//     var homeTeam5 = $(".game5").attr("class","homeTeam");
+//     var awayTeam5 = $(".game5").attr("class","awayTeam");
+//
+//     var homeTeam6 = $(".game6").attr("class","homeTeam");
+//     var awayTeam6 = $(".game6").attr("class","awayTeam");
+//
+//     var homeTeam7 = $(".game7").attr("class","homeTeam");
+//     var awayTeam7 = $(".game7").attr("class","awayTeam");
+//
+//     var homeTeam8 = $(".game8").attr("class","homeTeam");
+//     var awayTeam8 = $(".game8").attr("class","awayTeam");
+//
+//     var homeTeam9 = $(".game9").attr("class","homeTeam");
+//     var awayTeam9 = $(".game9").attr("class","awayTeam");
+//
+//     var homeTeam10 = $(".game10").attr("class","homeTeam");
+//     var awayTeam10 = $(".game10").attr("class","awayTeam");
+//
+//     if(homeTeam1.attr("value") > awayTeam1.attr("value")){
+//
+//     }
+// };
 
+// CREATING A RANKING TABLE WITH ALL THE USERS
 
-
+// var createRankingTable = function(){
+//     usersRef.on("child_added",function(snapshot){
+//         var row = $("<tr>");
+//         var week = $("<td>");
+//         var ranking = $("<td>");
+//         var team_name = $("<td>");
+//         var teamOwner = $("<td>");
+//         var gamesPlayed = $("<td>");
+//         var won = $("<td>");
+//         var lost = $("<td>");
+//         var points = $("<td>");
+//         var totalPoints = $("<td>");
+//
+//         week.html(snapshot.val().week);
+//         ranking.html(snapshot.val().ranking);
+//         team_name.html(snapshot.val().team_name);
+//         teamOwner.html(snapshot.val().teamOwner);
+//         gamesPlayed.html(snapshot.val().gamesPlayed);
+//         won.html(snapshot.val().won);
+//         lost.html(snapshot.val().lost);
+//         points.html(snapshot.val().points);
+//         totalPoints.html(snapshot.val().totalPoints);
+//
+//         row.append(week);
+//         row.append(ranking);
+//         row.append(team_name);
+//         row.append(teamOwner);
+//         row.append(gamesPlayed);
+//         row.append(won);
+//         row.append(lost);
+//         row.append(points);
+//         row.append(totalPoints);
+//
+//         $(".rankings").append(row)
+//     });
+// }
 
