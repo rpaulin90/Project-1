@@ -496,6 +496,7 @@ $(document).ready(function() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
 
+            $('#registrationBtn').css('display','none');
             console.log("hello")
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
@@ -553,6 +554,7 @@ $(document).ready(function() {
             game.newRegistration = false;
             $(".rankingsDiv").css("display", "none");
             $("#lastWeekInfo").css("display","none");
+            $('#registrationBtn').css('display','block');
             // Sign-out successful.
         }).catch(function (error) {
             console.log(error.code);// An error happened.
@@ -650,6 +652,7 @@ $(document).ready(function() {
             // EACH NODE'S KEY WILL BE THEIR REGISTRATION KEY.
             // THIS ALLOWS US TO NOT HAVE TO LOOP THROUGH THE OBJECTS, WE JUST DO A SIMPLE QUERY
             // FOR THE USER'S NUMBER
+            $('#modal-custom').iziModal('toggle');
             game.newRegistration = true;
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
@@ -718,6 +721,9 @@ $(document).ready(function() {
         }
 
         firebase.auth().signInWithEmailAndPassword($("#emailLogIn").val(), $("#passwordLogIn").val()).then(function () {
+            $('#modal-custom').iziModal('close', {
+                transition: 'bounceOutDown' // Here transitionOut is the same property.
+            });
 
         }).catch(function (error) {
             // Handle Errors here.
