@@ -1,24 +1,160 @@
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+/* HEADER NAVBAR */
+#logOut {
+  cursor: pointer;
 }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
+/* PICKS SECTION */
+#profilePage {
+  margin-top: 70px;
 }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
+div.wide.column {
+  padding: 0px 5px !important;
 }
 
-img {
-    width: 30px;
-    height: 30px;
+/* PICKS */
+#gameweeks-picks-content {
+  padding: 10px 0px;
 }
 
-label {
-    min-width: 250px;
+#picksContainer {
+  margin: 25px 0px 10px 0px;
+}
+
+table.ui.very.compact {
+  font-size: 9pt;
+}
+
+.radio-inline {
+  font-size: 9pt !important;
+}
+
+.ui.fixed.table td, .ui.fixed.table th {
+  padding: 1px 8px 1px 4px;
+}
+
+.ui.celled.table td, .ui.celled.table th {
+  padding: 1px 8px 1px 4px;
+}
+
+#submitPicks {
+  padding: 5px;
+}
+
+/* LAST WEEKS RESULTS */
+#last-weeks-results-content {
+  padding: 0px 0px;
+}
+
+/* YOUR PICKS */
+#your-picks-content {
+  padding: 0px 0px;
+}
+
+/* LOWER SECTION */
+#clubs {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+/* TEAM NAV */
+#nav-container {
+  text-align: center;
+  overflow: auto;
+}
+
+#club-navbar {
+  border-top: 2px solid rgba(34,36,38,.15);
+  display: -webkit-inline-box;
+}
+
+#content-container {
+  margin-top: 35px;
+}
+
+#TOT img {
+  height: 3rem;
+  width: auto;
+}
+
+#nav-container div.item {
+  cursor: pointer;
+}
+
+#nav-container div.item:hover {
+  background-color: transparent;
+  box-shadow: none;
+  border-color: darkred;
+}
+
+/* TEAM CONTENT */
+.card-header {
+  background-color: green !important;
+}
+
+div.ui.fluid.card div.card-header div.card-label {
+  color: white;
+}
+
+#injuries-content {
+  font-size: 10pt;
+}
+
+#team-info-content {
+  font-size: 10pt;
+}
+
+#table-standings {
+  font-size: 10pt;
+  padding: 10px 10px;
+  overflow: auto;
+}
+
+#team-news-content {
+  font-size: 10pt;
+}
+
+/*OTHER*/
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width:600px){
+  #table-standings {
+    padding: 0px;
+  }
+
+  .mobile-table {
+    display: none;
+  }
+
+  #profilePage {
+    margin-top: 100px;
+  }
+
+  #logo {
+    display: none;
+  }
+}
+
+@media screen and (min-width:600px) and (max-width:768px){
+  .desktop-table {
+    display: none;
+  }
+}
+
+@media screen and (min-width:768px) and (max-width:990px){
+  #table-standings {
+    padding: 0px;
+  }
+
+  .mobile-table {
+    display: none;
+  }
+}
+
+@media screen and (min-width:990px){
+  .desktop-table {
+    display: none;
+  }
 }
