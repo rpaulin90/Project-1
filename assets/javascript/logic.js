@@ -27,8 +27,7 @@ $(document).ready(function() {
         userKeyNode: "",
         currentUserUid: "",
         lastWeeksResults: "",
-        totalPoints: 0,
-        newRegistration: false
+        totalPoints: 0
 
     };
 
@@ -65,6 +64,7 @@ $(document).ready(function() {
     }
 
     var gameWeek = 34 + (x / 2);
+    //gameWeek = gameWeek - 1;
     var startTime;
     var deadLine = false;
     var selectedTeams = [];
@@ -97,6 +97,7 @@ $(document).ready(function() {
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
                 if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
+                //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "FINISHED")) {
 
                     matchHolder.push(i);
 
@@ -208,73 +209,41 @@ $(document).ready(function() {
                 }
 
             }
+
+
             resultsRef.set({
 
-                [gameWeek - 1]: resultsLastWeek
+            [gameWeek - 1]: resultsLastWeek
 
             });
-
+            console.log(resultsLastWeek);
 
         });
 ///////// DOMINGO'S CODE //////////
     };
 
+    ////////////////////// FUNCTION TO UPDATE DATABASE /////////////////////////////
+
     var updateDatabase = function(){
         if (gameWeek !== 1) { // IN GAMEWEEK 1, THERE IS NO LAST WEEK RESULTS
-            console.log("updateDatabase");
 
-            var lastGameWeek = (gameWeek - 1).toString();
             var databaseLastGameWeek = (gameWeek - 2).toString();
 
-            resultsRef.orderByKey().equalTo(lastGameWeek).once("value", function (snapshot) {
-
-                snapshot.forEach(function (childSnapshot) {
-
-                    game.lastWeeksResults = childSnapshot.val();
-
-
-                });
-
-            });
-
+            // 1- UPDATE WEEKLY GAMES PLAYED
 
             usersRef.orderByKey().once("value", function (snapshot) {
-                console.log("on value");
+                console.log("1- UPDATE WEEKLY GAMES PLAYED");
                 snapshot.forEach(function (childSnapshot) {
-                    // console.log(childSnapshot.key);
+
                     var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
-                    var pointsId = childSnapshot.val().pointsPerGameWeek;
-                    var gamesPlayedId = childSnapshot.val().gamesPlayedPerWeek;
                     var lastWeeksPicks = picksId[databaseLastGameWeek];
-                    var weeklyPoints = 0;
-                    var totalPoints = 0;
-                    var totalGamesPlayed = 0;
                     var weeklyGamesPlayed = 0;
-                    var weeklyPointsArray = pointsId;
-                    var weeklyGamesPlayedArray = gamesPlayedId;
 
-
-                    for(var f = 0; f < lastWeeksPicks.length; f++) {
-                        if(lastWeeksPicks[f]!=="undefined"){
-                            weeklyGamesPlayed++}
-                        if (lastWeeksPicks[f] === game.lastWeeksResults[f]) {
-                            weeklyPoints++
+                    for (var f = 0; f < lastWeeksPicks.length; f++) {
+                        if (lastWeeksPicks[f] !== "undefined") {
+                            weeklyGamesPlayed++
                         }
                     }
-
-                    // UPDATING THE USER'S TOTAL POINTS
-
-
-                    for(var t = 0; t < weeklyPointsArray.length; t++){
-                        totalPoints += weeklyPointsArray[t];
-                        totalGamesPlayed += weeklyGamesPlayedArray[t];
-                    }
-
-                    usersRef.child(childSnapshot.key).child("pointsPerGameWeek").update({
-
-                        [databaseLastGameWeek]: weeklyPoints
-
-                    });
 
                     usersRef.child(childSnapshot.key).child("gamesPlayedPerWeek").update({
 
@@ -282,138 +251,126 @@ $(document).ready(function() {
 
                     });
 
-
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalGamesPlayed: totalGamesPlayed
-
-                    });
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalPointsNegative: -totalPoints
-
-                    });
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalPoints: totalPoints
-
-                    });
-
-                    if(childSnapshot.val().totalPoints == 0){
-                        usersRef.child(childSnapshot.key).update({
-
-                            totalPoints: totalPoints,
-                            totalPointsNegative: 1000,
-                            totalGamesPlayed: totalGamesPlayed
-
-                        });
-                    }
-
-                });
-            });
-
-        }
-    };
-
-    ////////////// NEED A SPECIAL UPDATE FUNCTION FOR REGISTRATION ////////////////////
-
-    var updateDatabaseRegistration = function(){
-        if (gameWeek !== 1) { // IN GAMEWEEK 1, THERE IS NO LAST WEEK RESULTS
-            console.log("updateDatabase");
-
-            var lastGameWeek = (gameWeek - 1).toString();
-            var databaseLastGameWeek = (gameWeek - 2).toString();
-
-            resultsRef.orderByKey().equalTo(lastGameWeek).once("value", function (snapshot) {
-
-                snapshot.forEach(function (childSnapshot) {
-
-                    game.lastWeeksResults = childSnapshot.val();
-
-
                 });
 
-            });
+                // 2- UPDATE WEEKLY POINTS
 
-            usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-                console.log("on value");
-                snapshot.forEach(function (childSnapshot) {
-                    // console.log(childSnapshot.key);
-                    var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
-                    var pointsId = childSnapshot.val().pointsPerGameWeek;
-                    var gamesPlayedId = childSnapshot.val().gamesPlayedPerWeek;
-                    var lastWeeksPicks = picksId[databaseLastGameWeek];
-                    var weeklyPoints = 0;
-                    var totalPoints = 0;
-                    var totalGamesPlayed = 0;
-                    var weeklyGamesPlayed = 0;
-                    var weeklyPointsArray = pointsId;
-                    var weeklyGamesPlayedArray = gamesPlayedId;
+                usersRef.orderByKey().once("value", function (snapshot) {
+                    console.log("2- UPDATE WEEKLY POINTS");
 
+                    snapshot.forEach(function (childSnapshot) {
 
-                    for(var f = 0; f < lastWeeksPicks.length; f++) {
-                        if(lastWeeksPicks[f]!=="undefined"){
-                            weeklyGamesPlayed++}
-                        if (lastWeeksPicks[f] === game.lastWeeksResults[f]) {
-                            weeklyPoints++
+                        var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
+                        var lastWeeksPicks = picksId[databaseLastGameWeek];
+                        var weeklyPoints = 0;
+
+                        for (var f = 0; f < lastWeeksPicks.length; f++) {
+                            if (lastWeeksPicks[f] === resultsLastWeek[f]) {
+                                weeklyPoints++
+                            }
                         }
-                    }
 
-                    // UPDATING THE USER'S TOTAL POINTS
+                        usersRef.child(childSnapshot.key).child("pointsPerGameWeek").update({
 
-
-                    for(var t = 0; t < weeklyPointsArray.length; t++){
-                        totalPoints += weeklyPointsArray[t];
-                        totalGamesPlayed += weeklyGamesPlayedArray[t];
-                    }
-
-                    usersRef.child(childSnapshot.key).child("pointsPerGameWeek").update({
-
-                        [databaseLastGameWeek]: weeklyPoints
-
-                    });
-
-                    usersRef.child(childSnapshot.key).child("gamesPlayedPerWeek").update({
-
-                        [databaseLastGameWeek]: weeklyGamesPlayed
-
-                    });
-
-
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalGamesPlayed: totalGamesPlayed
-
-                    });
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalPointsNegative: -totalPoints
-
-                    });
-                    usersRef.child(childSnapshot.key).update({
-
-                        totalPoints: totalPoints
-
-                    });
-
-                    if(childSnapshot.val().totalPoints == 0){
-                        usersRef.child(childSnapshot.key).update({
-
-                            totalPoints: totalPoints,
-                            totalPointsNegative: 1000,
-                            totalGamesPlayed: totalGamesPlayed
+                            [databaseLastGameWeek]: weeklyPoints
 
                         });
-                    }
 
+
+                    });
+                    // 3- UPDATE TOTAL GAMES PLAYED
+
+                    usersRef.orderByKey().once("value", function (snapshot) {
+                        console.log("3- UPDATE TOTAL GAMES PLAYED");
+                        snapshot.forEach(function (childSnapshot) {
+
+                            var pointsId = childSnapshot.val().pointsPerGameWeek;
+                            var gamesPlayedId = childSnapshot.val().gamesPlayedPerWeek;
+                            var totalGamesPlayed = 0;
+                            var weeklyPointsArray = pointsId;
+                            var weeklyGamesPlayedArray = gamesPlayedId;
+
+                            for(var t = 0; t < weeklyPointsArray.length; t++){
+                                totalGamesPlayed += weeklyGamesPlayedArray[t];
+                            }
+
+                            usersRef.child(childSnapshot.key).update({
+
+                                totalGamesPlayed: totalGamesPlayed
+
+                            });
+
+                        });
+
+                        // 4- UPDATE TOTAL POINTS
+
+                        usersRef.orderByKey().once("value", function (snapshot) {
+                            console.log("4- UPDATE TOTAL POINTS");
+                            snapshot.forEach(function (childSnapshot) {
+
+                                var pointsId = childSnapshot.val().pointsPerGameWeek;
+                                var totalPoints = 0;
+                                var weeklyPointsArray = pointsId;
+
+
+                                for(var t = 0; t < weeklyPointsArray.length; t++){
+                                    totalPoints += weeklyPointsArray[t];
+                                }
+
+
+                                usersRef.child(childSnapshot.key).update({
+
+                                    totalPointsNegative: -totalPoints,
+                                    totalPoints: totalPoints
+
+                                });
+
+                                // usersRef.child(childSnapshot.key).update({
+                                //
+                                //     totalPoints: totalPoints
+                                //
+                                // });
+
+
+                            });
+                        });
+
+                        // 4- CHECK If USER HAS 0 POINTS
+
+                        usersRef.orderByKey().once("value", function (snapshot) {
+                            console.log("5- CHECK IF TOTAL POINTS ARE 0");
+                            snapshot.forEach(function (childSnapshot) {
+
+                                var pointsId = childSnapshot.val().pointsPerGameWeek;
+                                var totalPoints = 0;
+                                var weeklyPointsArray = pointsId;
+
+
+                                for(var t = 0; t < weeklyPointsArray.length; t++){
+                                    totalPoints += weeklyPointsArray[t];
+                                }
+
+                                if(totalPoints == 0){
+
+                                    usersRef.child(childSnapshot.key).update({
+
+                                        totalPointsNegative: 1000
+
+                                    });
+                                }
+
+                            });
+                        });
+                    });
                 });
             });
-
         }
+
     };
 
-    ////////////// NEED A SPECIAL UPDATE FUNCTION FOR REGISTRATION ////////////////////
 
+
+    /////////////////////////////////////////////////////////////////////////////
 
 
     var makeRankingsTable = function(){
@@ -520,21 +477,27 @@ $(document).ready(function() {
                 $("#lastWeekInfo").css("display","block");
                 selectedTeams = [];
                 makePicksTable();
-                if(game.newRegistration){
-                    updateDatabaseRegistration();
-                }else{
-                    updateDatabase();
-                }
-
-
 
             });
 
         } else {
             showSignUpBox();
+            updateDatabase();
             // No user is signed in.
         }
     });
+
+    jQuery(function($)
+    {
+        $(document).ajaxStop(function()
+        {
+            console.log(gameWeek);
+            console.log("results last week: " + resultsLastWeek);
+            updateDatabase();// Executed when all ajax requests are done.
+
+        });
+    });
+
 
 
 // WHAT HAPPENS WHEN A USER LOGS OUT
@@ -551,7 +514,7 @@ $(document).ready(function() {
             lastWeeksPicks = "";
             game.lastWeeksResults = "";
             weeklyPoints = 0;
-            game.newRegistration = false;
+            updateDatabase();
             $(".rankingsDiv").css("display", "none");
             $("#lastWeekInfo").css("display","none");
             $('#registrationBtn').css('display','block');
@@ -592,7 +555,6 @@ $(document).ready(function() {
 
         });
 
-        updateDatabase();
 
     });
 
@@ -653,7 +615,6 @@ $(document).ready(function() {
             // THIS ALLOWS US TO NOT HAVE TO LOOP THROUGH THE OBJECTS, WE JUST DO A SIMPLE QUERY
             // FOR THE USER'S NUMBER
             $('#modal-custom').iziModal('toggle');
-            game.newRegistration = true;
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
             var picksArray = [];
