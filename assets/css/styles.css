@@ -1,32 +1,35 @@
 /* HEADER NAVBAR */
 #logOut {
-  cursor: pointer;
+
+    cursor: pointer;
+
 }
 
 /* PICKS SECTION */
 #profilePage {
-  margin-top: 70px;
+
+    margin-top: 70px;
 }
 
 div.wide.column {
-  padding: 0px 5px !important;
+    padding: 0px 5px !important;
 }
 
 /* PICKS */
 #gameweeks-picks-content {
-  padding: 10px 0px;
+    padding: 10px 0px;
 }
 
 #picksContainer {
-  margin: 25px 0px 10px 0px;
+    margin: 25px 0px 10px 0px;
 }
 
 table.ui.very.compact {
-  font-size: 9pt;
+    font-size: 9pt;
 }
 
 .radio-inline {
-  font-size: 9pt !important;
+    font-size: 9pt !important;
 }
 
 .team-pick {
@@ -38,20 +41,20 @@ table.ui.very.compact {
 }
 
 .ui.fixed.table td, .ui.fixed.table th {
-  padding: 1px 8px 1px 4px;
+    padding: 1px 8px 1px 4px;
 }
 
 .ui.celled.table td, .ui.celled.table th {
-  padding: 1px 8px 1px 4px;
+    padding: 1px 8px 1px 4px;
 }
 
 #submitPicks {
-  padding: 5px;
+    padding: 5px;
 }
 
 /* LAST WEEKS RESULTS */
 #last-weeks-results-content {
-  padding: 0px 0px;
+    padding: 0px 0px;
 }
 
 .home-result {
@@ -67,7 +70,7 @@ table.ui.very.compact {
 
 /* YOUR PICKS */
 #your-picks-content {
-  padding: 0px 0px;
+    padding: 0px 0px;
 }
 
 #yourPicks td {
@@ -76,129 +79,116 @@ table.ui.very.compact {
 
 /* LOWER SECTION */
 #clubs {
-  margin-top: 40px;
-  margin-bottom: 20px;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 /* TEAM NAV */
 #nav-container {
-  text-align: center;
-  overflow: auto;
+    text-align: center;
+    overflow: auto;
 }
 
 #club-navbar {
-  border-top: 2px solid rgba(34,36,38,.15);
-  display: -webkit-inline-box;
+    border-top: 2px solid rgba(34,36,38,.15);
+    display: -webkit-inline-box;
 }
 
 #content-container {
-  margin-top: 35px;
+    margin-top: 35px;
 }
 
 #TOT img {
-  height: 3rem;
-  width: auto;
+    height: 3rem;
+    width: auto;
 }
 
 #nav-container div.item {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 #nav-container div.item:hover {
-  background-color: transparent;
-  box-shadow: none;
-  border-color: darkred;
+    background-color: transparent;
+    box-shadow: none;
+    border-color: darkred;
 }
 
 /* TEAM CONTENT */
 .card-header {
-  background-color: green !important;
+    background-color: green !important;
 }
 
 div.ui.fluid.card div.card-header div.card-label {
-  color: white;
+    color: white;
 }
 
 #injuries-content {
-  font-size: 9pt;
+    font-size: 9pt;
 }
 
 #team-info-content {
-  font-size: 9pt;
+    font-size: 9pt;
 }
 
 #table-standings {
-  font-size: 9pt;
-  padding: 10px 10px;
-  overflow: auto;
+    font-size: 9pt;
+    padding: 10px 10px;
+    overflow: auto;
 }
 
 #team-news-content {
-  font-size: 9pt;
+    font-size: 9pt;
 }
 
 /*OTHER*/
 .hidden {
-  display: none;
+    display: none;
 }
-
-/*.team-pick label {
-  height: 100%;
-  width: 100%;
-}
-
-.team-pick input[type=radio]{
-  display: none;
-}
-
-.team-pick input[type=radio]:checked + .team-pick{
-  background-color: #241009;
-}*/
 
 @media screen and (max-width:600px){
-  #table-standings {
-    padding: 0px;
-  }
+    #table-standings {
+        padding: 0px;
+    }
 
-  .mobile-table {
-    display: none;
-  }
+    .mobile-table {
+        display: none;
+    }
 
-  #profilePage {
-    margin-top: 100px;
-  }
+    #profilePage {
+        margin-top: 100px;
+    }
 
-  #logo {
-    display: none;
-  }
+    #logo {
+        display: none;
+    }
 }
 
 @media screen and (min-width:600px) and (max-width:768px){
-  .desktop-table {
-    display: none;
-  }
+    .desktop-table {
+        display: none;
+    }
 
-  #profilePage {
-    margin-top: 100px;
-  }
+    #profilePage {
+      margin-top: 100px;
+    }
 
-  #logo {
-    display: none;
-  }
+    #logo {
+      display: none;
+    }
 }
 
 @media screen and (min-width:768px) and (max-width:990px){
-  #table-standings {
-    padding: 0px;
-  }
+    #table-standings {
+        padding: 0px;
+    }
 
-  .mobile-table {
-    display: none;
-  }
+    .mobile-table {
+        display: none;
+    }
 }
 
 @media screen and (min-width:990px){
-  .desktop-table {
-    display: none;
-  }
+    .desktop-table {
+        display: none;
+    }
 }
