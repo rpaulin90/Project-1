@@ -90,8 +90,9 @@ $(document).ready(function() {
     var makePicksTable = function () {
         console.log("makePicksTable");
         $("#picksContainer").empty();
-        $("#gameResults").empty();
+        $("#game-results").empty();
         $("#yourPicks").empty();
+        $("#yourPicksCurrent").empty();
 
 ///////// DOMINGO'S CODE //////////
         $.ajax({
