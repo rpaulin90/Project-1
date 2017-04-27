@@ -647,12 +647,6 @@ $(document).ready(function() {
 
     $("#resetPassword").on('click', function(event) {
         var emailForPasswordReset = $("#emailForPasswordReset").val();
-        passwordReset(emailForPasswordReset);
-    });
-
-    function passwordReset(emailForPasswordReset) {
-        console.log(emailForPasswordReset);
-
         var that = $(this);
 
         firebase.auth().sendPasswordResetEmail(emailForPasswordReset).then(function () {
@@ -671,7 +665,9 @@ $(document).ready(function() {
             }
             console.log(error.message);
         });
-    }
+    });
+
+
 
 ////////////////////////////////////////////////////////
 // JAIME's CODE
