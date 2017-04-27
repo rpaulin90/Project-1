@@ -43,6 +43,7 @@ $(document).ready(function() {
 //console.log(currentDate);
 
     var displayTeams = function (teamHolder, index) {
+
         radioButtonDiv = $('<div class="ui radio checkbox">');
 
         newLabel = $("<label>");
@@ -62,6 +63,7 @@ $(document).ready(function() {
         radioButtonDiv.append(newInput);
         radioButtonDiv.append(newLabel);
         newColumn.append(radioButtonDiv);
+
     };
 
     var x = 0;
@@ -170,7 +172,9 @@ $(document).ready(function() {
                 deadLine = true;
             }
             else {
-                $("#time-remaining").append("Time remaining: " + timeDiff + " hours");
+
+              $("#time-remaining").append("Time remaining: " + timeDiff + " hours");
+
                 deadLine = false;
             }
 
@@ -196,7 +200,9 @@ $(document).ready(function() {
             }
 
             resultsRef.set({
-                [gameWeek - 1]: resultsLastWeek
+
+              [gameWeek - 1]: resultsLastWeek
+
             });
             console.log(resultsLastWeek);
         });
@@ -527,6 +533,7 @@ $(document).ready(function() {
 
         var that = $(this);
 
+
         /// adding some requirements to register
 
         if(game.name.length > 2 && game.teamName.length > 2) {
@@ -591,7 +598,6 @@ $(document).ready(function() {
                 $("#pwd").val("");
                 $("#name").val("");
                 $("#teamName").val("");
-
             });
         }else{
             var fx = "wobble",  //wobble shake
@@ -637,6 +643,7 @@ $(document).ready(function() {
             console.log(errorMessage);
         });
     });
+
 
     $("#resetPassword").on('click', function(event) {
         var emailForPasswordReset = $("#emailForPasswordReset").val();
@@ -1063,9 +1070,4 @@ $(document).ready(function() {
         return tags;
     }
 });
-
-
-
-
-
 
