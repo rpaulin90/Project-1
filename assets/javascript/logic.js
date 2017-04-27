@@ -173,15 +173,19 @@ $(document).ready(function() {
                         }
                     }
 
-                    for(var c = 0; c < keyId.picksPerGameWeek[gameWeek-1].length; c++){
-                        ////// making the current week's picks section
-                        var rowCurrent = $("<tr>");
-                        var picksCurrent = $("<td>");
+                    if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
+                        $("#yourPicksCurrent").append("No picks have been selected yet"); //////// LATEST CHANGE
+                    }else {
+                        for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
+                            ////// making the current week's picks section
+                            var rowCurrent = $("<tr>");
+                            var picksCurrent = $("<td>");
 
-                        picksCurrent.html(keyId.picksPerGameWeek[gameWeek-1][c]);
+                            picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
 
-                        rowCurrent.append(picksCurrent);
-                        $("#yourPicksCurrent").append(rowCurrent);
+                            rowCurrent.append(picksCurrent);
+                            $("#yourPicksCurrent").append(rowCurrent);
+                        }
                     }
                 });
             });

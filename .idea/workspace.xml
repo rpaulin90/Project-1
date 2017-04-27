@@ -20,8 +20,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="198" column="40" lean-forward="false" selection-start-line="198" selection-start-column="39" selection-end-line="198" selection-end-column="40" />
+            <state relative-caret-position="168">
+              <caret line="224" column="12" lean-forward="false" selection-start-line="224" selection-start-column="5" selection-end-line="224" selection-end-column="12" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#section#3;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -36,8 +36,8 @@
       <file leaf-file-name="logic.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/assets/javascript/logic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="90" column="38" lean-forward="true" selection-start-line="90" selection-start-column="38" selection-end-line="90" selection-end-column="38" />
+            <state relative-caret-position="234">
+              <caret line="176" column="73" lean-forward="false" selection-start-line="176" selection-start-column="73" selection-end-line="176" selection-end-column="73" />
               <folding />
             </state>
           </provider>
@@ -78,11 +78,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>newform</find>
-      <find>top conte</find>
-      <find>font</find>
-      <find>ajax</find>
-      <find>getteams</find>
       <find>getteamsqu</find>
       <find>successfully</find>
       <find>submitPicks</find>
@@ -105,9 +100,14 @@
       <find>undefined</find>
       <find>lastweek</find>
       <find>yourpicks</find>
-      <find>child(</find>
       <find>currentpicks</find>
       <find>yourpickscurrent</find>
+      <find>key</find>
+      <find>currentuseruid</find>
+      <find>child(</find>
+      <find>currentpicks-modal</find>
+      <find>current</find>
+      <find>yourpicksc</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -346,12 +346,12 @@
       <workItem from="1493302444699" duration="2646000" />
       <workItem from="1493305819486" duration="1570000" />
       <workItem from="1493308189701" duration="10650000" />
-      <workItem from="1493323676019" duration="1455000" />
+      <workItem from="1493323676019" duration="4014000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="206483000" />
+    <option name="totallyTimeSpent" value="209042000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="62" y="31" width="1162" height="650" extended-state="0" />
@@ -808,8 +808,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="198" column="40" lean-forward="false" selection-start-line="198" selection-start-column="39" selection-end-line="198" selection-end-column="40" />
+        <state relative-caret-position="168">
+          <caret line="224" column="12" lean-forward="false" selection-start-line="224" selection-start-column="5" selection-end-line="224" selection-end-column="12" />
           <folding>
             <element signature="n#style#0;n#div#0;n#section#3;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -822,8 +822,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/javascript/logic.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="90" column="38" lean-forward="true" selection-start-line="90" selection-start-column="38" selection-end-line="90" selection-end-column="38" />
+        <state relative-caret-position="234">
+          <caret line="176" column="73" lean-forward="false" selection-start-line="176" selection-start-column="73" selection-end-line="176" selection-end-column="73" />
           <folding />
         </state>
       </provider>
