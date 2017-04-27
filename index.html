@@ -52,7 +52,7 @@
             <button class="submit" id="signUp">Create Account</button>
         </footer>
     </section>
-    <section class="hide">
+    <section class="hide" data-iziModal-group="grupo1">
         <input type="text" placeholder="Email" id="emailForPasswordReset">
         <footer>
             <button data-iziModal-close>Cancel</button>
@@ -184,6 +184,21 @@
     </div>
 </div> -->
 
+
+<!--///////////// JUST ADDED ////////////////-->
+
+<div id="modal-modifications" style="text-align: center; font-size: 20pt; width: 80%">
+
+    <canvas id="canvas"></canvas>
+</div>
+
+<div id="picks-submitted-successfully"></div>
+
+<!--<canvas id="canvas" style="margin-top: 20px; width: 40%"></canvas>-->
+<button id="pointsGraph">Weekly Points</button>
+
+<!--///////////// JUST ADDED ////////////////-->
+
 <div id="clubs" class="hidden">
     <div id="nav-container">
         <nav class="ui secondary pointing menu" id="club-navbar">
@@ -268,6 +283,7 @@
 </div>
 
 <!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
