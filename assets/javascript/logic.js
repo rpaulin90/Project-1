@@ -1052,7 +1052,7 @@ $(document).ready(function() {
         var playerName = undefined;
         $.each(eplData, function(index, player) {
             if (player.team_code === teamCode) {
-                if (player.status === "i" || player.status === "d") {
+                if (player.status === "i" || player.status === "d" || player.status === "s") {
                     playerName = $('<h2 class="ui sub header">' + player.first_name + ' ' + player.second_name + '</h4>');
                     $("#injuries-content").append(playerName);
 
