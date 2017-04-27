@@ -93,95 +93,79 @@
 
 <!-- TOP CONTENT: PICKS / RESULTS -->
 <div class="container" id="profilePage" style="display: none">
-    <div class="ui three column stackable grid container">
-        <div class="seven wide column">
-            <div class="ui fluid card">
-                <div class="content card-header">
-                    <div class="header card-label">
-                        Gameweek's picks
-                    </div>
-                </div>
-                <div class="content" id="gameweeks-picks-content">
-                    <div class="ui sub header center aligned" id="time-remaining">
+  <div class="ui three column stackable grid container">
+      <div class="ten wide column">
+          <div class="ui fluid card">
+              <div class="content card-header">
+                  <div class="header card-label">
+                      Gameweek's picks
+                  </div>
+              </div>
+              <div class="content" id="gameweeks-picks-content">
+                  <div class="ui sub header center aligned" id="time-remaining">
 
-                    </div>
-                    <table class="ui very compact small fixed unstackable striped celled table" id="picks-table">
-                        <thead>
-                        <tr>
-                            <th class="six wide center aligned">Home</th>
-                            <th class="four wide center aligned">Draw</th>
-                            <th class="six wide center aligned">Away</th>
-                        </tr>
-                        </thead>
-                        <tbody id="picksContainer">
+                  </div>
+                  <table class="ui very compact small fixed unstackable striped celled table" id="picks-table">
+                      <thead>
+                      <tr>
+                          <th class="seven wide center aligned">Home</th>
+                          <th class="two wide center aligned">Draw</th>
+                          <th class="seven wide center aligned">Away</th>
+                      </tr>
+                      </thead>
+                      <tbody id="picksContainer">
 
-                        </tbody>
-                    </table>
-                </div>
-                <div class="extra content center aligned">
-                    <button class="ui button" id="submitPicks" type="submit">Submit Picks</button>
-                </div>
-            </div>
-        </div>
-        <div class="six wide column">
-            <div class="ui fluid card">
-                <div class="content card-header">
-                    <div class="header card-label">
-                        Last week's results
-                    </div>
-                </div>
-                <div class="content" id="last-weeks-results-content">
-                    <table class="ui very compact small fixed unstackable striped table">
-                        <thead>
-                        <tr>
-                            <th class="seven wide center aligned">Home</th>
-                            <th class="two wide"></th>
-                            <th class="seven wide center aligned">Away</th>
-                        </tr>
-                        </thead>
-                        <tbody id="gameResults">
+                      </tbody>
+                  </table>
+              </div>
+              <div class="extra content center aligned">
+                  <button class="ui button" id="submitPicks" type="submit">Submit Picks</button>
+              </div>
+          </div>
+      </div>
+      <div class="four wide column">
+          <div class="ui fluid card">
+              <div class="content card-header">
+                  <div class="header card-label">
+                      Last week's results
+                  </div>
+              </div>
+              <div class="content" id="last-weeks-results-content">
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="three wide column">
-            <div class="ui fluid card">
-                <div class="content card-header">
-                    <div class="header card-label">
-                        Picks
-                    </div>
-                </div>
-                <div class="content" id="your-picks-content">
-                    <table class="ui very compact small fixed unstackable striped table">
-                        <thead>
-                        <tr>
-                            <th class="center aligned">V</th>
-                        </tr>
-                        </thead>
-                        <tbody id="yourPicks">
+              </div>
+          </div>
+      </div>
+      <div class="two wide column">
+          <div class="ui fluid card">
+              <div class="content card-header">
+                  <div class="header card-label">
+                      Your Picks
+                  </div>
+              </div>
+              <div class="content" id="your-picks-content">
+                  <table class="ui very compact small fixed unstackable striped table">
+                      <tbody id="yourPicks">
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 <!-- <div class="three wide column">
 </div> -->
 <!-- <div class="container">
-    <div class="row" style="margin: 10px 0 10px 0">
-        <div class="rankingsDiv col-xs-12" style="display: none">
-            <table class="rankings"></table>
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 10px">
-        <div class="col-xs-12 text-center">
-            <button id="rankingsTable" style="display: none">Current Rankings</button>
-        </div>
-    </div>
+  <div class="row" style="margin: 10px 0 10px 0">
+      <div class="rankingsDiv col-xs-12" style="display: none">
+          <table class="rankings"></table>
+      </div>
+  </div>
+  <div class="row" style="margin-bottom: 10px">
+      <div class="col-xs-12 text-center">
+          <button id="rankingsTable" style="display: none">Current Rankings</button>
+      </div>
+  </div>
 </div> -->
 
 
@@ -200,86 +184,86 @@
 <!--///////////// JUST ADDED ////////////////-->
 
 <div id="clubs" class="hidden">
-    <div id="nav-container">
-        <nav class="ui secondary pointing menu" id="club-navbar">
-            <!-- club navigation bar -->
-        </nav>
-    </div>
-    <div id="content-container">
-        <div class="ui three column stackable grid container">
-            <div class="four wide column">
-                <!-- injuries box -->
-                <div class="ui fluid card">
-                    <div class="content card-header">
-                        <div class="header card-label">
-                            Injuries
-                        </div>
-                    </div>
-                    <div class="content" id="injuries-content">
-                        <!-- injuries content -->
-                    </div>
-                </div>
-                <!-- general information box  -->
-                <div class="ui fluid card">
-                    <div class="content card-header">
-                        <div class="header card-label">
-                            Team Information
-                        </div>
-                    </div>
-                    <div class="content" id="team-info-content">
-                        <!-- top scorer -->
-                        <!-- clean sheets -->
-                        <!-- home record -->
-                        <!-- away record -->
-                    </div>
-                </div>
-            </div>
-            <div class="nine wide column">
-                <!-- standings table -->
-                <div class="ui fluid card">
-                    <div class="content card-header">
-                        <div class="header card-label">
-                            Standings
-                        </div>
-                    </div>
-                    <div class="content" id="table-standings">
-                        <table class="ui celled compact unstackable striped table">
-                            <thead>
-                            <tr>
-                                <th>Pos</th>
-                                <th>Club</th>
-                                <th class="mobile-table">P</th>
-                                <th>W</th>
-                                <th>D</th>
-                                <th>L</th>
-                                <th>GF</th>
-                                <th>GA</th>
-                                <th class="mobile-table">GD</th>
-                                <th>Pts</th>
-                            </tr>
-                            </thead>
-                            <tbody id="table-standings-content">
-                            <!-- table content -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="three wide column">
-                <!-- news  -->
-                <div class="ui fluid card">
-                    <div class="content card-header">
-                        <div class="header card-label">
-                            Team News
-                        </div>
-                    </div>
-                    <div class="content" id="team-news-content">
-                        <!-- teams news content -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div id="nav-container">
+      <nav class="ui secondary pointing menu" id="club-navbar">
+          <!-- club navigation bar -->
+      </nav>
+  </div>
+  <div id="content-container">
+      <div class="ui three column stackable grid container">
+          <div class="four wide column">
+              <!-- injuries box -->
+              <div class="ui fluid card">
+                  <div class="content card-header">
+                      <div class="header card-label">
+                          Injuries
+                      </div>
+                  </div>
+                  <div class="content" id="injuries-content">
+                      <!-- injuries content -->
+                  </div>
+              </div>
+              <!-- general information box  -->
+              <div class="ui fluid card">
+                  <div class="content card-header">
+                      <div class="header card-label">
+                          Team Information
+                      </div>
+                  </div>
+                  <div class="content" id="team-info-content">
+                      <!-- top scorer -->
+                      <!-- clean sheets -->
+                      <!-- home record -->
+                      <!-- away record -->
+                  </div>
+              </div>
+          </div>
+          <div class="nine wide column">
+              <!-- standings table -->
+              <div class="ui fluid card">
+                  <div class="content card-header">
+                      <div class="header card-label">
+                          Standings
+                      </div>
+                  </div>
+                  <div class="content" id="table-standings">
+                      <table class="ui celled compact unstackable striped table">
+                          <thead>
+                          <tr>
+                              <th>Pos</th>
+                              <th>Club</th>
+                              <th class="mobile-table">P</th>
+                              <th>W</th>
+                              <th>D</th>
+                              <th>L</th>
+                              <th>GF</th>
+                              <th>GA</th>
+                              <th class="mobile-table">GD</th>
+                              <th>Pts</th>
+                          </tr>
+                          </thead>
+                          <tbody id="table-standings-content">
+                          <!-- table content -->
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+          <div class="three wide column">
+              <!-- news  -->
+              <div class="ui fluid card">
+                  <div class="content card-header">
+                      <div class="header card-label">
+                          Team News
+                      </div>
+                  </div>
+                  <div class="content" id="team-news-content">
+                      <!-- teams news content -->
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 
 <!-- SCRIPTS -->
