@@ -90,8 +90,9 @@ $(document).ready(function() {
     var makePicksTable = function () {
         console.log("makePicksTable");
         $("#picksContainer").empty();
-        $("#gameResults").empty();
+        $("#game-results").empty();
         $("#yourPicks").empty();
+        $("#yourPicksCurrent").empty();
 
 ///////// DOMINGO'S CODE //////////
         $.ajax({
@@ -163,27 +164,36 @@ $(document).ready(function() {
             usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     var keyId = childSnapshot.val();
-                    for(var l = 0; l < keyId.picksPerGameWeek[gameWeek-2].length; l++){
 
-                        var row = $("<tr>");
-                        var picks = $("<td>");
+                    if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
+                        $("#yourPicks").append("No picks were selected last week"); //////// LATEST CHANGE
+                    }else {
+                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                        picks.html(keyId.picksPerGameWeek[gameWeek-2][l]);
+                            var row = $("<tr>");
+                            var picks = $("<td>");
 
-                        row.append(picks);
-                        $("#yourPicks").append(row);
+                            picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
 
+                            row.append(picks);
+                            $("#yourPicks").append(row);
+
+                        }
                     }
 
-                    for(var c = 0; c < keyId.picksPerGameWeek[gameWeek-1].length; c++){
-                        ////// making the current week's picks section
-                        var rowCurrent = $("<tr>");
-                        var picksCurrent = $("<td>");
+                    if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
+                        $("#yourPicksCurrent").append("No picks have been selected yet"); //////// LATEST CHANGE
+                    }else {
+                        for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
+                            ////// making the current week's picks section
+                            var rowCurrent = $("<tr>");
+                            var picksCurrent = $("<td>");
 
-                        picksCurrent.html(keyId.picksPerGameWeek[gameWeek-1][c]);
+                            picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
 
-                        rowCurrent.append(picksCurrent);
-                        $("#yourPicksCurrent").append(rowCurrent);
+                            rowCurrent.append(picksCurrent);
+                            $("#yourPicksCurrent").append(rowCurrent);
+                        }
                     }
                 });
             });
