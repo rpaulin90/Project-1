@@ -1,8 +1,6 @@
 /* HEADER NAVBAR */
-#logOut {
-
-    cursor: pointer;
-
+#top-navbar div.ui.container div.selectable {
+  cursor: pointer;
 }
 
 /* PICKS SECTION */
@@ -72,6 +70,15 @@ table.ui.very.compact {
   line-height: 40px;
 }
 
+.radio {
+  cursor: pointer;
+}
+
+.radio.selected {
+  background-color: #0E6EB8 !important;
+  color: white !important;
+}
+
 /* LOWER SECTION */
 #clubs {
     margin-top: 40px;
@@ -87,6 +94,7 @@ table.ui.very.compact {
 #club-navbar {
     border-top: 2px solid rgba(34,36,38,.15);
     display: -webkit-inline-box;
+    font-size: 10pt;
 }
 
 #content-container {
@@ -135,6 +143,27 @@ div.ui.fluid.card div.card-header div.card-label {
     font-size: 9pt;
 }
 
+/* MODALS */
+#lastWeek-modal {
+  text-align: center;
+}
+
+#lastWeeksResultsContainer {
+  margin: 20px 0px;
+}
+
+#currentPicks-modal {
+  text-align: center;
+}
+
+#currentPicks-modal div.content {
+  padding: 0px;
+}
+
+#currentPicks-modal div.sixteen.wide.column {
+  padding: 0px 0px !important;
+}
+
 /*OTHER*/
 .hidden {
     display: none;
@@ -150,7 +179,7 @@ div.ui.fluid.card div.card-header div.card-label {
     }
 
     #profilePage {
-        margin-top: 100px;
+        margin-top: 200px;
     }
 
     #logo {
@@ -164,7 +193,7 @@ div.ui.fluid.card div.card-header div.card-label {
     }
 
     #profilePage {
-      margin-top: 100px;
+      margin-top: 200px;
     }
 
     #logo {

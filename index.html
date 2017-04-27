@@ -17,8 +17,11 @@
     <div class="ui container">
         <div class="item" id="logo"><img src="./assets/images/soccer-ball.png" alt=""></div>
         <div class="item" id="welcome"></div>
+        <div class="item selectable" id="currentPicksBtn">Current Picks</div>
+        <div class="item selectable" id="lastWeeksResultsBtn">Last Week's Picks</div>
+        <div class="item selectable" id="pointsGraph">Weekly Points</div>
         <div class="right menu">
-            <div class="ui item" id="logOut">Logout</div>
+            <div class="ui item selectable" id="logOut">Logout</div>
         </div>
     </div>
 </div>
@@ -94,6 +97,7 @@
 <!-- TOP CONTENT: PICKS / RESULTS -->
 <div class="container" id="profilePage" style="display: none">
     <div class="ui three column stackable grid container">
+        <div class="three wide column"></div>
         <div class="ten wide column">
             <div class="ui fluid card">
                 <div class="content card-header">
@@ -106,13 +110,6 @@
 
                     </div>
                     <table class="ui very compact small fixed unstackable striped celled table" id="picks-table">
-                        <thead>
-                        <tr>
-                            <th class="seven wide center aligned">Home</th>
-                            <th class="two wide center aligned">Draw</th>
-                            <th class="seven wide center aligned">Away</th>
-                        </tr>
-                        </thead>
                         <tbody id="picksContainer">
 
                       </tbody>
@@ -123,59 +120,9 @@
               </div>
           </div>
       </div>
-        <!--////// JUST ADDED /////////-->
-
-      <!--<div class="four wide column">-->
-          <!--<div class="ui fluid card">-->
-              <!--<div class="content card-header">-->
-                  <!--<div class="header card-label">-->
-                      <!--Last week's results-->
-                  <!--</div>-->
-              <!--</div>-->
-              <!--<div class="content" id="last-weeks-results-content">-->
-                  <!--<table class="ui very compact small fixed unstackable striped table">-->
-                      <!--<tbody id="game-results">-->
-
-                      <!--</tbody>-->
-                  <!--</table>-->
-              <!--</div>-->
-          <!--</div>-->
-      <!--</div>-->
-      <!--<div class="two wide column">-->
-          <!--<div class="ui fluid card">-->
-              <!--<div class="content card-header">-->
-                  <!--<div class="header card-label">-->
-                      <!--Your Picks-->
-                  <!--</div>-->
-              <!--</div>-->
-              <!--<div class="content" id="your-picks-content">-->
-                  <!--<table class="ui very compact small fixed unstackable striped table">-->
-                      <!--<tbody id="yourPicks">-->
-                        <!--</tbody>-->
-                    <!--</table>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--////// JUST ADDED /////////-->
+      <div class="three wide column"></div>
     </div>
 </div>
-<!-- <div class="three wide column">
-</div> -->
-<!-- <div class="container">
-  <div class="row" style="margin: 10px 0 10px 0">
-      <div class="rankingsDiv col-xs-12" style="display: none">
-          <table class="rankings"></table>
-      </div>
-  </div>
-  <div class="row" style="margin-bottom: 10px">
-      <div class="col-xs-12 text-center">
-          <button id="rankingsTable" style="display: none">Current Rankings</button>
-      </div>
-  </div>
-</div> -->
-
-<!--///////////// JUST ADDED ////////////////-->
 
 <div id="modal-modifications" style="text-align: center; font-size: 20pt; width: 80%">
 
@@ -184,10 +131,10 @@
 
 <!-- LAST WEEK'S RESULTS AND LAST WEEK'S PICKS -->
 
-<div id="lastWeek-modal" style="text-align: center; width: 80%">
+<div id="lastWeek-modal">
     <div class="container" id="lastWeeksResultsContainer">
         <div class="ui two column stackable grid container">
-            <div class="four wide column">
+            <div class="ten wide column">
                 <div class="ui fluid card">
                     <div class="content card-header">
                         <div class="header card-label">
@@ -203,7 +150,7 @@
                     </div>
                 </div>
             </div>
-            <div class="two wide column">
+            <div class="six wide column">
                 <div class="ui fluid card">
                     <div class="content card-header">
                         <div class="header card-label">
@@ -224,41 +171,26 @@
 
 <!-- CURRENT WEEK'S RESULTS AND CURRENT WEEK'S PICKS -->
 
-<div id="currentPicks-modal" style="text-align: center; width: 80%">
+<div id="currentPicks-modal">
     <div class="container">
-        <!--<div class="ui two column stackable grid container">-->
-            <div class="two wide column">
-                <div class="ui fluid card">
-                    <!--<div class="content card-header">-->
-                        <!--&lt;!&ndash;<div class="header card-label">&ndash;&gt;-->
-                            <!--&lt;!&ndash;Your Picks For This Week&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--</div>-->
-                    <div class="content">
-                        <table class="ui very compact small fixed unstackable striped table">
-                            <tbody id="yourPicksCurrent">
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="sixteen wide column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <table class="ui very compact small fixed unstackable striped table">
+                        <tbody id="yourPicksCurrent">
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        <!--</div>-->
+        </div>
     </div>
 </div>
 
-
-
 <!-- CURRENT WEEK'S RESULTS AND CURRENT WEEK'S PICKS -->
-
 
 <div id="picks-submitted-successfully"></div>
 <div id="picks-submitted-unsuccessfully"></div>
 
-<button id="pointsGraph">Weekly Points</button>
-<button id="lastWeeksResultsBtn">Weekly Points</button>
-<button id="currentPicksBtn">Current Picks</button>
-
-<!--///////////// JUST ADDED ////////////////-->
 
 <div id="clubs" class="hidden">
     <div id="nav-container">
