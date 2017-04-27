@@ -57,15 +57,10 @@ table.ui.very.compact {
     padding: 0px 0px;
 }
 
-.home-result {
+.result-cell {
   font-size: 9pt;
   padding: 0px 10px;
-}
-
-.away-result {
-  font-size: 9pt;
-  padding: 0px 10px;
-  border-bottom: solid thin rgba(34,36,38,.15);
+  line-height: 20px;
 }
 
 /* YOUR PICKS */
@@ -74,7 +69,7 @@ table.ui.very.compact {
 }
 
 #yourPicks td {
-  padding: 7px 0px 7px 2px;
+  line-height: 40px;
 }
 
 /* LOWER SECTION */

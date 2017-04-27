@@ -134,27 +134,20 @@ $(document).ready(function() {
             for (var e = 0; e < response.fixtures.length; e++) {
                 if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
 
-                    // var row = $("<tr>");
-                    // var home = $('<td class="center aligned">');
-                    // var result = $('<td class="center aligned">');
-                    // var away = $('<td class="center aligned">');
-                    // home.html(response.fixtures[e].homeTeamName);
-                    // away.html(response.fixtures[e].awayTeamName);
-                    // result.html(response.fixtures[e].result.goalsHomeTeam + "-" + response.fixtures[e].result.goalsAwayTeam);
-                    //
-                    // row.append(home);
-                    // row.append(result);
-                    // row.append(away);
-                    // $("#gameResults").append(row);
-                    var resultHomeDiv = $('<div class="home-result">');
+                    var row = $("<tr>");
+                    var col = $("<td>");
+
+                    var resultHomeDiv = $('<div class="result-cell">');
                     var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
-                    var resultAwayDiv = $('<div class="away-result">');
+                    var resultAwayDiv = $('<div class="result-cell">');
                     var awayTeam = $('<span>' + response.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsAwayTeam + '</span>');
 
                     resultHomeDiv.append(homeTeam);
                     resultAwayDiv.append(awayTeam);
-                    $('#last-weeks-results-content').append(resultHomeDiv);
-                    $('#last-weeks-results-content').append(resultAwayDiv);
+                    col.append(resultHomeDiv);
+                    col.append(resultAwayDiv);
+                    row.append(col);
+                    $('#game-results').append(row);
                 }
             }
 
@@ -684,7 +677,7 @@ $(document).ready(function() {
     var NEWS_API_KEY = "b8e5013c-f10c-474c-9cf6-b9416ae989ef";
     var getTeamNewsQueryURL = "https://content.guardianapis.com/search?section=football&page-size=50&api-key=";
     var API_KEY = "43d2319104c54b0c9cf2d5679ab2ae5d";
-    var getTeamsQueryURL = "https://api.football-data.org/v1/competitions/426/leagueTable";
+    var getTeamsQueryURL = "https://api.football-data.org/v1/competitions/426/leagueTable?matchday=38";
     var teams = [];
     var eplData = [];
     var standing = [];
@@ -1075,4 +1068,3 @@ $(document).ready(function() {
         return tags;
     }
 });
-
