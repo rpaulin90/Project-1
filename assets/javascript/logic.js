@@ -110,13 +110,13 @@ $(document).ready(function() {
                     //Output
                     newRow = $('<tr>');
 
-                    newColumn = $('<td>');
+                    newColumn = $('<td class="team-pick">');
                     displayTeams(response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName, index);
                     newRow.append(newColumn);
-                    newColumn = $('<td class="center aligned">');
+                    newColumn = $('<td class="center aligned draw-pick">');
                     displayTeams("DRAW", index);
                     newRow.append(newColumn);
-                    newColumn = $('<td class="left aligned">');
+                    newColumn = $('<td class="team-pick">');
                     displayTeams(response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName, index);
                     newRow.append(newColumn);
 
@@ -131,18 +131,27 @@ $(document).ready(function() {
             for (var e = 0; e < response.fixtures.length; e++) {
                 if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
 
-                    var row = $("<tr>");
-                    var home = $('<td class="center aligned">');
-                    var result = $('<td class="center aligned">');
-                    var away = $('<td class="center aligned">');
-                    home.html(response.fixtures[e].homeTeamName);
-                    away.html(response.fixtures[e].awayTeamName);
-                    result.html(response.fixtures[e].result.goalsHomeTeam + "-" + response.fixtures[e].result.goalsAwayTeam);
+                    // var row = $("<tr>");
+                    // var home = $('<td class="center aligned">');
+                    // var result = $('<td class="center aligned">');
+                    // var away = $('<td class="center aligned">');
+                    // home.html(response.fixtures[e].homeTeamName);
+                    // away.html(response.fixtures[e].awayTeamName);
+                    // result.html(response.fixtures[e].result.goalsHomeTeam + "-" + response.fixtures[e].result.goalsAwayTeam);
+                    //
+                    // row.append(home);
+                    // row.append(result);
+                    // row.append(away);
+                    // $("#gameResults").append(row);
+                    var resultHomeDiv = $('<div class="home-result">');
+                    var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
+                    var resultAwayDiv = $('<div class="away-result">');
+                    var awayTeam = $('<span>' + response.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsAwayTeam + '</span>');
 
-                    row.append(home);
-                    row.append(result);
-                    row.append(away);
-                    $("#gameResults").append(row);
+                    resultHomeDiv.append(homeTeam);
+                    resultAwayDiv.append(awayTeam);
+                    $('#last-weeks-results-content').append(resultHomeDiv);
+                    $('#last-weeks-results-content').append(resultAwayDiv);
                 }
             }
 

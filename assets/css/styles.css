@@ -29,6 +29,14 @@ table.ui.very.compact {
   font-size: 9pt !important;
 }
 
+.team-pick {
+  padding-left: 10px !important;
+}
+
+.draw-pick {
+  padding-left: 10px !important;
+}
+
 .ui.fixed.table td, .ui.fixed.table th {
   padding: 1px 8px 1px 4px;
 }
@@ -46,9 +54,24 @@ table.ui.very.compact {
   padding: 0px 0px;
 }
 
+.home-result {
+  font-size: 9pt;
+  padding: 0px 10px;
+}
+
+.away-result {
+  font-size: 9pt;
+  padding: 0px 10px;
+  border-bottom: solid thin rgba(34,36,38,.15);
+}
+
 /* YOUR PICKS */
 #your-picks-content {
   padding: 0px 0px;
+}
+
+#yourPicks td {
+  padding: 7px 0px 7px 2px;
 }
 
 /* LOWER SECTION */
@@ -97,27 +120,40 @@ div.ui.fluid.card div.card-header div.card-label {
 }
 
 #injuries-content {
-  font-size: 10pt;
+  font-size: 9pt;
 }
 
 #team-info-content {
-  font-size: 10pt;
+  font-size: 9pt;
 }
 
 #table-standings {
-  font-size: 10pt;
+  font-size: 9pt;
   padding: 10px 10px;
   overflow: auto;
 }
 
 #team-news-content {
-  font-size: 10pt;
+  font-size: 9pt;
 }
 
 /*OTHER*/
 .hidden {
   display: none;
 }
+
+/*.team-pick label {
+  height: 100%;
+  width: 100%;
+}
+
+.team-pick input[type=radio]{
+  display: none;
+}
+
+.team-pick input[type=radio]:checked + .team-pick{
+  background-color: #241009;
+}*/
 
 @media screen and (max-width:600px){
   #table-standings {
@@ -139,6 +175,14 @@ div.ui.fluid.card div.card-header div.card-label {
 
 @media screen and (min-width:600px) and (max-width:768px){
   .desktop-table {
+    display: none;
+  }
+
+  #profilePage {
+    margin-top: 100px;
+  }
+
+  #logo {
     display: none;
   }
 }
