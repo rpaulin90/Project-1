@@ -500,6 +500,7 @@ $(document).ready(function() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+            callInfoAPI();
             $('#registrationBtn').css('display','none');
             $("#registrationBtn").addClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").removeClass("hide");
@@ -531,6 +532,12 @@ $(document).ready(function() {
             showSignUpBox();
             updateDatabase();
             $("#welcome").empty();
+            if (!($("#top-navbar").hasClass("hidden"))) {
+                $("#top-navbar").addClass("hidden");
+            }
+            if (!($("#clubs").hasClass("hidden"))) {
+                $("#clubs").addClass("hidden");
+            }
             $("#registrationBtn").removeClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").addClass("hide");
         }
@@ -571,9 +578,6 @@ $(document).ready(function() {
         });
     });
 
-    $("#rankingsTable").on("click",function(){
-        makeRankingsTable();
-    });
 
     $("#submitPicks").on("click", function (event) {
        event.preventDefault();
@@ -873,6 +877,7 @@ $(document).ready(function() {
 
             $("#rankingsBtn").on('click', function () {
 
+                makeRankingsTable();
                 $('#rankings-modal').iziModal('open', this); // Do not forget the "this"
             });
 
@@ -974,60 +979,62 @@ $(document).ready(function() {
      * Make football-data API call, and once done, get jokecamp JSON. Put all
      * necessary data in variables and create DOM elements
      */
-    $.ajax({
-        headers: { 'X-Auth-Token': API_KEY },
-        url: getTeamsQueryURL,
-        dataType: 'json',
-        type: 'GET'
-    }).done(function(response) {
-        standing = response.standing;
-        console.log(standing);
-
+    function callInfoAPI() {
         $.ajax({
-            url: getTeamNewsQueryURL + NEWS_API_KEY,
-            method: "GET"
-        }).done(function(response) {
-            newsArray = response.response.results;
-            console.log(newsArray);
+            headers: {'X-Auth-Token': API_KEY},
+            url: getTeamsQueryURL,
+            dataType: 'json',
+            type: 'GET'
+        }).done(function (response) {
+            standing = response.standing;
+            console.log(standing);
 
             $.ajax({
-                url: "https://jokecamp.github.io/epl-fantasy-geek/js/static-data.json",
+                url: getTeamNewsQueryURL + NEWS_API_KEY,
                 method: "GET"
-            }).done(function(response) {
-                console.log(response);
-                teams = response.teams;
-                eplData = response.elements;
+            }).done(function (response) {
+                newsArray = response.response.results;
+                console.log(newsArray);
 
-                $.each(teams, function(index, team) {
-                    teams[index].crestUrl = badges[index];
+                $.ajax({
+                    url: "https://jokecamp.github.io/epl-fantasy-geek/js/static-data.json",
+                    method: "GET"
+                }).done(function (response) {
+                    console.log(response);
+                    teams = response.teams;
+                    eplData = response.elements;
 
-                    // rename team names in teams array to match
-                    // team names from football-data api response.
-                    // TOT, MANU, and MANCity are special cases
-                    if (teams[index].name === "Spurs") {
-                        teams[index].name = "Tottenham Hotspur FC";
-                    } else if (teams[index].name === "Man Utd") {
-                        teams[index].name = "Manchester United FC";
-                    } else if (teams[index].name === "Man City") {
-                        teams[index].name = "Manchester City FC";
-                    } else {
-                        $.each(standing, function(i, val) {
-                            if (val.teamName.toLowerCase().includes(team.name.toLowerCase())) {
-                                teams[index].name = val.teamName;
-                                return false;
-                            }
-                        });
-                    }
+                    $.each(teams, function (index, team) {
+                        teams[index].crestUrl = badges[index];
+
+                        // rename team names in teams array to match
+                        // team names from football-data api response.
+                        // TOT, MANU, and MANCity are special cases
+                        if (teams[index].name === "Spurs") {
+                            teams[index].name = "Tottenham Hotspur FC";
+                        } else if (teams[index].name === "Man Utd") {
+                            teams[index].name = "Manchester United FC";
+                        } else if (teams[index].name === "Man City") {
+                            teams[index].name = "Manchester City FC";
+                        } else {
+                            $.each(standing, function (i, val) {
+                                if (val.teamName.toLowerCase().includes(team.name.toLowerCase())) {
+                                    teams[index].name = val.teamName;
+                                    return false;
+                                }
+                            });
+                        }
+                    });
+
+                    setTeamsTag();
+
+                    console.log(teams);
+
+                    createTeamsNav();
                 });
-
-                setTeamsTag();
-
-                console.log(teams);
-
-                // createTeamsNav();
             });
         });
-    });
+    }
 
     /**
      * Creates the teams navbar and each team's on click event handler
@@ -1036,7 +1043,12 @@ $(document).ready(function() {
         var mainDiv = $("#clubs");
         $("#club-navbar").empty();
         $("#loader").toggleClass("hidden");
-        $("#clubs").toggleClass("hidden");
+        if ($("#top-navbar").hasClass("hidden")) {
+            $("#top-navbar").removeClass("hidden");
+        }
+        if ($("#clubs").hasClass("hidden")) {
+            $("#clubs").removeClass("hidden");
+        }
 
         $.each(teams, function(index, team) {
             var teamBadge = $('<div class="item" id=' + team.short_name + '><img class="badge-icon" src="' + team.crestUrl + '"></div>');
