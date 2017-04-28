@@ -130,6 +130,14 @@ div.ui.fluid.card div.card-header div.card-label {
     color: white;
 }
 
+h2.ui.sub.header {
+  font-size: 9pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+}
+
 #injuries-content {
     font-size: 9pt;
 }
