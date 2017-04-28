@@ -69,7 +69,7 @@ $(document).ready(function() {
     var x = 0;
     var convertedDate = moment(new Date(GWArray[x]));
 
-    while (moment(convertedDate).diff(moment(), "days") <= 0) {
+    while (moment(convertedDate).diff(moment(), "hours") <= 0) {
         x += 2;
         convertedDate = moment(new Date(GWArray[x]));
     }
@@ -501,9 +501,10 @@ $(document).ready(function() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+
             callInfoAPI();
             $("#wrapper").addClass("hide");
-            $("body").css("background-image", "none");
+            $("body").css('background-image', 'none');
             $('#registrationBtn').css('display','none');
             $("#registrationBtn").addClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").removeClass("hide");
@@ -526,9 +527,6 @@ $(document).ready(function() {
                 
                 });
 
-
-       
-                
                 $("#homepage").css("display", "none");
                 $("#logInPage").css("display", "none");
                 $("#profilePage").css("display", "block");
@@ -550,8 +548,8 @@ $(document).ready(function() {
             }
             $("#registrationBtn").removeClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").addClass("hide");
-            $("body").css("background", "url('assets/images/bg-img.jpg' ");
-            $("body").css("background-size", "cover");
+            $("body").css('background', 'url("assets/images/bg-img.jpg") fixed');
+            $("body").css('background-size', 'cover');
             
         }
     });
