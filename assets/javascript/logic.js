@@ -492,6 +492,7 @@ $(document).ready(function() {
         $("#homepage").css("display", "block");
     };
 
+
 // START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY LOGGED IN
     showSignUpBox();
 ///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
@@ -501,9 +502,12 @@ $(document).ready(function() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             callInfoAPI();
+            $("#wrapper").addClass("hide");
+            $("body").css("background-image", "none");
             $('#registrationBtn').css('display','none');
             $("#registrationBtn").addClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").removeClass("hide");
+            
             console.log("hello")
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
@@ -518,8 +522,13 @@ $(document).ready(function() {
                     game.name = keyId.name;
                     game.teamName = keyId.teamName;
                     $("#welcome").text("Hello " + keyId.name + "!!");
+
+                
                 });
 
+
+       
+                
                 $("#homepage").css("display", "none");
                 $("#logInPage").css("display", "none");
                 $("#profilePage").css("display", "block");
@@ -529,6 +538,7 @@ $(document).ready(function() {
                 makePicksTable();
             });
         } else {
+            $("#wrapper").removeClass("hide");
             showSignUpBox();
             updateDatabase();
             $("#welcome").empty();
@@ -540,6 +550,9 @@ $(document).ready(function() {
             }
             $("#registrationBtn").removeClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").addClass("hide");
+            $("body").css("background", "url('assets/images/bg-img.jpg' ");
+            $("body").css("background-size", "cover");
+            
         }
     });
 
@@ -716,6 +729,7 @@ $(document).ready(function() {
 
         var that = $(this);
 
+    
 
         /// adding some requirements to register
 
@@ -824,6 +838,7 @@ $(document).ready(function() {
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+
         });
     });
 
