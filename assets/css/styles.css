@@ -166,7 +166,7 @@ div.ui.fluid.card div.card-header div.card-label {
 
 /*OTHER*/
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 @media screen and (max-width:600px){
