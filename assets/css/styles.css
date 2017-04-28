@@ -243,27 +243,9 @@ h2.ui.sub.header {
 }
 
 /* CSS for Login Page */
-
-body {
-  /*background: url("../images/bg-img.jpg") fixed;*/
-  /*background-size: cover;*/
-  /*color: #fff;*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  }
-
 #wrapper {
     color: #fff;
 }
-
- #login-btn {
-  float: right;
-  padding: 20px 30px;
-  font-size: 20px;
-  color: #000;
-  margin-right: 50px;
-  margin-top: 15px;
-  }
 
 #main-header {
   text-transform: uppercase;
@@ -351,11 +333,6 @@ body {
   float: left;
 }
 
-#login-btn {
-  margin-right: 190px;
-  padding: 10px;
-  }
-
   #content-header {
   font-size: 30px;
   float: left;
@@ -396,11 +373,6 @@ body {
 }
 
 @media screen and (min-width:768px) and (max-width:990px){
-
-#login-btn {
-  margin-right: 350px;
-  }
-
   #content-header {
       font-size: 40px;
   }

@@ -16,7 +16,6 @@
 <div>
 <h1 id="main-header">English Premier League Predictions</h1>
 
-<button class="trigger-custom styled-text" data-izimodal-open="modal-custom" id="login-btn">Login / Register</button>
 </div>
 
 <div class="main-content">
@@ -44,16 +43,16 @@
 
 
 <!-- TOP NAV BAR -->
-<div class="ui fixed stackable inverted menu hidden" id="top-navbar">
+<div class="ui fixed stackable inverted menu" id="top-navbar">
     <div class="ui container">
         <div class="item" id="logo"><img src="./assets/images/soccer-ball.png" alt=""></div>
-        <div class="item" id="welcome"></div>
-        <div class="item selectable" id="currentPicksBtn">Current Picks</div>
-        <div class="item selectable" id="lastWeeksResultsBtn">Last Week's Picks</div>
-        <div class="item selectable" id="pointsGraph">Weekly Points</div>
-        <div class="item selectable" id="rankingsBtn">Rankings</div>
+        <div class="item" id="welcome">Welcome</div>
+        <div class="item selectable hidden" id="currentPicksBtn">Current Picks</div>
+        <div class="item selectable hidden" id="lastWeeksResultsBtn">Last Week's Picks</div>
+        <div class="item selectable hidden" id="pointsGraph">Weekly Points</div>
+        <div class="item selectable hidden" id="rankingsBtn">Rankings</div>
         <div class="right menu">
-            <div class="ui item selectable" id="logOut">Logout</div>
+            <div class="ui item selectable" data-izimodal-open="modal-custom" id="login-btn">Sign in</div>
         </div>
     </div>
 </div>
@@ -61,38 +60,37 @@
 
 
 <!-- IZIMODAL -->
-<!--<button class="trigger-custom" data-izimodal-open="modal-custom" id="registrationBtn">Login/Register</button>-->
 
 <div id="modal-custom" data-iziModal-group="group1">
     <button data-iziModal-close class="icon-close">x</button>
     <header>
-        <a href="" id="signin">Sign in</a>
-        <a href="" class="active" id="goToLogIn">New Account</a>
+        <a href="" class="active" id="signin">Sign in</a>
+        <a href="" id="goToLogIn">New Account</a>
         <a href="" id="resetPasswordTab">Reset Password</a>
         <a href="" id="requirements">Registration Requirements</a>
     </header>
-    <section class="hide">
+    <section>
         <input type="text" placeholder="Email" id="emailLogIn">
         <input type="password" placeholder="Password" id="passwordLogIn">
         <footer>
-            <button data-iziModal-close>Cancel</button>
+            <button data-iziModal-close class="cancel-btn">Cancel</button>
             <button class="submit" id="logIn">Log in</button>
         </footer>
     </section>
-    <section>
+    <section class="hide">
         <input type="text" placeholder="Name" id="name">
         <input type="text" placeholder="Team Name" id="teamName">
         <input type="text" placeholder="Email" id="emailRegistration">
         <input type="password" placeholder="Password" id="passwordRegistration">
         <footer>
-            <button data-iziModal-close>Cancel</button>
+            <button data-iziModal-close class="cancel-btn">Cancel</button>
             <button class="submit" id="signUp">Create Account</button>
         </footer>
     </section>
     <section class="hide">
         <input type="text" placeholder="Email" id="emailForPasswordReset">
         <footer>
-            <button data-iziModal-close>Cancel</button>
+            <button data-iziModal-close class="cancel-btn">Cancel</button>
             <button class="submit" id="resetPassword">Send Reset Password Email</button>
         </footer>
     </section>

@@ -484,7 +484,12 @@ $(document).ready(function() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-
+            $("#login-btn").html("Sign out");
+            $("#currentPicksBtn").removeClass("hidden");
+            $("#lastWeeksResultsBtn").removeClass("hidden");
+            $("#pointsGraph").removeClass("hidden");
+            $("#rankingsBtn").removeClass("hidden");
+            $("#login-btn").attr("data-izimodal-open", "");
             callInfoAPI();
             $("#wrapper").addClass("hide");
             $("body").css('background-image', 'none');
@@ -519,13 +524,16 @@ $(document).ready(function() {
                 makePicksTable();
             });
         } else {
+            $("#login-btn").html("Sign in");
+            $("#login-btn").attr("data-izimodal-open", "modal-custom");
+            $("#currentPicksBtn").addClass("hidden");
+            $("#lastWeeksResultsBtn").addClass("hidden");
+            $("#pointsGraph").addClass("hidden");
+            $("#rankingsBtn").addClass("hidden");
             $("#wrapper").removeClass("hide");
             showSignUpBox();
             updateDatabase();
-            $("#welcome").empty();
-            if (!($("#top-navbar").hasClass("hidden"))) {
-                $("#top-navbar").addClass("hidden");
-            }
+            $("#welcome").html("Welcome");
             if (!($("#clubs").hasClass("hidden"))) {
                 $("#clubs").addClass("hidden");
             }
@@ -548,28 +556,29 @@ $(document).ready(function() {
     });
 
 // WHAT HAPPENS WHEN A USER LOGS OUT
-    $(document).on("click", "#logOut", function (event) {
+    $(document).on("click", "#login-btn", function (event) {
+        if ($("#login-btn").html() === "Sign out") {
+            event.preventDefault();
 
-        event.preventDefault();
-
-        firebase.auth().signOut().then(function () {
-            usersRef.off("value");
-            game.email = "";
-            game.name = "";
-            game.teamName = "";
-            game.currentUserUid = "";
-            lastWeeksPicks = "";
-            game.lastWeeksResults = "";
-            weeklyPoints = 0;
-            updateDatabase();
-            $(".rankingsDiv").css("display", "none");
-            $("#lastWeekInfo").css("display","none");
-            $('#registrationBtn').css('display','block');
-            // Sign-out successful.
-        }).catch(function (error) {
-            console.log(error.code);// An error happened.
-            console.log(error.message);// An error happened.
-        });
+            firebase.auth().signOut().then(function () {
+                usersRef.off("value");
+                game.email = "";
+                game.name = "";
+                game.teamName = "";
+                game.currentUserUid = "";
+                lastWeeksPicks = "";
+                game.lastWeeksResults = "";
+                weeklyPoints = 0;
+                updateDatabase();
+                $(".rankingsDiv").css("display", "none");
+                $("#lastWeekInfo").css("display","none");
+                $('#registrationBtn').css('display','block');
+                // Sign-out successful.
+            }).catch(function (error) {
+                console.log(error.code);// An error happened.
+                console.log(error.message);// An error happened.
+            });
+        }
     });
 
 
@@ -1039,9 +1048,6 @@ $(document).ready(function() {
         var mainDiv = $("#clubs");
         $("#club-navbar").empty();
         $("#loader").toggleClass("hidden");
-        if ($("#top-navbar").hasClass("hidden")) {
-            $("#top-navbar").removeClass("hidden");
-        }
         if ($("#clubs").hasClass("hidden")) {
             $("#clubs").removeClass("hidden");
         }
