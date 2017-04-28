@@ -385,7 +385,7 @@ $(document).ready(function() {
         rowTH.append(correctThisWeekTH);
         rowTH.append(totalCorrectTH);
 
-        $(".rankings").append(rowTH);
+        $("#rankings").append(rowTH);
 
         usersRef.orderByChild("totalPointsNegative").once("value",function(snapshot){
             snapshot.forEach(function (childSnapshot) {
@@ -414,7 +414,7 @@ $(document).ready(function() {
                 row.append(guessesSubmitted);
                 row.append(correctThisWeek);
                 row.append(totalCorrect);
-                $(".rankings").append(row);
+                $("#rankings").append(row);
             });
         });
         $(".rankingsDiv").css("display", "block");
@@ -876,7 +876,7 @@ $(document).ready(function() {
             });
 
             $("#rankingsBtn").on('click', function () {
-
+                $("#rankings").empty();
                 makeRankingsTable();
                 $('#rankings-modal').iziModal('open', this); // Do not forget the "this"
             });
@@ -898,7 +898,7 @@ $(document).ready(function() {
                 overlayColor: 'rgba(0, 0, 0, 0.4)',
                 iconColor: '',
                 iconClass: null,
-                width: 800,
+                width: 600,
                 padding: 0,
                 overlayClose: true,
                 closeOnEscape: true,
@@ -914,7 +914,7 @@ $(document).ready(function() {
                 overlayColor: 'rgba(0, 0, 0, 0.4)',
                 iconColor: '',
                 iconClass: null,
-                width: 800,
+                width: 400,
                 padding: 0,
                 overlayClose: true,
                 closeOnEscape: true,
@@ -930,7 +930,7 @@ $(document).ready(function() {
                 overlayColor: 'rgba(0, 0, 0, 0.4)',
                 iconColor: '',
                 iconClass: null,
-                width: 800,
+                width: 1000,
                 padding: 0,
                 overlayClose: true,
                 closeOnEscape: true,
