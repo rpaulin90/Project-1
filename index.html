@@ -41,7 +41,6 @@
 
 </div>
 
-
 <!-- TOP NAV BAR -->
 <div class="ui fixed stackable inverted menu" id="top-navbar">
     <div class="ui container">
@@ -57,7 +56,11 @@
     </div>
 </div>
 
-
+<div id="loader" class="hidden">
+    <div class="ui active inverted dimmer">
+        <div id="club-loader" class="ui text loader">Loading</div>
+    </div>
+</div>
 
 <!-- IZIMODAL -->
 
@@ -126,6 +129,10 @@
 
 <!-- IZIMODAL -->
 
+<div class="ui text container hidden" id="team-name">
+    <h1 class="ui header center aligned">
+    </h1>
+</div>
 <!-- TOP CONTENT: PICKS / RESULTS -->
 <div class="container" id="profilePage" style="display: none">
     <div class="ui three column stackable grid container">
@@ -133,9 +140,10 @@
         <div class="ten wide column">
             <div class="ui fluid card">
                 <div class="content card-header">
-                    <div class="header card-label">
+                    <div class="header card-label" id="gameweeks-picks-header">
                         Gameweek's picks
                     </div>
+                    <div class="meta">Select results by clicking on the corresponding space below</div>
                 </div>
                 <div class="content" id="gameweeks-picks-content">
                     <div class="ui sub header center aligned" id="time-remaining">

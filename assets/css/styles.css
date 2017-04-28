@@ -8,10 +8,15 @@
   width: auto;
 }
 
+/* TEAM NAME */
+#team-name {
+  color: black;
+  margin-top: 50px;
+}
+
 /* PICKS SECTION */
 #profilePage {
-
-    margin-top: 70px;
+    margin-top: 30px;
 }
 
 div.wide.column {
@@ -93,7 +98,8 @@ table.ui.very.compact {
 /* TEAM NAV */
 #nav-container {
     text-align: center;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden
 }
 
 #club-navbar {
@@ -200,6 +206,11 @@ h2.ui.sub.header {
     display: none !important;
 }
 
+.radio:hover {
+    background-color: #2185D0;
+    color: #fff;
+}
+
 @media screen and (max-width:600px){
     #table-standings {
         padding: 0px;
@@ -209,8 +220,12 @@ h2.ui.sub.header {
         display: none;
     }
 
+    #team-name {
+        margin-top: 280px;
+    }
+
     #profilePage {
-        margin-top: 250px;
+      margin-top: 0px;
     }
 
     #logo {
@@ -223,8 +238,12 @@ h2.ui.sub.header {
         display: none;
     }
 
+    #team-name {
+      margin-top: 280px;
+    }
+
     #profilePage {
-      margin-top: 200px;
+      margin-top: 0px;
     }
 
     #logo {
