@@ -8,10 +8,15 @@
   width: auto;
 }
 
+/* TEAM NAME */
+#team-name {
+  color: black;
+  margin-top: 50px;
+}
+
 /* PICKS SECTION */
 #profilePage {
-
-    margin-top: 70px;
+    margin-top: 30px;
 }
 
 div.wide.column {
@@ -203,7 +208,7 @@ h2.ui.sub.header {
         display: none;
     }
 
-    #profilePage {
+    #team-name {
         margin-top: 250px;
     }
 
@@ -217,7 +222,7 @@ h2.ui.sub.header {
         display: none;
     }
 
-    #profilePage {
+    #team-name {
       margin-top: 200px;
     }
 

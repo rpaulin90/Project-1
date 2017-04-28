@@ -101,14 +101,12 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
-            $("#loader").addClass("hidden");
             console.log("ajax call");
             var matchHolder = [];
 
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
                 if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
-                    //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "FINISHED")) {
 
                     matchHolder.push(i);
 
@@ -137,8 +135,9 @@ $(document).ready(function() {
                 $(this).addClass('selected');
                 var val = $(this).attr('value');
                 console.log(val);
-                // $(this).parent().find('input').val(val);
             });
+
+            $("#loader").addClass("hidden");
 
             // making the last week's results and picks info section
             for (var e = 0; e < response.fixtures.length; e++) {
@@ -491,6 +490,7 @@ $(document).ready(function() {
             $("#lastWeeksResultsBtn").removeClass("hidden");
             $("#pointsGraph").removeClass("hidden");
             $("#rankingsBtn").removeClass("hidden");
+            $("#team-name").removeClass("hidden");
             $("#login-btn").attr("data-izimodal-open", "");
             callInfoAPI();
             $("#wrapper").addClass("hide");
@@ -499,7 +499,6 @@ $(document).ready(function() {
             $("#registrationBtn").addClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").removeClass("hide");
 
-            console.log("hello")
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
 
@@ -513,8 +512,7 @@ $(document).ready(function() {
                     game.name = keyId.name;
                     game.teamName = keyId.teamName;
                     $("#welcome").text("Hello " + keyId.name + "!!");
-
-
+                    $("#team-name h1").html(keyId.teamName.toUpperCase());
                 });
 
                 $("#homepage").css("display", "none");
@@ -532,6 +530,7 @@ $(document).ready(function() {
             $("#lastWeeksResultsBtn").addClass("hidden");
             $("#pointsGraph").addClass("hidden");
             $("#rankingsBtn").addClass("hidden");
+            $("#team-name").addClass("hidden");
             $("#wrapper").removeClass("hide");
             showSignUpBox();
             updateDatabase();
