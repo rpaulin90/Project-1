@@ -28,6 +28,7 @@ $(document).ready(function() {
         userKeyNode: "",
         currentUserUid: "",
         lastWeeksResults: "",
+        thisWeekPick: [],
         totalPoints: 0
 
     };
@@ -104,18 +105,28 @@ $(document).ready(function() {
                 if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
 
                     matchHolder.push(i);
-
+                    matchToRadio = game.thisWeekPick[gameWeek - 1][index];
                     //Output
                     var newRow = $('<tr class="radio-group">');
 
                     var value = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
+                    
                     newColumn = $('<td class="radio six wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
+                    if (value === matchToRadio) {
+                        newColumn.addClass('selected');
+                    }
                     newRow.append(newColumn);
                     value = "DRAW";
                     newColumn = $('<td class="radio four wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
+                    if (value === matchToRadio) {
+                        newColumn.addClass('selected');
+                    }
                     newRow.append(newColumn);
                     value = response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName;
                     newColumn = $('<td class="radio six wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
+                    if (value === matchToRadio) {
+                        newColumn.addClass('selected');
+                    }
                     newRow.append(newColumn);
 
                     selectedTeams.push(matchHolder.length - 1);
@@ -160,7 +171,7 @@ $(document).ready(function() {
                     var keyId = childSnapshot.val();
 
                     if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                        $("#yourPicks").append("No picks were selected last week"); //////// LATEST CHANGE
+                        $("#yourPicks").html("No picks were selected last week"); //////// LATEST CHANGE
                     }else {
                         for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
@@ -176,7 +187,7 @@ $(document).ready(function() {
                     }
 
                     if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                        $("#yourPicksCurrent").append("No picks have been selected yet"); //////// LATEST CHANGE
+                        $("#yourPicksCurrent").html("No picks have been selected yet"); //////// LATEST CHANGE
                     }else {
                         for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
                             ////// making the current week's picks section
@@ -493,10 +504,13 @@ $(document).ready(function() {
                 snapshot.forEach(function (childSnapshot) {
 
                     var keyId = childSnapshot.val();
+                    //console.log(keyId);
 
+                    game.thisWeekPick = keyId.picksPerGameWeek;
                     game.email = keyId.email;
                     game.name = keyId.name;
                     game.teamName = keyId.teamName;
+
                     $("#welcome").text("Hello " + keyId.name + "!!");
                     $("#team-name h1").html(keyId.teamName.toUpperCase());
                 });
