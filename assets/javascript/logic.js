@@ -241,7 +241,7 @@ $(document).ready(function() {
 
                     for (var f = 0; f < lastWeeksPicks.length; f++) {
                         if (lastWeeksPicks[f] !== "undefined") {
-                            weeklyGamesPlayed++
+                            weeklyGamesPlayed++;
                         }
                     }
 
@@ -260,7 +260,7 @@ $(document).ready(function() {
 
                         for (var f = 0; f < lastWeeksPicks.length; f++) {
                             if (lastWeeksPicks[f] === resultsLastWeek[f]) {
-                                weeklyPoints++
+                                weeklyPoints++;
                             }
                         }
 
@@ -318,7 +318,7 @@ $(document).ready(function() {
                                     totalPoints += weeklyPointsArray[t];
                                 }
 
-                                if(totalPoints == 0){
+                                if(totalPoints === 0){
                                     usersRef.child(childSnapshot.key).update({
                                         totalPointsNegative: 1000
                                     });
@@ -697,7 +697,7 @@ $(document).ready(function() {
 
                 var pointsArray = [];
                 for (var a = 0; a < 38; a++) {
-                    pointsArray.push(0)
+                    pointsArray.push(0);
                 }
                 var gamesPlayedArray = pointsArray;
                 usersRef.child(game.currentUserUid).set({
@@ -1122,7 +1122,7 @@ $(document).ready(function() {
                     newsArticle.webUrl.toLowerCase().includes(tag.toLowerCase())) {
                     articleLabel = $('<h2 class="ui sub header">' + newsArticle.webTitle + '</h2>');
                     $("#team-news-content").append(articleLabel);
-                    var readMore = $('<div><a href=' + newsArticle.webUrl + ' target="_blank">Read More...</a></div>')
+                    var readMore = $('<div><a href=' + newsArticle.webUrl + ' target="_blank">Read More...</a></div>');
                     $("#team-news-content").append(readMore);
                     return false;
                 }
