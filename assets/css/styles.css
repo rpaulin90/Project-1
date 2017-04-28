@@ -156,6 +156,10 @@ div.ui.fluid.card div.card-header div.card-label {
   text-align: center;
 }
 
+#rankings-modal {
+  text-align: center;
+}
+
 #currentPicks-modal div.content {
   padding: 0px;
 }

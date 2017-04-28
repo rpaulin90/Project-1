@@ -43,6 +43,7 @@
         <div class="item selectable" id="currentPicksBtn">Current Picks</div>
         <div class="item selectable" id="lastWeeksResultsBtn">Last Week's Picks</div>
         <div class="item selectable" id="pointsGraph">Weekly Points</div>
+        <div class="item selectable" id="rankingsBtn">Rankings</div>
         <div class="right menu">
             <div class="ui item selectable" id="logOut">Logout</div>
         </div>
@@ -204,7 +205,7 @@
             <div class="ui fluid card">
                 <div class="content">
                     <table class="ui very compact small fixed unstackable striped table">
-                        <tbody id="yourPicksCurrent">
+                        <tbody id="yourPicksCurrent" style="text-align: center;">
                         </tbody>
                     </table>
                 </div>
@@ -213,11 +214,27 @@
     </div>
 </div>
 
-<!-- CURRENT WEEK'S RESULTS AND CURRENT WEEK'S PICKS -->
+<!-- ALERTS FOR PICK SUBMISSION -->
 
 <div id="picks-submitted-successfully"></div>
 <div id="picks-submitted-unsuccessfully"></div>
 
+<!-- RANKINGS TABLE -->
+
+<div id="rankings-modal">
+    <div class="container">
+        <div class="sixteen wide column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <table class="ui very compact small fixed unstackable striped table">
+                        <tbody id="rankings" style="text-align: center;">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="clubs" class="hidden">
     <div id="nav-container">
