@@ -3,6 +3,11 @@
   cursor: pointer;
 }
 
+#logo img {
+  height: 30px;
+  width: auto;
+}
+
 /* PICKS SECTION */
 #profilePage {
 
@@ -125,6 +130,14 @@ div.ui.fluid.card div.card-header div.card-label {
     color: white;
 }
 
+h2.ui.sub.header {
+  font-size: 9pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+}
+
 #injuries-content {
     font-size: 9pt;
 }
@@ -168,6 +181,14 @@ div.ui.fluid.card div.card-header div.card-label {
   padding: 0px 0px !important;
 }
 
+#rankings-modal div.content {
+  padding: 0px;
+}
+
+#rankings-modal div.sixteen.wide.column {
+  padding: 0px 0px !important;
+}
+
 /*OTHER*/
 .hidden {
     display: none !important;
@@ -183,7 +204,7 @@ div.ui.fluid.card div.card-header div.card-label {
     }
 
     #profilePage {
-        margin-top: 200px;
+        margin-top: 250px;
     }
 
     #logo {
@@ -222,26 +243,8 @@ div.ui.fluid.card div.card-header div.card-label {
 }
 
 /* CSS for Login Page */
-
-body {
-  /*background: url("../images/bg-img.jpg") fixed;*/
-  /*background-size: cover;*/
-  /*color: #fff;*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  }
-
 #wrapper {
     color: #fff;
-}
-
-#login-btn {
-    float: right;
-    padding: 20px 30px;
-    font-size: 20px;
-    color: #000;
-    margin-right: 50px;
-    margin-top: 15px;
 }
 
 #main-header {
@@ -265,7 +268,7 @@ body {
   padding-top: 50px;
   margin-bottom: 20px;
   clear: both;
-} 
+}
 
 .p-main {
   font-family: 'Oswald', sans-serif;
@@ -300,7 +303,7 @@ body {
   font-family: 'Oswald', sans-serif;
   font-size: 25px;
   text-shadow: 3px 3px #000;
-  float: left; 
+  float: left;
   clear: both;
   margin-left: 400px;
 }
@@ -318,7 +321,7 @@ body {
   float: left;
   clear: both;
   font-family: 'Oswald', sans-serif;
-  font-size: 10px; 
+  font-size: 10px;
 }
 
 /* Media Queries for Login Page */
@@ -329,11 +332,6 @@ body {
   text-align: center;
   float: left;
 }
-
-#login-btn {
-  margin-right: 190px;
-  padding: 10px;
-  } 
 
   #content-header {
   font-size: 30px;
@@ -370,16 +368,11 @@ body {
 
 #authors {
   margin-left: 150px;
-  font-size: 10px; 
+  font-size: 10px;
 }
 }
 
 @media screen and (min-width:768px) and (max-width:990px){
-
-#login-btn {
-  margin-right: 350px;
-  } 
-
   #content-header {
       font-size: 40px;
   }
@@ -387,7 +380,7 @@ body {
 #image-one {
   max-width: 80%;
   height: auto;
-  margin-left: 20px; 
+  margin-left: 20px;
   margin-top: 10px;
 }
 
@@ -409,5 +402,3 @@ body {
 }
 
 }
-
-

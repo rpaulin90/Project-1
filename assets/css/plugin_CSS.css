@@ -62,15 +62,15 @@ body{
     width: 50%;
     padding: 0;
     text-align: center;
-    background: #ddd;
-    color: #999;
-    height: 73px;
+    background: #21ba45;
+    color: white;
+    height: 60px;
     vertical-align: middle;
-    line-height: 73px;
+    line-height: 60px;
 }
 #modal-custom .iziModal-content header a.active{
     background: #fff;
-    color: #777;
+    color: #767676;
 }
 #modal-custom .iziModal-content section{
     padding: 30px;
@@ -86,9 +86,11 @@ body{
 #modal-custom .iziModal-content section button{
     height: 46px;
     padding: 0;
+    font-size: 14pt;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 }
 #modal-custom .iziModal-content section input:focus{
-    border-color:#28CA97;
+    border-color: #21ba45;
 }
 #modal-custom .iziModal-content section label[for="check"]{
     margin-bottom: 26px;
@@ -100,7 +102,7 @@ body{
     overflow: hidden;
 }
 #modal-custom .iziModal-content section button{
-    background: #28CA97;
+    background: #21ba45;
     color: white;
     margin: 0;
     border: 0;
@@ -113,7 +115,8 @@ body{
 }
 #modal-custom .iziModal-content section button:nth-child(1){
     border-radius: 3px 0 0 3px;
-    background: #aaa;
+    background: #e0e1e2;
+    color: rgba(0,0,0,.6);
 }
 #modal-custom .iziModal-content section button:nth-child(2){
     border-radius: 0 3px 3px 0;
@@ -125,7 +128,7 @@ body{
     position: absolute;
     right: -8px;
     top: -8px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     border-radius: 50%;
     width: 30px;
