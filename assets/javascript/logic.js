@@ -101,6 +101,7 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
+            $("#loader").addClass("hidden");
             console.log("ajax call");
             var matchHolder = [];
 
@@ -484,6 +485,7 @@ $(document).ready(function() {
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+            $("#loader").removeClass("hidden");
             $("#login-btn").html("Sign out");
             $("#currentPicksBtn").removeClass("hidden");
             $("#lastWeeksResultsBtn").removeClass("hidden");
