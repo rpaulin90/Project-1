@@ -695,6 +695,12 @@ $(document).ready(function() {
         }
     });
 
+    $("#modal-custom section:not(.hide)").keypress(function(e) {
+        if (e.which === 13) {
+            $("#modal-custom section:not(.hide) button.submit").click();
+        }
+    });
+
     /* JS inside the modal */
     $("#modal-custom").on('click', 'header a', function(event) {
         event.preventDefault();
