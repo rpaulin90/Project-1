@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2efc671b-b929-4c31-8775-bd90d76e9c82" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/css/styles.css" afterPath="$PROJECT_DIR$/assets/css/styles.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/javascript/logic.js" afterPath="$PROJECT_DIR$/assets/javascript/logic.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,8 +20,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="145" column="97" lean-forward="false" selection-start-line="145" selection-start-column="97" selection-end-line="145" selection-end-column="97" />
+            <state relative-caret-position="105">
+              <caret line="7" column="109" lean-forward="true" selection-start-line="7" selection-start-column="109" selection-end-line="7" selection-end-column="109" />
               <folding>
                 <element signature="e#1527#1532#0" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#section#3;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -40,8 +37,8 @@
       <file leaf-file-name="logic.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/javascript/logic.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="30" lean-forward="true" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+            <state relative-caret-position="386">
+              <caret line="608" column="20" lean-forward="true" selection-start-line="608" selection-start-column="20" selection-end-line="608" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -80,11 +77,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rankings</find>
-      <find>top nav</find>
-      <find>clubs</find>
-      <find>authst</find>
-      <find>authstat</find>
       <find>makeran</find>
       <find>makerank</find>
       <find>ranking</find>
@@ -103,13 +95,18 @@
       <find>login-btn</find>
       <find>welcome</find>
       <find>meta</find>
-      <find>card</find>
       <find>hover</find>
       <find>state</find>
-      <find>initialize</find>
       <find>head</find>
       <find>team name</find>
       <find>other</find>
+      <find>initialize</find>
+      <find>lastweekspick</find>
+      <find>lastweekspicks</find>
+      <find>append</find>
+      <find>card</find>
+      <find>yourpicks</find>
+      <find>yourpickscurr</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -125,9 +122,9 @@
         <option value="$PROJECT_DIR$/updateFunction.js" />
         <option value="$PROJECT_DIR$/charts.html" />
         <option value="$PROJECT_DIR$/assets/javascript/updateFunction.js" />
-        <option value="$PROJECT_DIR$/assets/javascript/logic.js" />
         <option value="$PROJECT_DIR$/assets/css/styles.css" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/assets/javascript/logic.js" />
       </list>
     </option>
   </component>
@@ -346,12 +343,12 @@
       <workItem from="1493308189701" duration="10650000" />
       <workItem from="1493323676019" duration="4014000" />
       <workItem from="1493335600217" duration="7045000" />
-      <workItem from="1493382496079" duration="9639000" />
+      <workItem from="1493382496079" duration="12682000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="225726000" />
+    <option name="totallyTimeSpent" value="228769000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="118" y="23" width="1162" height="650" extended-state="0" />
@@ -762,14 +759,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/javascript/logic.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="30" lean-forward="true" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/assets/css/plugin_CSS.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="157">
@@ -786,10 +775,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/assets/javascript/logic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="608" column="20" lean-forward="true" selection-start-line="608" selection-start-column="20" selection-end-line="608" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="145" column="97" lean-forward="false" selection-start-line="145" selection-start-column="97" selection-end-line="145" selection-end-column="97" />
+        <state relative-caret-position="105">
+          <caret line="7" column="109" lean-forward="true" selection-start-line="7" selection-start-column="109" selection-end-line="7" selection-end-column="109" />
           <folding>
             <element signature="e#1527#1532#0" expanded="true" />
             <element signature="n#style#0;n#div#0;n#section#3;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />

@@ -73,7 +73,6 @@ $(document).ready(function() {
     }
 
     var gameWeek = 34 + (x / 2);
-    //gameWeek = gameWeek - 1;
     var startTime;
     var deadLine = false;
     var selectedTeams = [];
@@ -579,7 +578,7 @@ $(document).ready(function() {
                    var keyId = childSnapshot.val();
 
                    if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                       $("#yourPicks").append("No picks were selected last week"); //////// LATEST CHANGE
+                       $("#yourPicks").html("No picks were selected last week"); //////// LATEST CHANGE
                    }else {
                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
@@ -594,15 +593,19 @@ $(document).ready(function() {
                        }
                    }
                    $("#yourPicksCurrent").empty();
-                   for(var c = 0; c < keyId.picksPerGameWeek[gameWeek-1].length; c++){
-                       ////// making the current week's picks section
-                       var rowCurrent = $("<tr>");
-                       var picksCurrent = $("<td>");
+                   if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
+                       $("#yourPicksCurrent").html("No picks have been selected yet"); //////// LATEST CHANGE
+                   }else {
+                       for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
+                           ////// making the current week's picks section
+                           var rowCurrent = $("<tr>");
+                           var picksCurrent = $("<td>");
 
-                       picksCurrent.html(keyId.picksPerGameWeek[gameWeek-1][c]);
+                           picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
 
-                       rowCurrent.append(picksCurrent);
-                       $("#yourPicksCurrent").append(rowCurrent);
+                           rowCurrent.append(picksCurrent);
+                           $("#yourPicksCurrent").append(rowCurrent);
+                       }
                    }
                });
            });
