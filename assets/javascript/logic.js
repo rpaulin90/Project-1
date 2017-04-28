@@ -505,7 +505,7 @@ $(document).ready(function() {
                 snapshot.forEach(function (childSnapshot) {
 
                     var keyId = childSnapshot.val();
-                    console.log(keyId);
+                    //console.log(keyId);
 
                     game.thisWeekPick = keyId.picksPerGameWeek;
                     game.email = keyId.email;
