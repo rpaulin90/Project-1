@@ -497,7 +497,7 @@ $(document).ready(function() {
             $("#registrationBtn").addClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").removeClass("hide");
 
-            console.log("hello")
+            console.log("hello");
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
 
@@ -524,7 +524,7 @@ $(document).ready(function() {
                 makePicksTable();
             });
         } else {
-            $("#login-btn").html("Sign in");
+            $("#login-btn").html("Sign in/Register");
             $("#login-btn").attr("data-izimodal-open", "modal-custom");
             $("#currentPicksBtn").addClass("hidden");
             $("#lastWeeksResultsBtn").addClass("hidden");

@@ -122,8 +122,14 @@ table.ui.very.compact {
 }
 
 /* TEAM CONTENT */
+
 .card-header {
     background-color: green !important;
+}
+
+.meta {
+    color: #ebebeb !important;
+    font-size: .77em !important;
 }
 
 div.ui.fluid.card div.card-header div.card-label {
