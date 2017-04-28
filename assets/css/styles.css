@@ -216,3 +216,188 @@ div.ui.fluid.card div.card-header div.card-label {
         display: none;
     }
 }
+
+/* CSS for Login Page */
+
+body {
+  background: url("../images/bg-img.jpg") fixed;
+  background-size: cover;
+  color: #fff;
+  }
+
+ #login-btn {
+  float: right;
+  padding: 20px 30px;
+  font-size: 20px;
+  color: #000;
+  margin-right: 50px;
+  margin-top: 15px;
+  } 
+
+h1 {
+  text-transform: uppercase;
+  font-size: 60px;
+  text-align: center;
+  float: left;
+  padding-left: 30px;
+  padding-top: 20px;
+  text-shadow: 3px 3px #000;
+  font-family: 'Oswald', sans-serif;
+}
+
+
+h2 {
+  font-size: 40px;
+  text-shadow: 3px 3px #000;
+  font-family: 'Oswald', sans-serif;
+  float: left;
+  margin-left: 20px;
+  padding-top: 50px;
+  margin-bottom: 20px;
+  clear: both;
+} 
+
+.p-main {
+  font-family: 'Oswald', sans-serif;
+ font-size: 30px;
+  text-shadow: 3px 3px #000;
+  float: left;
+  margin-left: 20px;
+  line-height: 40px;
+  clear: both;
+}
+
+
+#image-one {
+  float: left;
+  max-width: 45%;
+  height: auto;
+  clear: both;
+  margin-left: 400px;
+  margin-top: 10px;
+}
+
+#image-two {
+  float: left;
+  max-width: 45%;
+  height: auto;
+  clear: both;
+  margin-left: 400px;
+  margin-top: 10px;
+}
+
+#text-one {
+  font-family: 'Oswald', sans-serif;
+  font-size: 25px;
+  text-shadow: 3px 3px #000;
+  float: left; 
+  clear: both;
+  margin-left: 400px;
+}
+
+#text-two {
+  font-family: 'Oswald', sans-serif;
+  font-size: 25px;
+  text-shadow: 3px 3px #000;
+  float: left;
+  clear: both;
+  margin-left: 400px;
+}
+
+h3 {
+  float: left;
+  clear: both;
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px; 
+}
+
+/* Media Queries for Login Page */
+
+@media screen and (max-width:600px){
+    h1 {
+  font-size: 40px;
+  text-align: center;
+  float: left;
+}
+
+#login-btn {
+  margin-right: 190px;
+  padding: 10px;
+  } 
+
+  h2 {
+  font-size: 30px;
+  float: left;
+  }
+
+  .p-main {
+  font-size: 20px;
+}
+
+#image-one {
+  max-width: 90%;
+  height: auto;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+#image-two {
+  max-width: 90%;
+  height: auto;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+#text-one {
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+#text-two {
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+h3 {
+  margin-left: 150px;
+  font-size: 10px; 
+}
+}
+
+@media screen and (min-width:768px) and (max-width:990px){
+
+#login-btn {
+  margin-right: 350px;
+  } 
+
+  h2 {
+      font-size: 40px;
+  }
+
+#image-one {
+  max-width: 80%;
+  height: auto;
+  margin-left: 20px; 
+  margin-top: 10px;
+}
+
+#image-two {
+  max-width: 80%;
+  height: auto;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+#text-one {
+  font-size: 30px;
+  margin-left: 20px;
+}
+
+#text-two {
+  font-size: 30px;
+  margin-left: 20px;
+}
+
+}
+
+
