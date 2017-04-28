@@ -235,14 +235,14 @@ body {
     color: #fff;
 }
 
- #login-btn {
-  float: right;
-  padding: 20px 30px;
-  font-size: 20px;
-  color: #000;
-  margin-right: 50px;
-  margin-top: 15px;
-  } 
+#login-btn {
+    float: right;
+    padding: 20px 30px;
+    font-size: 20px;
+    color: #000;
+    margin-right: 50px;
+    margin-top: 15px;
+}
 
 #main-header {
   text-transform: uppercase;

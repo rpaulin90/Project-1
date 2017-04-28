@@ -550,6 +550,7 @@ $(document).ready(function() {
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").addClass("hide");
             $("body").css('background', 'url("assets/images/bg-img.jpg") fixed');
             $("body").css('background-size', 'cover');
+            resultsLastWeek = []; ///// ADD SO RESULTS NODE WILL NOT KEEP PILING UP EVERY TIME USER LOGS IN/OUT
             
         }
     });
