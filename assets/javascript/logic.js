@@ -1003,7 +1003,7 @@ $(document).ready(function() {
 
                 console.log(teams);
 
-                createTeamsNav();
+                // createTeamsNav();
             });
         });
     });
