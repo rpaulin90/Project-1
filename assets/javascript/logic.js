@@ -370,23 +370,6 @@ $(document).ready(function() {
     var makeRankingsTable = function(){
         $(".rankings").empty();
 
-        var rowTH = $("<tr>");
-        var weekTH = $("<td>").text("Week");
-        var team_nameTH = $("<td>").text("Team Name");
-        var teamOwnerTH = $("<td>").text("Team Owner");
-        var guessesSubmittedTH = $("<td>").text("Guesses Submitted");
-        var totalCorrectTH = $("<td>").text("Total Points");
-        var correctThisWeekTH = $("<td>").text("Points This Week");
-
-        rowTH.append(weekTH);
-        rowTH.append(team_nameTH);
-        rowTH.append(teamOwnerTH);
-        rowTH.append(guessesSubmittedTH);
-        rowTH.append(correctThisWeekTH);
-        rowTH.append(totalCorrectTH);
-
-        $("#rankings").append(rowTH);
-
         usersRef.orderByChild("totalPointsNegative").once("value",function(snapshot){
             snapshot.forEach(function (childSnapshot) {
 
@@ -508,7 +491,7 @@ $(document).ready(function() {
             $('#registrationBtn').css('display','none');
             $("#registrationBtn").addClass("hide");
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").removeClass("hide");
-            
+
             console.log("hello")
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
@@ -524,7 +507,7 @@ $(document).ready(function() {
                     game.teamName = keyId.teamName;
                     $("#welcome").text("Hello " + keyId.name + "!!");
 
-                
+
                 });
 
                 $("#homepage").css("display", "none");
@@ -550,7 +533,7 @@ $(document).ready(function() {
             $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").addClass("hide");
             $("body").css('background', 'url("assets/images/bg-img.jpg") fixed');
             $("body").css('background-size', 'cover');
-            
+
         }
     });
 
@@ -727,7 +710,7 @@ $(document).ready(function() {
 
         var that = $(this);
 
-    
+
 
         /// adding some requirements to register
 
