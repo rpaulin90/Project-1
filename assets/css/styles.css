@@ -209,7 +209,11 @@ h2.ui.sub.header {
     }
 
     #team-name {
-        margin-top: 250px;
+        margin-top: 280px;
+    }
+
+    #profilePage {
+      margin-top: 0px;
     }
 
     #logo {
@@ -223,7 +227,11 @@ h2.ui.sub.header {
     }
 
     #team-name {
-      margin-top: 200px;
+      margin-top: 280px;
+    }
+
+    #profilePage {
+      margin-top: 0px;
     }
 
     #logo {

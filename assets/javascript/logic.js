@@ -40,8 +40,6 @@ $(document).ready(function() {
     currentDate = moment().format('LT');
     currentTime = moment().format('l');
 
-//console.log(currentDate);
-
     var displayTeams = function (teamHolder, index) {
 
         radioButtonDiv = $('<div class="ui radio checkbox">');
@@ -88,7 +86,6 @@ $(document).ready(function() {
 
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
     var makePicksTable = function () {
-        console.log("makePicksTable");
         $("#picksContainer").empty();
         $("#game-results").empty();
         $("#yourPicks").empty();
@@ -101,7 +98,6 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
-            console.log("ajax call");
             var matchHolder = [];
 
             var index = 0;
@@ -134,7 +130,6 @@ $(document).ready(function() {
                 $(this).parent().find('.radio').removeClass('selected');
                 $(this).addClass('selected');
                 var val = $(this).attr('value');
-                console.log(val);
             });
 
             $("#loader").addClass("hidden");
@@ -242,7 +237,6 @@ $(document).ready(function() {
                 [gameWeek - 1]: resultsLastWeek
 
             });
-            console.log(resultsLastWeek);
         });
 ///////// DOMINGO'S CODE //////////
     };
@@ -256,7 +250,6 @@ $(document).ready(function() {
             // 1- UPDATE WEEKLY GAMES PLAYED
 
             usersRef.orderByKey().once("value", function (snapshot) {
-                console.log("1- UPDATE WEEKLY GAMES PLAYED");
                 snapshot.forEach(function (childSnapshot) {
 
                     var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
@@ -277,8 +270,6 @@ $(document).ready(function() {
                 // 2- UPDATE WEEKLY POINTS
 
                 usersRef.orderByKey().once("value", function (snapshot) {
-                    console.log("2- UPDATE WEEKLY POINTS");
-
                     snapshot.forEach(function (childSnapshot) {
                         var picksId = childSnapshot.val().picksPerGameWeek; // array starts at 0 so need to compensate
                         var lastWeeksPicks = picksId[databaseLastGameWeek];
@@ -296,7 +287,6 @@ $(document).ready(function() {
                     });
                     // 3- UPDATE TOTAL GAMES PLAYED
                     usersRef.orderByKey().once("value", function (snapshot) {
-                        console.log("3- UPDATE TOTAL GAMES PLAYED");
                         snapshot.forEach(function (childSnapshot) {
 
                             var pointsId = childSnapshot.val().pointsPerGameWeek;
@@ -316,7 +306,6 @@ $(document).ready(function() {
 
                         // 4- UPDATE TOTAL POINTS
                         usersRef.orderByKey().once("value", function (snapshot) {
-                            console.log("4- UPDATE TOTAL POINTS");
                             snapshot.forEach(function (childSnapshot) {
 
                                 var pointsId = childSnapshot.val().pointsPerGameWeek;
@@ -341,7 +330,6 @@ $(document).ready(function() {
 
                         // 4- CHECK If USER HAS 0 POINTS
                         usersRef.orderByKey().once("value", function (snapshot) {
-                            console.log("5- CHECK IF TOTAL POINTS ARE 0");
                             snapshot.forEach(function (childSnapshot) {
 
                                 var pointsId = childSnapshot.val().pointsPerGameWeek;
@@ -374,7 +362,6 @@ $(document).ready(function() {
             snapshot.forEach(function (childSnapshot) {
 
                 var userID = childSnapshot.val();
-                console.log(userID.email);
                 var row = $("<tr>");
                 var week = $("<td>");
                 var team_name = $("<td>");
@@ -425,7 +412,7 @@ $(document).ready(function() {
                     weeklyPointsArray.push(pointsId[g]);
                     gameWeeks.push(g + 1);
                 }
-                console.log(weeklyPointsArray);
+
                 var lineChartData = {
                     labels: gameWeeks,
                     datasets: [{
@@ -550,8 +537,7 @@ $(document).ready(function() {
     {
         $(document).ajaxStop(function()
         {
-            console.log(gameWeek);
-            console.log("results last week: " + resultsLastWeek);
+            $("#gameweeks-picks-header").html('Gameweek ' + gameWeek + ' picks');
             updateDatabase();// Executed when all ajax requests are done.
         });
     });
@@ -623,7 +609,6 @@ $(document).ready(function() {
        incompleteSelection = false;
        for (var r = 0; r < (selectedTeams.length); r++) {
            var value = ($("#picksContainer .radio-group .selected[name='" + r + "']").attr("value"));
-           console.log(value);
            selectedTeams[r] = value;
           //  selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
            if (selectedTeams[r] === undefined) {
@@ -687,13 +672,7 @@ $(document).ready(function() {
         overlayClose: false,
         width: 600,
         autoOpen: false,
-        overlayColor: 'rgba(0, 0, 0, 0.6)',
-        onOpened: function() {
-            console.log('onOpened');
-        },
-        onClosed: function() {
-            console.log('onClosed');
-        }
+        overlayColor: 'rgba(0, 0, 0, 0.6)'
     });
 
     $("#modal-custom section:not(.hide)").keypress(function(e) {
@@ -786,8 +765,6 @@ $(document).ready(function() {
                     }
                 }
 
-                console.log(error.code);
-                console.log(error.message);
                 $("#email").val("");
                 $("#pwd").val("");
                 $("#name").val("");
@@ -833,9 +810,6 @@ $(document).ready(function() {
 
             var errorCode = error.code;
             var errorMessage = error.message;
-            console.log(errorCode);
-            console.log(errorMessage);
-
         });
     });
 
@@ -862,7 +836,6 @@ $(document).ready(function() {
                     }, 1500);
                 }
             }
-            console.log(error.message);
         });
     });
 
@@ -999,20 +972,17 @@ $(document).ready(function() {
             type: 'GET'
         }).done(function (response) {
             standing = response.standing;
-            console.log(standing);
 
             $.ajax({
                 url: getTeamNewsQueryURL + NEWS_API_KEY,
                 method: "GET"
             }).done(function (response) {
                 newsArray = response.response.results;
-                console.log(newsArray);
 
                 $.ajax({
                     url: "https://jokecamp.github.io/epl-fantasy-geek/js/static-data.json",
                     method: "GET"
                 }).done(function (response) {
-                    console.log(response);
                     teams = response.teams;
                     eplData = response.elements;
 
@@ -1040,8 +1010,6 @@ $(document).ready(function() {
 
                     setTeamsTag();
 
-                    console.log(teams);
-
                     createTeamsNav();
                 });
             });
@@ -1054,7 +1022,6 @@ $(document).ready(function() {
     function createTeamsNav() {
         var mainDiv = $("#clubs");
         $("#club-navbar").empty();
-        $("#loader").toggleClass("hidden");
         if ($("#clubs").hasClass("hidden")) {
             $("#clubs").removeClass("hidden");
         }
