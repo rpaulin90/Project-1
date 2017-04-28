@@ -871,6 +871,11 @@ $(document).ready(function() {
                 $('#currentPicks-modal').iziModal('open', this); // Do not forget the "this"
             });
 
+            $("#rankingsBtn").on('click', function () {
+
+                $('#rankings-modal').iziModal('open', this); // Do not forget the "this"
+            });
+
 
             $("#modal-modifications").iziModal({
                 title:'Points Per Week',
@@ -899,6 +904,22 @@ $(document).ready(function() {
             $("#currentPicks-modal").iziModal({
                 title: 'Current Picks',
                 subtitle: 'Gameweek: ' + (gameWeek),
+                theme: '',
+                headerColor: '#1fa13b',
+                overlayColor: 'rgba(0, 0, 0, 0.4)',
+                iconColor: '',
+                iconClass: null,
+                width: 800,
+                padding: 0,
+                overlayClose: true,
+                closeOnEscape: true,
+                bodyOverflow: false,
+                autoOpen: false
+            });
+
+            $("#rankings-modal").iziModal({
+                title: 'Rankings',
+                subtitle: 'As of gameweek: ' + (gameWeek),
                 theme: '',
                 headerColor: '#1fa13b',
                 overlayColor: 'rgba(0, 0, 0, 0.4)',
