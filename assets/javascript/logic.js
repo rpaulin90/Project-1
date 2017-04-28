@@ -161,7 +161,7 @@ $(document).ready(function() {
                     var keyId = childSnapshot.val();
 
                     if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                        $("#yourPicks").append("No picks were selected last week"); //////// LATEST CHANGE
+                        $("#yourPicks").html("No picks were selected last week"); //////// LATEST CHANGE
                     }else {
                         for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
@@ -177,7 +177,7 @@ $(document).ready(function() {
                     }
 
                     if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                        $("#yourPicksCurrent").append("No picks have been selected yet"); //////// LATEST CHANGE
+                        $("#yourPicksCurrent").html("No picks have been selected yet"); //////// LATEST CHANGE
                     }else {
                         for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
                             ////// making the current week's picks section
