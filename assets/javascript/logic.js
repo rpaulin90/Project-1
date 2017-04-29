@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 
     //// INITIALIZE FIREBASE
@@ -49,7 +48,7 @@ $(document).ready(function() {
     }
 
     var gameWeek = 34 + (x / 2);
-    gameWeek = gameWeek - 1;
+    gameWeek = gameWeek;
     var startTime;
     var deadLine = false;
     var selectedTeams = [];
@@ -79,8 +78,7 @@ $(document).ready(function() {
 
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
-                //if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
-                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
+                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
@@ -481,7 +479,7 @@ $(document).ready(function() {
             $("body").css('background', 'url("assets/images/bg-img.jpg") fixed');
             $("body").css('background-size', 'cover');
 
-            resultsLastWeek = []; ///// NEED THIS SO RESULTS NODE WILL NOT KEEP PILING UP EVERY TIME USER LOGS IN/OUT
+            //resultsLastWeek = []; ///// NEED THIS SO RESULTS NODE WILL NOT KEEP PILING UP EVERY TIME USER LOGS IN/OUT
 
         }
     });
@@ -523,100 +521,101 @@ $(document).ready(function() {
     /// PICKS ARE SENT TO FIREBASE AS AN ARRAY OR WE ALERT THE USER IF THERE ARE NO PICKS SELECTED
     /// ALSO TAKE CARE OF UPDATING THE CURRENT AND LAST WEEK PICKS MODALS ACCORDINGLY
     $("#submitPicks").on("click", function (event) {
-       event.preventDefault();
+        event.preventDefault();
 
-       usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-               snapshot.forEach(function (childSnapshot) {
-                   var keyId = childSnapshot.val();
-                   $("#yourPicks").empty();
-                   if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                       $("#yourPicks").html("No picks were selected last week");
-                   }else {
-                       for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+        usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var keyId = childSnapshot.val();
 
-                           var row = $("<tr>");
-                           var picks = $("<td>");
+                $("#yourPicks").empty();
+                if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
+                    $("#yourPicks").html("No picks were selected last week");
+                }else {
+                    for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                           picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+                        var row = $("<tr>");
+                        var picks = $("<td>");
 
-                           row.append(picks);
-                           $("#yourPicks").append(row);
+                        picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
 
-                       }
-                   }
-                   $("#yourPicksCurrent").empty();
-                   if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                       $("#yourPicksCurrent").html("No picks have been selected yet");
-                   }else {
-                       for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
-                           ////// making the current week's picks section
-                           var rowCurrent = $("<tr>");
-                           var picksCurrent = $("<td>");
+                        row.append(picks);
+                        $("#yourPicks").append(row);
 
-                           picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
+                    }
+                }
+                $("#yourPicksCurrent").empty();
+                if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
+                    $("#yourPicksCurrent").html("No picks have been selected yet");
+                }else {
+                    for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
+                        ////// making the current week's picks section
+                        var rowCurrent = $("<tr>");
+                        var picksCurrent = $("<td>");
 
-                           rowCurrent.append(picksCurrent);
-                           $("#yourPicksCurrent").append(rowCurrent);
-                       }
-                   }
-               });
-           });
+                        picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
+
+                        rowCurrent.append(picksCurrent);
+                        $("#yourPicksCurrent").append(rowCurrent);
+                    }
+                }
+            });
+        });
 
 ////// DOMINGO'S CODE //////
-       incompleteSelection = false;
-       for (var r = 0; r < (selectedTeams.length); r++) {
-           var value = ($("#picksContainer .radio-group .selected[name='" + r + "']").attr("value"));
-           selectedTeams[r] = value;
-          //  selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
-           if (selectedTeams[r] === undefined) {
+        incompleteSelection = false;
+        for (var r = 0; r < (selectedTeams.length); r++) {
+            var value = ($("#picksContainer .radio-group .selected[name='" + r + "']").attr("value"));
+            selectedTeams[r] = value;
+            //  selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
+            if (selectedTeams[r] === undefined) {
 
-               $("#picks-submitted-unsuccessfully").iziModal({
-                   title: "Please make a selection for every game",
-                   icon: 'icon-star',
-                   headerColor: '#b83c3c ',
-                   width: 600,
-                   timeout: 15000,
-                   timeoutProgressbar: true,
-                   transitionIn: 'fadeInUp',
-                   transitionOut: 'fadeOutDown',
-                   history: false,
-                   autoOpen: true/*,
-                    onClosed: function(){
-                    $("html").removeClass('overflow-hidden');
-                    }*/
-               });
+                $("#picks-submitted-unsuccessfully").iziModal({
+                    title: "Please make a selection for every game",
+                    icon: 'icon-star',
+                    headerColor: '#b83c3c ',
+                    width: 600,
+                    timeout: 15000,
+                    timeoutProgressbar: true,
+                    transitionIn: 'fadeInUp',
+                    transitionOut: 'fadeOutDown',
+                    history: false,
+                    autoOpen: true/*,
+                     onClosed: function(){
+                     $("html").removeClass('overflow-hidden');
+                     }*/
+                });
 
-               //alert("undefined bruh");
-               incompleteSelection = true;
-               break;
-           }
-       }
+                //alert("undefined bruh");
+                incompleteSelection = true;
+                break;
+            }
+        }
 
-       if (incompleteSelection === false) {
+        if (incompleteSelection === false) {
             $("#picks-submitted-successfully").iziModal({
-                   title: "Your Picks Have Been Successfully Submitted",
-                   icon: 'icon-star',
-                   headerColor: '#5cb85c ',
-                   width: 600,
-                   timeout: 15000,
-                   timeoutProgressbar: true,
-                   transitionIn: 'fadeInUp',
-                   transitionOut: 'fadeOutDown',
-                   /*attached: 'bottom',*/
-                   history: false,
-                   autoOpen: true/*,
-                    onClosed: function(){
-                    $("html").removeClass('overflow-hidden');
-                    }*/
-               });
-       }
+                title: "Your Picks Have Been Successfully Submitted",
+                icon: 'icon-star',
+                headerColor: '#5cb85c ',
+                width: 600,
+                timeout: 15000,
+                timeoutProgressbar: true,
+                transitionIn: 'fadeInUp',
+                transitionOut: 'fadeOutDown',
+                /*attached: 'bottom',*/
+                history: false,
+                autoOpen: true/*,
+                 onClosed: function(){
+                 $("html").removeClass('overflow-hidden');
+                 }*/
+            });
+        }
 
-       ////// DOMINGO'S CODE //////
-       var databaseGameWeek = (gameWeek-1).toString();
-       usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
-           [databaseGameWeek]: selectedTeams
-       });
-   });
+        ////// DOMINGO'S CODE //////
+        var databaseGameWeek = (gameWeek-1).toString();
+        usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
+            [databaseGameWeek]: selectedTeams
+        });
+    });
 
     ////////////////// IZIMODAL ///////////////////////
 
