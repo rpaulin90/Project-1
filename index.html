@@ -5,53 +5,58 @@
     <meta charset="utf-8">
     <title>EPL Pool</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/css/iziModal.min.css">
     <link rel="stylesheet" href="assets/css/plugin_CSS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <!-- BODY STARTS -->
 <body>
+
 <div id="wrapper">
-<div>
-<h1 id="main-header">English Premier League Predictions</h1>
-
+    <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui text container">
+            <h1 class="ui inverted header">English Premier League Predictions</h1>
+            <h2>How's your knowledge of the Premier League?</h2>
+            <div class="ui huge primary button" data-izimodal-open="modal-custom" id="get-started-button">
+              Get Started
+              <i class="right arrow icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="eight wide column">
+                    <h3 class="ui header">Come play the fantasy game that allows you to pick the winning teams each week.</h3>
+                    <p>At the end of every week, you will be updated with how your picks holds up against other online players.</p>
+                    <h3 class="ui header">Think you know it all? Give it a try now by registering and logging into your profile.</h3>
+                    <p>Newsfeeds in your profile help you to make an informed decision.</p>
+                </div>
+                <div class="six wide right floated column">
+                    <img src="assets/images/helper-img.png" alt="image of assisting tables in profile">
+                    <img src="assets/images/helper-img.png" alt="image of assisting tables in profile">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="main-content">
-<h2 id="content-header">How's your knowledge of the Premier League?</h2>
-<p class="p-main">Come play the fantasy game that allows you to pick the winning teams each week.</p>
-<p class="p-main">At the end of every week, you will be updated with how your picks holds up against other online players.</p>
-<p class="p-main">Think you know it all? Give it a try now by registering and logging into your profile.</p>
-</div>
-
-<div>
-<img src="assets/images/helper-img.png" alt="image of assisting tables in profile" id="image-one">
-<p id="text-one">Newsfeeds in your profile help you to make an informed decision.</p>
-</div>
-
-<div>
-<img src="assets/images/helper-img.png" alt="image of assisting tables in profile" id="image-two">
-<p id="text-two">Instant stats when a game finishes.</p>
-</div>
-
-<footer>
-<h3 id="authors">Made with &#10084; by Ricardo, Domingo, Jaime &amp; Marie</h3>
-</footer>
-
-</div>
+<!-- <footer>
+  <h3 id="authors">Made with &#10084; by Ricardo, Domingo, Jaime &amp; Marie</h3>
+</footer> -->
 
 <!-- TOP NAV BAR -->
-<div class="ui fixed stackable inverted menu" id="top-navbar">
+<div class="ui fixed stackable inverted menu hidden" id="top-navbar">
     <div class="ui container">
         <div class="item" id="logo"><img src="./assets/images/soccer-ball.png" alt=""></div>
         <div class="item" id="welcome">Welcome</div>
-        <div class="item selectable hidden" id="currentPicksBtn">Current Picks</div>
-        <div class="item selectable hidden" id="lastWeeksResultsBtn">Last Week's Picks</div>
-        <div class="item selectable hidden" id="pointsGraph">Weekly Points</div>
-        <div class="item selectable hidden" id="rankingsBtn">Rankings</div>
+        <div class="item selectable" id="currentPicksBtn">Current Picks</div>
+        <div class="item selectable" id="lastWeeksResultsBtn">Last Week's Picks</div>
+        <div class="item selectable" id="pointsGraph">Weekly Points</div>
+        <div class="item selectable" id="rankingsBtn">Rankings</div>
         <div class="right menu">
-            <div class="ui item selectable" data-izimodal-open="modal-custom" id="login-btn">Sign in</div>
+            <div class="ui item selectable" id="signout-btn">Sign out</div>
         </div>
     </div>
 </div>

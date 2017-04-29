@@ -1,3 +1,9 @@
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 /* HEADER NAVBAR */
 #top-navbar div.ui.container div.selectable {
   cursor: pointer;
@@ -11,7 +17,7 @@
 /* TEAM NAME */
 #team-name {
   color: black;
-  margin-top: 50px;
+  margin-top: 70px;
 }
 
 /* PICKS SECTION */
@@ -146,16 +152,18 @@ h2.ui.sub.header {
   font-size: 9pt;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-top: 10px;
+  padding-top: 15px;
   padding-bottom: 0px;
 }
 
 #injuries-content {
     font-size: 9pt;
+    padding-top: 0px;
 }
 
 #team-info-content {
     font-size: 9pt;
+    padding-top: 0px;
 }
 
 #table-standings {
@@ -166,6 +174,7 @@ h2.ui.sub.header {
 
 #team-news-content {
     font-size: 9pt;
+    padding-top: 0px;
 }
 
 /* MODALS */
@@ -268,78 +277,40 @@ h2.ui.sub.header {
 }
 
 /* CSS for Login Page */
-#wrapper {
-    color: #fff;
+.masthead h1.ui.header {
+    margin-top: 1em;
+    margin-bottom: 0em;
+    font-size: 4em;
+    font-weight: normal;
 }
 
-#main-header {
-  text-transform: uppercase;
-  font-size: 60px;
-  text-align: center;
-  float: left;
-  padding-left: 30px;
-  padding-top: 20px;
-  text-shadow: 3px 3px #000;
-  font-family: 'Oswald', sans-serif;
+.masthead.segment {
+    min-height: 300px;
+    padding: 2em 0em 5em 0em;
+    border-bottom: solid 2px white;
 }
 
-
-#content-header {
-  font-size: 40px;
-  text-shadow: 3px 3px #000;
-  font-family: 'Oswald', sans-serif;
-  float: left;
-  margin-left: 20px;
-  padding-top: 50px;
-  margin-bottom: 20px;
-  clear: both;
+.ui.vertical.stripe {
+    padding: 6em 0em;
 }
 
-.p-main {
-  font-family: 'Oswald', sans-serif;
- font-size: 30px;
-  text-shadow: 3px 3px #000;
-  float: left;
-  margin-left: 20px;
-  line-height: 40px;
-  clear: both;
+.ui.vertical.stripe .row {
+    background-color: rgba(0, 0, 0, 0.7);
+    border: solid 2px white;
+    color: white;
+    padding: 20px;
 }
 
-
-#image-one {
-  float: left;
-  max-width: 45%;
-  height: auto;
-  clear: both;
-  margin-left: 400px;
-  margin-top: 10px;
+.ui.vertical.stripe .row h3 {
+    color: white;
 }
 
-#image-two {
-  float: left;
-  max-width: 45%;
-  height: auto;
-  clear: both;
-  margin-left: 400px;
-  margin-top: 10px;
+.ui.vertical.stripe .button + h3, .ui.vertical.stripe p + h3 {
+    margin-top: 3em;
 }
 
-#text-one {
-  font-family: 'Oswald', sans-serif;
-  font-size: 25px;
-  text-shadow: 3px 3px #000;
-  float: left;
-  clear: both;
-  margin-left: 400px;
-}
-
-#text-two {
-  font-family: 'Oswald', sans-serif;
-  font-size: 25px;
-  text-shadow: 3px 3px #000;
-  float: left;
-  clear: both;
-  margin-left: 400px;
+.ui.vertical.stripe h3 {
+    font-size: 2em;
 }
 
 #authors {
@@ -352,12 +323,6 @@ h2.ui.sub.header {
 /* Media Queries for Login Page */
 
 @media screen and (max-width:600px){
-    #main-header {
-  font-size: 40px;
-  text-align: center;
-  float: left;
-}
-
   #content-header {
   font-size: 30px;
   float: left;

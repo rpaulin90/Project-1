@@ -110,7 +110,7 @@ $(document).ready(function() {
                     var newRow = $('<tr class="radio-group">');
 
                     var value = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
-                    
+
                     newColumn = $('<td class="radio six wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
                     if (value === matchToRadio) {
                         newColumn.addClass('selected');
@@ -482,19 +482,13 @@ $(document).ready(function() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             $("#loader").removeClass("hidden");
-            $("#login-btn").html("Sign out");
-            $("#currentPicksBtn").removeClass("hidden");
-            $("#lastWeeksResultsBtn").removeClass("hidden");
-            $("#pointsGraph").removeClass("hidden");
-            $("#rankingsBtn").removeClass("hidden");
+            $("#top-navbar").removeClass("hidden");
             $("#team-name").removeClass("hidden");
-            $("#login-btn").attr("data-izimodal-open", "");
             callInfoAPI();
             $("#wrapper").addClass("hide");
             $("body").css('background-image', 'none');
             $('#registrationBtn').css('display','none');
             $("#registrationBtn").addClass("hide");
-            $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").removeClass("hide");
 
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
@@ -524,12 +518,7 @@ $(document).ready(function() {
                 makePicksTable();
             });
         } else {
-            $("#login-btn").html("Sign in/Register");
-            $("#login-btn").attr("data-izimodal-open", "modal-custom");
-            $("#currentPicksBtn").addClass("hidden");
-            $("#lastWeeksResultsBtn").addClass("hidden");
-            $("#pointsGraph").addClass("hidden");
-            $("#rankingsBtn").addClass("hidden");
+            $("#top-navbar").addClass("hidden");
             $("#team-name").addClass("hidden");
             $("#wrapper").removeClass("hide");
             showSignUpBox();
@@ -539,7 +528,6 @@ $(document).ready(function() {
                 $("#clubs").addClass("hidden");
             }
             $("#registrationBtn").removeClass("hide");
-            $("#pointsGraph, #lastWeeksResultsBtn, #currentPicksBtn").addClass("hide");
             $("body").css('background', 'url("assets/images/bg-img.jpg") fixed');
             $("body").css('background-size', 'cover');
 
@@ -558,29 +546,27 @@ $(document).ready(function() {
     });
 
 // WHAT HAPPENS WHEN A USER LOGS OUT
-    $(document).on("click", "#login-btn", function (event) {
-        if ($("#login-btn").html() === "Sign out") {
-            event.preventDefault();
+    $(document).on("click", "#signout-btn", function (event) {
+        event.preventDefault();
 
-            firebase.auth().signOut().then(function () {
-                usersRef.off("value");
-                game.email = "";
-                game.name = "";
-                game.teamName = "";
-                game.currentUserUid = "";
-                lastWeeksPicks = "";
-                game.lastWeeksResults = "";
-                weeklyPoints = 0;
-                updateDatabase();
-                $(".rankingsDiv").css("display", "none");
-                $("#lastWeekInfo").css("display","none");
-                $('#registrationBtn').css('display','block');
-                // Sign-out successful.
-            }).catch(function (error) {
-                console.log(error.code);// An error happened.
-                console.log(error.message);// An error happened.
-            });
-        }
+        firebase.auth().signOut().then(function () {
+            usersRef.off("value");
+            game.email = "";
+            game.name = "";
+            game.teamName = "";
+            game.currentUserUid = "";
+            lastWeeksPicks = "";
+            game.lastWeeksResults = "";
+            weeklyPoints = 0;
+            updateDatabase();
+            $(".rankingsDiv").css("display", "none");
+            $("#lastWeekInfo").css("display","none");
+            $('#registrationBtn').css('display','block');
+            // Sign-out successful.
+        }).catch(function (error) {
+            console.log(error.code);// An error happened.
+            console.log(error.message);// An error happened.
+        });
     });
 
 
