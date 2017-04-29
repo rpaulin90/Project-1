@@ -1,8 +1,7 @@
 
-//// INITIALIZE FIREBASE
-
-
 $(document).ready(function() {
+
+    //// INITIALIZE FIREBASE
     var config = {
         apiKey: "AIzaSyABIt9nahLYOw9L0fIZkFWSMGaf4p5gMlI",
         authDomain: "epl-sandbox.firebaseapp.com",
@@ -27,7 +26,6 @@ $(document).ready(function() {
         teamName: "",
         userKeyNode: "",
         currentUserUid: "",
-        lastWeeksResults: "",
         thisWeekPick: [],
         totalPoints: 0
 
@@ -35,35 +33,12 @@ $(document).ready(function() {
 
 
 ///////// DOMINGO'S CODE //////////
+///////// OBTAINING CURRENT GAMEWEEK ///////////
 
     var GWArray = ["04/22/2017", "04/23/2017", "04/29/2017", "05/01/2017", "05/05/2017", "05/08/2017", "05/10/2017", "05/14/2017", "05/15/2017", "05/21/2017"];
 
     currentDate = moment().format('LT');
     currentTime = moment().format('l');
-
-    var displayTeams = function (teamHolder, index) {
-
-        radioButtonDiv = $('<div class="ui radio checkbox">');
-
-        newLabel = $("<label>");
-        newLabel.addClass("radio-inline");
-        if (teamHolder === "DRAW") {
-            newLabel.html("");
-        } else {
-            newLabel.html(teamHolder);
-        }
-
-        newInput = $("<input>");
-        newInput.attr("type", "radio");
-        newInput.attr("name", "optradio");
-        newInput.attr("value", teamHolder);
-        newInput.attr("name", index);
-
-        radioButtonDiv.append(newInput);
-        radioButtonDiv.append(newLabel);
-        newColumn.append(radioButtonDiv);
-
-    };
 
     var x = 0;
     var convertedDate = moment(new Date(GWArray[x]));
@@ -85,6 +60,7 @@ $(document).ready(function() {
 ///////// DOMINGO'S CODE //////////
 
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
+// WE ALSO OBTAIN ALL NECESSARY INFORMATION FROM THE API TO USE IN OTHER SECTIONS (MODALS)
     var makePicksTable = function () {
         $("#picksContainer").empty();
         $("#game-results").empty();
@@ -144,7 +120,7 @@ $(document).ready(function() {
 
             $("#loader").addClass("hidden");
 
-            // making the last week's results and picks info section
+            // making the last week's results and picks info section (EXAMPLE: SWANSEA 1 - 0 SUNDERLAND /// PICK: SWANSEA)
             for (var e = 0; e < response.fixtures.length; e++) {
                 if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
 
@@ -164,14 +140,13 @@ $(document).ready(function() {
                     $('#game-results').append(row);
                 }
             }
-            //////////// JUST ADDED ////////////////
 
             usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     var keyId = childSnapshot.val();
 
                     if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                        $("#yourPicks").html("No picks were selected last week"); //////// LATEST CHANGE
+                        $("#yourPicks").html("No picks were selected last week");
                     }else {
                         for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
@@ -186,11 +161,12 @@ $(document).ready(function() {
                         }
                     }
 
+                    ////// making the current week's picks section
                     if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                        $("#yourPicksCurrent").html("No picks have been selected yet"); //////// LATEST CHANGE
+                        $("#yourPicksCurrent").html("No picks have been selected yet");
                     }else {
                         for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
-                            ////// making the current week's picks section
+
                             var rowCurrent = $("<tr>");
                             var picksCurrent = $("<td>");
 
@@ -203,11 +179,7 @@ $(document).ready(function() {
                 });
             });
 
-            //////////// JUST ADDED ////////////////
-
-
-
-
+            /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
             startTime = moment(new Date(GWArray[x]));
             timeDiff = moment(startTime).diff(moment(), "hours");
 
@@ -221,7 +193,7 @@ $(document).ready(function() {
                 deadLine = false;
             }
 
-            // OBTAINING RESULTS FROM LAST WEEK
+            // OBTAINING RESULTS FROM LAST WEEK (E.G. DETERMINE WHO WON OR IF IT WAS A DRAW)
             for (var f = 0; f < response.fixtures.length; f++) {
                 if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
 
@@ -242,6 +214,7 @@ $(document).ready(function() {
                 }
             }
 
+            //// SETTING THE RESULTS AS AN ARRAY IN FIREBASE
             resultsRef.set({
 
                 [gameWeek - 1]: resultsLastWeek
@@ -268,7 +241,7 @@ $(document).ready(function() {
 
                     for (var f = 0; f < lastWeeksPicks.length; f++) {
                         if (lastWeeksPicks[f] !== "undefined") {
-                            weeklyGamesPlayed++
+                            weeklyGamesPlayed++;
                         }
                     }
 
@@ -287,7 +260,7 @@ $(document).ready(function() {
 
                         for (var f = 0; f < lastWeeksPicks.length; f++) {
                             if (lastWeeksPicks[f] === resultsLastWeek[f]) {
-                                weeklyPoints++
+                                weeklyPoints++;
                             }
                         }
 
@@ -330,11 +303,6 @@ $(document).ready(function() {
                                     totalPointsNegative: -totalPoints,
                                     totalPoints: totalPoints
                                 });
-                                // usersRef.child(childSnapshot.key).update({
-                                //
-                                //     totalPoints: totalPoints
-                                //
-                                // });
                             });
                         });
 
@@ -350,7 +318,7 @@ $(document).ready(function() {
                                     totalPoints += weeklyPointsArray[t];
                                 }
 
-                                if(totalPoints == 0){
+                                if(totalPoints === 0){
                                     usersRef.child(childSnapshot.key).update({
                                         totalPointsNegative: 1000
                                     });
@@ -364,6 +332,8 @@ $(document).ready(function() {
     };
 
     /////////////////////////////////////////////////////////////////////////////
+
+    //////// MAKING A RANKING TABLE BY TAKING USER'S TOTAL POINTS AS A REFERENCE/////////
 
     var makeRankingsTable = function(){
         $(".rankings").empty();
@@ -400,15 +370,11 @@ $(document).ready(function() {
         $(".rankingsDiv").css("display", "block");
     };
 
-
-
-
-    ////////// JUST ADDED //////////////
+    ///////// USING THE WEEKLY POINTS ARRAY IN FIREBASE TO CREATE A LINE CHART OF THE USER'S PERFORMANCE /////////
 
     var makeWeeklyPointsGraph = function(){
 
         $("#canvas").empty();
-
 
         usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
 
@@ -431,8 +397,8 @@ $(document).ready(function() {
                         fillColor: "rgba(151,187,205,0.2)",
                         strokeColor: "rgba(151,187,205,1)",
                         pointColor: "rgba(151,187,205,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
+                        pointStrokeColor: "#1397ff",
+                        pointHighlightFill: "#1397ff",
                         pointHighlightStroke: "rgba(151,187,205,1)",
                         bezierCurve: true,
                         data: weeklyPointsArray
@@ -443,7 +409,6 @@ $(document).ready(function() {
                 Chart.defaults.global.responsive = true;
                 Chart.defaults.global.tooltipYPadding = 10;
                 Chart.defaults.global.tooltipXPadding = 3;
-
 
                 var ctx = document.getElementById("canvas").getContext("2d");
                 var LineChartDemo = new Chart(ctx).Line(lineChartData, {
@@ -459,28 +424,11 @@ $(document).ready(function() {
 
     };
 
-    ////////// JUST ADDED //////////////
-
-///// USER REGISTRATION LOGIC
-
-    var showSignUpBox = function () {
-        // FIRST WE CREATE THE SIGN UP PAGE/HOMEPAGE
-        $("#logInPage").css("display", "none");
-        $("#profilePage").css("display", "none");
-        $("#rankingsTable").css("display","none");
-        $("#registrationBtn").css("display, block");
-        $("#homepage").css("display", "block");
-    };
-
-
-// START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY LOGGED IN
-    showSignUpBox();
-///// USER PROFILE LOGIC (ONCE THE USER IS LOGGED IN)
-// IF THERE IS A USER LOGGED IN, TAKE HIM TO HIS PROFILE
-// IF THERE IS NO ONE LOGGED IN, JUST SHOW THE HOMEPAGE
+    // START THE PROGRAM BY CHECKING IF THERE IS A USER ALREADY LOGGED IN
+    // THIS LISTENER WILL CALL A FUNCTION EVERY TIME A USER LOGS IN OR OUT (OR WHEN JUST OPENED THE PAGE)
 
     firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
+        if (user) { /// THERE IS A USER LOGGED IN
             $("#loader").removeClass("hidden");
             $("#top-navbar").removeClass("hidden");
             $("#team-name").removeClass("hidden");
@@ -498,7 +446,6 @@ $(document).ready(function() {
                 snapshot.forEach(function (childSnapshot) {
 
                     var keyId = childSnapshot.val();
-                    //console.log(keyId);
 
                     game.thisWeekPick = keyId.picksPerGameWeek;
                     game.email = keyId.email;
@@ -521,7 +468,8 @@ $(document).ready(function() {
             $("#top-navbar").addClass("hidden");
             $("#team-name").addClass("hidden");
             $("#wrapper").removeClass("hide");
-            showSignUpBox();
+            //showSignUpBox();
+            $("#profilePage").css("display", "none");
             updateDatabase();
             $("#welcome").html("Welcome");
             if (!($("#clubs").hasClass("hidden"))) {
@@ -531,11 +479,12 @@ $(document).ready(function() {
             $("body").css('background', 'url("assets/images/bg-img.jpg") fixed');
             $("body").css('background-size', 'cover');
 
-            resultsLastWeek = []; ///// ADD SO RESULTS NODE WILL NOT KEEP PILING UP EVERY TIME USER LOGS IN/OUT
+            resultsLastWeek = []; ///// NEED THIS SO RESULTS NODE WILL NOT KEEP PILING UP EVERY TIME USER LOGS IN/OUT
 
         }
     });
 
+    /// WE NEED TO RETRIEVE SOME INFORMATION FROM THE API BEFORE WE UPDATE THE DATABASE
     jQuery(function($)
     {
         $(document).ajaxStop(function()
@@ -569,7 +518,8 @@ $(document).ready(function() {
         });
     });
 
-
+    /// PICKS ARE SENT TO FIREBASE AS AN ARRAY OR WE ALERT THE USER IF THERE ARE NO PICKS SELECTED
+    /// ALSO TAKE CARE OF UPDATING THE CURRENT AND LAST WEEK PICKS MODALS ACCORDINGLY
     $("#submitPicks").on("click", function (event) {
        event.preventDefault();
 
@@ -578,7 +528,7 @@ $(document).ready(function() {
                    var keyId = childSnapshot.val();
 
                    if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                       $("#yourPicks").html("No picks were selected last week"); //////// LATEST CHANGE
+                       $("#yourPicks").html("No picks were selected last week");
                    }else {
                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
@@ -594,7 +544,7 @@ $(document).ready(function() {
                    }
                    $("#yourPicksCurrent").empty();
                    if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                       $("#yourPicksCurrent").html("No picks have been selected yet"); //////// LATEST CHANGE
+                       $("#yourPicksCurrent").html("No picks have been selected yet");
                    }else {
                        for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
                            ////// making the current week's picks section
@@ -617,7 +567,7 @@ $(document).ready(function() {
            selectedTeams[r] = value;
           //  selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
            if (selectedTeams[r] === undefined) {
-               ///////// JUST ADDED ///////////
+
                $("#picks-submitted-unsuccessfully").iziModal({
                    title: "Please make a selection for every game",
                    icon: 'icon-star',
@@ -627,15 +577,12 @@ $(document).ready(function() {
                    timeoutProgressbar: true,
                    transitionIn: 'fadeInUp',
                    transitionOut: 'fadeOutDown',
-                   /*attached: 'bottom',*/
                    history: false,
                    autoOpen: true/*,
                     onClosed: function(){
                     $("html").removeClass('overflow-hidden');
                     }*/
                });
-
-               ///////// JUST ADDED ///////////
 
                //alert("undefined bruh");
                incompleteSelection = true;
@@ -665,14 +612,12 @@ $(document).ready(function() {
        ////// DOMINGO'S CODE //////
        var databaseGameWeek = (gameWeek-1).toString();
        usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
-           // email: game.email,
-           // name: game.name,
-           // teamName: game.teamName,
            [databaseGameWeek]: selectedTeams
        });
    });
 
     ////////////////// IZIMODAL ///////////////////////
+
     $("#modal-custom").iziModal({
         overlayClose: false,
         width: 600,
@@ -715,7 +660,7 @@ $(document).ready(function() {
         /// adding some requirements to register
 
         if(game.name.length > 2 && game.teamName.length > 2) {
-
+            /// LOGIC AFTER A SUCCESSFUL REGISTRATION
             firebase.auth().createUserWithEmailAndPassword(game.email, $("#passwordRegistration").val()).then(function () {
                 // CREATE A NODE IN OUR DATABASE WITH THIS USER'S INFORMATION
                 // EACH NODE'S KEY WILL BE THEIR REGISTRATION KEY.
@@ -739,7 +684,7 @@ $(document).ready(function() {
 
                 var pointsArray = [];
                 for (var a = 0; a < 38; a++) {
-                    pointsArray.push(0)
+                    pointsArray.push(0);
                 }
                 var gamesPlayedArray = pointsArray;
                 usersRef.child(game.currentUserUid).set({
@@ -813,16 +758,14 @@ $(document).ready(function() {
                 }
             }
 
-            var errorCode = error.code;
-            var errorMessage = error.message;
         });
     });
 
-
+    /// RESET PASSWORD LOGIC
     $("#resetPassword").on('click', function(event) {
-        /////// JUST ADDED ////////
+
         event.preventDefault();
-        ////// JUST ADDED /////////
+
 
         var emailForPasswordReset = $("#emailForPasswordReset").val();
         var that = $(this);
@@ -845,91 +788,88 @@ $(document).ready(function() {
     });
 
 
-            //////////// JUST ADDED //////////////
+    ////////// DEALING WITH THE RESPONSE TO CLICKING ON BUTTONS THAT PRODUCE MODALS ///////////
 
-            $("#pointsGraph").on("click",function(){
-                if(gameWeek !== 1) {
+    $("#pointsGraph").on("click",function(){
+        if(gameWeek !== 1) {
 
-                    makeWeeklyPointsGraph();
-                    $('#modal-modifications').iziModal('open');
-                }
-            });
+            makeWeeklyPointsGraph();
+            $('#modal-modifications').iziModal('open');
+        }
+    });
 
-            $("#lastWeeksResultsBtn").on('click', function () {
+    $("#lastWeeksResultsBtn").on('click', function () {
 
-                $('#lastWeek-modal').iziModal('open', this); // Do not forget the "this"
-            });
+        $('#lastWeek-modal').iziModal('open', this); // Do not forget the "this"
+    });
 
-            $("#currentPicksBtn").on('click', function () {
+    $("#currentPicksBtn").on('click', function () {
 
-                $('#currentPicks-modal').iziModal('open', this); // Do not forget the "this"
-            });
+        $('#currentPicks-modal').iziModal('open', this); // Do not forget the "this"
+    });
 
-            $("#rankingsBtn").on('click', function () {
-                $("#rankings").empty();
-                makeRankingsTable();
-                $('#rankings-modal').iziModal('open', this); // Do not forget the "this"
-            });
-
-
-            $("#modal-modifications").iziModal({
-                title:'Points Per Week',
-                overlayClose: true,
-                autoOpen: false,
-                overlayColor: 'rgba(0, 0, 0, 0.6)',
-            });
+    $("#rankingsBtn").on('click', function () {
+        $("#rankings").empty();
+        makeRankingsTable();
+        $('#rankings-modal').iziModal('open', this); // Do not forget the "this"
+    });
 
 
-            $("#lastWeek-modal").iziModal({
-                title: "Last week's results and picks",
-                subtitle: "Gameweek: " + (gameWeek-1),
-                theme: '',
-                headerColor: '#2a339c',
-                overlayColor: 'rgba(0, 0, 0, 0.4)',
-                iconColor: '',
-                iconClass: null,
-                width: 600,
-                padding: 0,
-                overlayClose: true,
-                closeOnEscape: true,
-                bodyOverflow: false,
-                autoOpen: false
-            });
-
-            $("#currentPicks-modal").iziModal({
-                title: 'Current Picks',
-                subtitle: 'Gameweek: ' + (gameWeek),
-                theme: '',
-                headerColor: '#1fa13b',
-                overlayColor: 'rgba(0, 0, 0, 0.4)',
-                iconColor: '',
-                iconClass: null,
-                width: 400,
-                padding: 0,
-                overlayClose: true,
-                closeOnEscape: true,
-                bodyOverflow: false,
-                autoOpen: false
-            });
-
-            $("#rankings-modal").iziModal({
-                title: 'Rankings',
-                subtitle: 'As of gameweek: ' + (gameWeek),
-                theme: '',
-                headerColor: '#1fa13b',
-                overlayColor: 'rgba(0, 0, 0, 0.4)',
-                iconColor: '',
-                iconClass: null,
-                width: 1000,
-                padding: 0,
-                overlayClose: true,
-                closeOnEscape: true,
-                bodyOverflow: false,
-                autoOpen: false
-            });
+    $("#modal-modifications").iziModal({
+        title:'Points Per Week',
+        overlayClose: true,
+        autoOpen: false,
+        overlayColor: 'rgba(0, 0, 0, 0.6)',
+    });
 
 
-            //////////// JUST ADDED //////////////
+    $("#lastWeek-modal").iziModal({
+        title: "Last week's results and picks",
+        subtitle: "Gameweek: " + (gameWeek-1),
+        theme: '',
+        headerColor: '#2a339c',
+        overlayColor: 'rgba(0, 0, 0, 0.4)',
+        iconColor: '',
+        iconClass: null,
+        width: 600,
+        padding: 0,
+        overlayClose: true,
+        closeOnEscape: true,
+        bodyOverflow: false,
+        autoOpen: false
+    });
+
+    $("#currentPicks-modal").iziModal({
+        title: 'Current Picks',
+        subtitle: 'Gameweek: ' + (gameWeek),
+        theme: '',
+        headerColor: '#1fa13b',
+        overlayColor: 'rgba(0, 0, 0, 0.4)',
+        iconColor: '',
+        iconClass: null,
+        width: 400,
+        padding: 0,
+        overlayClose: true,
+        closeOnEscape: true,
+        bodyOverflow: false,
+        autoOpen: false
+    });
+
+    $("#rankings-modal").iziModal({
+        title: 'Rankings',
+        subtitle: 'As of gameweek: ' + (gameWeek),
+        theme: '',
+        headerColor: '#1fa13b',
+        overlayColor: 'rgba(0, 0, 0, 0.4)',
+        iconColor: '',
+        iconClass: null,
+        width: 1000,
+        padding: 0,
+        overlayClose: true,
+        closeOnEscape: true,
+        bodyOverflow: false,
+        autoOpen: false
+    });
 
 ////////////////////////////////////////////////////////
 // JAIME's CODE
@@ -1169,7 +1109,7 @@ $(document).ready(function() {
                     newsArticle.webUrl.toLowerCase().includes(tag.toLowerCase())) {
                     articleLabel = $('<h2 class="ui sub header">' + newsArticle.webTitle + '</h2>');
                     $("#team-news-content").append(articleLabel);
-                    var readMore = $('<div><a href=' + newsArticle.webUrl + ' target="_blank">Read More...</a></div>')
+                    var readMore = $('<div><a href=' + newsArticle.webUrl + ' target="_blank">Read More...</a></div>');
                     $("#team-news-content").append(readMore);
                     return false;
                 }

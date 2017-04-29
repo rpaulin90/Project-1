@@ -220,6 +220,50 @@ h2.ui.sub.header {
     color: #fff;
 }
 
+/* CSS for Login Page */
+.masthead h1.ui.header {
+    margin-top: 1em;
+    margin-bottom: 0em;
+    font-size: 4em;
+    font-weight: normal;
+}
+
+.masthead.segment {
+    min-height: 300px;
+    padding: 2em 0em 5em 0em;
+    border-bottom: solid 2px white;
+}
+
+.ui.vertical.stripe {
+    padding: 6em 0em;
+}
+
+.ui.vertical.stripe .row {
+    background-color: rgba(0, 0, 0, 0.7);
+    border: solid 2px white;
+    color: white;
+    padding: 20px;
+}
+
+.ui.vertical.stripe .row h3 {
+    color: white;
+}
+
+.ui.vertical.stripe .button + h3, .ui.vertical.stripe p + h3 {
+    margin-top: 3em;
+}
+
+.ui.vertical.stripe h3 {
+    font-size: 2em;
+}
+
+#authors {
+  float: left;
+  clear: both;
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+}
+
 @media screen and (max-width:600px){
     #table-standings {
         padding: 0px;
@@ -274,121 +318,4 @@ h2.ui.sub.header {
     .desktop-table {
         display: none;
     }
-}
-
-/* CSS for Login Page */
-.masthead h1.ui.header {
-    margin-top: 1em;
-    margin-bottom: 0em;
-    font-size: 4em;
-    font-weight: normal;
-}
-
-.masthead.segment {
-    min-height: 300px;
-    padding: 2em 0em 5em 0em;
-    border-bottom: solid 2px white;
-}
-
-.ui.vertical.stripe {
-    padding: 6em 0em;
-}
-
-.ui.vertical.stripe .row {
-    background-color: rgba(0, 0, 0, 0.7);
-    border: solid 2px white;
-    color: white;
-    padding: 20px;
-}
-
-.ui.vertical.stripe .row h3 {
-    color: white;
-}
-
-.ui.vertical.stripe .button + h3, .ui.vertical.stripe p + h3 {
-    margin-top: 3em;
-}
-
-.ui.vertical.stripe h3 {
-    font-size: 2em;
-}
-
-#authors {
-  float: left;
-  clear: both;
-  font-family: 'Oswald', sans-serif;
-  font-size: 10px;
-}
-
-/* Media Queries for Login Page */
-
-@media screen and (max-width:600px){
-  #content-header {
-  font-size: 30px;
-  float: left;
-  }
-
-  .p-main {
-  font-size: 20px;
-}
-
-#image-one {
-  max-width: 90%;
-  height: auto;
-  margin-left: 20px;
-  margin-top: 10px;
-}
-
-#image-two {
-  max-width: 90%;
-  height: auto;
-  margin-left: 20px;
-  margin-top: 10px;
-}
-
-#text-one {
-  font-size: 20px;
-  margin-left: 20px;
-}
-
-#text-two {
-  font-size: 20px;
-  margin-left: 20px;
-}
-
-#authors {
-  margin-left: 150px;
-  font-size: 10px;
-}
-}
-
-@media screen and (min-width:768px) and (max-width:990px){
-  #content-header {
-      font-size: 40px;
-  }
-
-#image-one {
-  max-width: 80%;
-  height: auto;
-  margin-left: 20px;
-  margin-top: 10px;
-}
-
-#image-two {
-  max-width: 80%;
-  height: auto;
-  margin-left: 20px;
-  margin-top: 10px;
-}
-
-#text-one {
-  font-size: 30px;
-  margin-left: 20px;
-}
-
-#text-two {
-  font-size: 30px;
-  margin-left: 20px;
-}
-
 }
