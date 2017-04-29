@@ -49,6 +49,7 @@ $(document).ready(function() {
     }
 
     var gameWeek = 34 + (x / 2);
+    gameWeek = gameWeek - 1;
     var startTime;
     var deadLine = false;
     var selectedTeams = [];
@@ -78,7 +79,8 @@ $(document).ready(function() {
 
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
-                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
+                //if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
+                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
@@ -526,7 +528,7 @@ $(document).ready(function() {
        usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
                snapshot.forEach(function (childSnapshot) {
                    var keyId = childSnapshot.val();
-
+                   $("#yourPicks").empty();
                    if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
                        $("#yourPicks").html("No picks were selected last week");
                    }else {
