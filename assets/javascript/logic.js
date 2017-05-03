@@ -76,6 +76,15 @@ $(document).ready(function() {
         }).done(function (response) {
             var matchHolder = [];
 
+            var headRow = $("<tr>");
+            var headHome = $("<th>").text("HOME").addClass("center aligned").css("font-weight","bold");
+            var headDraw = $("<th>").text("").addClass("center aligned");
+            var headAway = $("<th>").text("AWAY").addClass("center aligned").css("font-weight","bold");;
+            headRow.append(headHome);
+            headRow.append(headDraw);
+            headRow.append(headAway);
+            $("#picksContainer").append(headRow);
+
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
                 if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
