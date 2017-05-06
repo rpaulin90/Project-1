@@ -87,7 +87,7 @@ $(document).ready(function() {
 
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
-                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "TIMED") {
+                if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
