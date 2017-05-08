@@ -398,34 +398,46 @@ $(document).ready(function() {
                     gameWeeks.push(g + 1);
                 }
 
-                var lineChartData = {
-                    labels: gameWeeks,
-                    datasets: [{
-                        lagend: 'Points Per Gameweek',
-                        backgroundColor: "rgba(99, 255, 172,0.5)",
-                        fillColor: "rgba(151,187,205,0.2)",
-                        strokeColor: "rgba(151,187,205,1)",
-                        pointColor: "rgba(151,187,205,1)",
-                        pointStrokeColor: "#1397ff",
-                        pointHighlightFill: "#1397ff",
-                        pointHighlightStroke: "rgba(151,187,205,1)",
-                        bezierCurve: true,
-                        data: weeklyPointsArray
-                    }]
-
-                };
-
-                Chart.defaults.global.responsive = true;
-                Chart.defaults.global.tooltipYPadding = 10;
-                Chart.defaults.global.tooltipXPadding = 3;
-
-                var ctx = document.getElementById("canvas").getContext("2d");
-                var LineChartDemo = new Chart(ctx).Line(lineChartData, {
-                    pointDotRadius: 1,
-                    lineTension: 1,
-                    scaleShowVerticalLines: false,
-                    fill: false,
-                    scaleGridLineColor: "black"
+                var ctx = document.getElementById("canvas").getContext("2d");;
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: gameWeeks,
+                        datasets: [
+                            {
+                                label: "Week Points",
+                                fill: false,
+                                lineTension: 0.1,
+                                backgroundColor: "rgba(75,192,192,0.4)",
+                                borderColor: "rgba(75,192,192,1)",
+                                borderCapStyle: 'butt',
+                                borderDash: [],
+                                borderDashOffset: 0.0,
+                                borderJoinStyle: 'miter',
+                                pointBorderColor: "rgba(75,192,192,1)",
+                                pointBackgroundColor: "#fff",
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                                pointHoverBorderColor: "rgba(220,220,220,1)",
+                                pointHoverBorderWidth: 2,
+                                pointRadius: 1,
+                                pointHitRadius: 10,
+                                data: weeklyPointsArray,
+                                spanGaps: false
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        },
+                        responsive: true
+                    }
                 });
 
             });
