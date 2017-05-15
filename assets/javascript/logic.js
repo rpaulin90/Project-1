@@ -31,10 +31,9 @@ $(document).ready(function() {
     };
 
 
-///////// DOMINGO'S CODE //////////
 ///////// OBTAINING CURRENT GAMEWEEK ///////////
 
-    var GWArray = ["04/22/2017", "04/23/2017", "04/29/2017", "05/01/2017", "05/05/2017", "05/08/2017", "05/12/2017", "05/14/2017", "05/15/2017", "05/21/2017"];
+    var GWArray = ["04/22/2017", "04/23/2017", "04/29/2017", "05/01/2017", "05/05/2017", "05/08/2017", "05/12/2017", "05/14/2017", "05/21/2017", "05/21/2017"];
 
     currentDate = moment().format('LT');
     currentTime = moment().format('l');
@@ -48,7 +47,19 @@ $(document).ready(function() {
     }
 
     var gameWeek = 34 + (x / 2);
-    gameWeek = gameWeek;
+
+    // JUST ADDED
+    if(gameWeek > 38){
+        gameWeek = 39;
+    }
+
+    var seasonOver = false;
+
+    //JUST ADDED
+    if(gameWeek > 38){
+        seasonOver = true;
+    }
+
     var startTime;
     var deadLine = false;
     var selectedTeams = [];
@@ -57,7 +68,6 @@ $(document).ready(function() {
     var resultsLastWeek = [];
 
 
-///////// DOMINGO'S CODE //////////
 
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
 // WE ALSO OBTAIN ALL NECESSARY INFORMATION FROM THE API TO USE IN OTHER SECTIONS (MODALS)
@@ -67,7 +77,7 @@ $(document).ready(function() {
         $("#yourPicks").empty();
         $("#yourPicksCurrent").empty();
 
-///////// DOMINGO'S CODE //////////
+
         $.ajax({
             headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
             url: 'https://api.football-data.org/v1/competitions/426/fixtures',
@@ -196,10 +206,15 @@ $(document).ready(function() {
                 deadLine = true;
             }
             else {
+                // JUST ADDED
+                if(seasonOver === true){
+                    $("#time-remaining").html("The season is over but we'll be back soon!");
+                }
+                else {
+                    $("#time-remaining").html("Time remaining: " + timeDiff + " hours");
 
-                $("#time-remaining").html("Time remaining: " + timeDiff + " hours");
-
-                deadLine = false;
+                    deadLine = false;
+                }
             }
 
             // OBTAINING RESULTS FROM LAST WEEK (E.G. DETERMINE WHO WON OR IF IT WAS A DRAW)
@@ -230,7 +245,7 @@ $(document).ready(function() {
 
             });
         });
-///////// DOMINGO'S CODE //////////
+
     };
 
     ////////////////////// FUNCTION TO UPDATE DATABASE /////////////////////////////
@@ -582,7 +597,7 @@ $(document).ready(function() {
             });
         });
 
-////// DOMINGO'S CODE //////
+
         incompleteSelection = false;
         for (var r = 0; r < (selectedTeams.length); r++) {
             var value = ($("#picksContainer .radio-group .selected[name='" + r + "']").attr("value"));
@@ -631,7 +646,7 @@ $(document).ready(function() {
             });
         }
 
-        ////// DOMINGO'S CODE //////
+
         var databaseGameWeek = (gameWeek-1).toString();
         usersRef.child(game.currentUserUid).child("picksPerGameWeek").update({
             [databaseGameWeek]: selectedTeams
@@ -894,7 +909,7 @@ $(document).ready(function() {
     });
 
 ////////////////////////////////////////////////////////
-// JAIME's CODE
+// NEWS TOOL
 ////////////////////////////////////////////////////////
     var NEWS_API_KEY = "b8e5013c-f10c-474c-9cf6-b9416ae989ef";
     var getTeamNewsQueryURL = "https://content.guardianapis.com/search?section=football&page-size=50&api-key=";
