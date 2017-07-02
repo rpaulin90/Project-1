@@ -2,10 +2,10 @@ $(document).ready(function() {
 
     //// INITIALIZE FIREBASE
     var config = {
-        apiKey: "AIzaSyABIt9nahLYOw9L0fIZkFWSMGaf4p5gMlI",
-        authDomain: "epl-sandbox.firebaseapp.com",
-        databaseURL: "https://epl-sandbox.firebaseio.com/",
-        storageBucket: "epl-sandbox"
+        apiKey: "AIzaSyBZ1EkdljPhyKZPccbmlsqZxU2bkmqvQnI",
+        authDomain: "epl-pool.firebaseapp.com",
+        databaseURL: "https://epl-pool.firebaseio.com/",
+        storageBucket: "epl-pool"
     };
 
     firebase.initializeApp(config);
@@ -362,11 +362,14 @@ $(document).ready(function() {
     var makeRankingsTable = function(){
         $(".rankings").empty();
 
+        var counter = 1;
+
         usersRef.orderByChild("totalPointsNegative").once("value",function(snapshot){
             snapshot.forEach(function (childSnapshot) {
 
                 var userID = childSnapshot.val();
                 var row = $("<tr>");
+                var place = $("<td>");
                 var week = $("<td>");
                 var team_name = $("<td>");
                 var teamOwner = $("<td>");
@@ -374,6 +377,7 @@ $(document).ready(function() {
                 var totalCorrect = $("<td>");
                 var correctThisWeek = $("<td>");
 
+                place.append(counter);
                 week.append(gameWeek-1);
                 team_name.append(userID.teamName);
                 teamOwner.append(userID.name);
@@ -381,6 +385,7 @@ $(document).ready(function() {
                 correctThisWeek.append(userID.pointsPerGameWeek[gameWeek-2]);
                 totalCorrect.append(userID.totalPoints);
 
+                row.append(place);
                 row.append(week);
 
                 row.append(team_name);
@@ -389,6 +394,8 @@ $(document).ready(function() {
                 row.append(correctThisWeek);
                 row.append(totalCorrect);
                 $("#rankings").append(row);
+
+                counter++;
             });
         });
         $(".rankingsDiv").css("display", "block");
