@@ -2,10 +2,12 @@ $(document).ready(function() {
 
     //// INITIALIZE FIREBASE
     var config = {
-        apiKey: "AIzaSyBZ1EkdljPhyKZPccbmlsqZxU2bkmqvQnI",
-        authDomain: "epl-pool.firebaseapp.com",
-        databaseURL: "https://epl-pool.firebaseio.com/",
-        storageBucket: "epl-pool"
+        apiKey: "AIzaSyABIt9nahLYOw9L0fIZkFWSMGaf4p5gMlI",
+        authDomain: "epl-sandbox.firebaseapp.com",
+        databaseURL: "https://epl-sandbox.firebaseio.com",
+        projectId: "epl-sandbox",
+        storageBucket: "epl-sandbox.appspot.com",
+        messagingSenderId: "208560202310"
     };
 
     firebase.initializeApp(config);
