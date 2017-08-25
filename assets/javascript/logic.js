@@ -18,6 +18,7 @@ $(document).ready(function() {
     var usersRef = database.ref().child("users");
 
     var resultsRef = database.ref().child("results");
+    var chatRef = database.ref().child("chat");
 
 // OUR GAME OBJECT, WHERE WE STORE INFORMATION FROM THE USER
 // THIS INFORMATION WILL LATER BE PUSHED INTO FIREBASE
@@ -35,7 +36,7 @@ $(document).ready(function() {
 
 ///////// OBTAINING CURRENT GAMEWEEK ///////////
 
-    var GWArray = ["04/22/2017", "04/23/2017", "04/29/2017", "05/01/2017", "05/05/2017", "05/08/2017", "05/12/2017", "05/14/2017", "05/21/2017", "05/21/2017"];
+    var GWArray = ["2017-08-11T18:45:00Z", "08/13/2017", "2017-08-19T11:30:00Z", "08/21/2017", "2017-08-26T11:30:00Z", "08/27/2017", "2017-09-09T11:30:00Z", "09/11/2017", "2017-09-15T19:00:00Z", "09/17/2017", "2017-09-23T11:30:00Z", "09/25/2017", "2017-09-30T11:30:00Z", "10/01/2017", "2017-10-14T14:00:00Z", "10/14/2017", "2017-10-21T14:00:00Z", "10/21/2017", "2017-10-28T14:00:00Z", "10/28/2017", "2017-11-04T15:00:00Z", "11/05/2017", "2017-11-18T15:00:00Z", "11/18/2017", "2017-11-25T15:00:00Z", "11/26/2017", "2017-11-28T19:45:00Z", "11/29/2017", "2017-12-02T15:00:00Z", "12/02/2017", "2017-12-09T15:00:00Z", "12/10/2017", "2017-12-12T19:45:00Z", "12/13/2017", "2017-12-16T15:00:00Z", "12/16/2017", "2017-12-23T15:00:00Z", "12/23/2017", "2017-12-26T15:00:00Z", "12/26/2017", "2017-12-30T15:00:00Z", "12/30/2017", "2018-01-01T15:00:00Z", "01/01/2018", "2018-01-13T15:00:00Z", "01/13/2018", "2018-01-20T15:00:00Z", "01/20/2018", "2018-01-30T19:45:00Z", "01/31/2018", "2018-02-03T15:00:00Z", "02/03/2018", "2018-02-10T15:00:00Z", "02/10/2018", "2018-02-24T15:00:00Z", "02/24/2018", "2018-03-03T15:00:00Z", "03/03/2018", "2018-03-10T15:00:00Z", "03/10/2018", "2018-03-17T15:00:00Z", "03/17/2018", "2018-03-31T14:00:00Z", "03/31/2018", "2018-04-07T14:00:00Z", "04/07/2018", "2018-04-14T14:00:00Z", "04/14/2018", "2018-04-21T14:00:00Z", "04/21/2018", "2018-04-28T14:00:00Z", "04/28/2018", "2018-05-05T14:00:00Z","05/05/2018", "2018-05-13T14:00:00Z", "05/13/2018"];
 
     currentDate = moment().format('LT');
     currentTime = moment().format('l');
@@ -48,7 +49,8 @@ $(document).ready(function() {
         convertedDate = moment(new Date(GWArray[x]));
     }
 
-    var gameWeek = 34 + (x / 2);
+    var gameWeek = 1 + (x / 2);
+    //gameWeek = 2;
 
     // JUST ADDED
     if(gameWeek > 38){
@@ -69,6 +71,8 @@ $(document).ready(function() {
     var incompleteSelection = false;
     var resultsLastWeek = [];
 
+    var first_game = GWArray[x];
+
 
 
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
@@ -82,7 +86,8 @@ $(document).ready(function() {
 
         $.ajax({
             headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
-            url: 'https://api.football-data.org/v1/competitions/426/fixtures',
+            url: 'https://api.football-data.org/v1/competitions/445/fixtures',
+            //url: 'https://salty-tundra-31504.herokuapp.com/fixtures',
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
@@ -97,16 +102,62 @@ $(document).ready(function() {
             headRow.append(headAway);
             $("#picksContainer").append(headRow);
 
+            //// NEW STUFF
+            let sortedFixturesArray = [];
+            let unsortedFixturesArray = [];
+
+            for (let y = 0; y < response.fixtures.length; y++){
+
+                if (response.fixtures[y].matchday === gameWeek) {
+                    sortedFixturesArray.push(response.fixtures[y]);
+                }
+
+            }
+
+            let compare = function (a,b) {
+                if (a._links.self.href < b._links.self.href)
+                    return -1;
+                if (a._links.self.href > b._links.self.href)
+                    return 1;
+                return 0;
+            }
+
+            sortedFixturesArray.sort(compare);
+
+            console.log('sortedFixturesArray: ');
+            console.log(sortedFixturesArray);
+
+            /// NEW STUFF
+
+            let sortedArrayResults = [];
+
+            for (var f = 0; f < response.fixtures.length; f++) {
+
+                if ((response.fixtures[f].matchday === gameWeek - 1)) {
+
+                    sortedArrayResults.push(response.fixtures[f]);
+
+                }
+            }
+
+            sortedArrayResults.sort(compare);
+            console.log("sortedArrayResults: ");
+            console.log(sortedArrayResults);
+
             var index = 0;
-            for (var i = 0; i < response.fixtures.length; i++) {
-                if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
+            //for (var i = 0; i < response.fixtures.length; i++) {
+            for (var i = 0; i < sortedFixturesArray.length; i++) {
+                //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
+                    //if (response.fixtures[i].matchday === gameWeek) {
+
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
                     //Output
                     var newRow = $('<tr class="radio-group">');
 
-                    var value = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
+                   // var value = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
+                    var value = sortedFixturesArray[matchHolder[matchHolder.length - 1]].homeTeamName;
 
                     newColumn = $('<td class="radio six wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
                     if (value === matchToRadio) {
@@ -119,7 +170,8 @@ $(document).ready(function() {
                         newColumn.addClass('selected');
                     }
                     newRow.append(newColumn);
-                    value = response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName;
+                    //value = response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName;
+                    value = sortedFixturesArray[matchHolder[matchHolder.length - 1]].awayTeamName;
                     newColumn = $('<td class="radio six wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
                     if (value === matchToRadio) {
                         newColumn.addClass('selected');
@@ -130,7 +182,7 @@ $(document).ready(function() {
                     index++;
 
                     $("#picksContainer").append(newRow);
-                }
+                //}
             }
 
             $('#picksContainer .radio-group .radio').click(function(){
@@ -142,25 +194,31 @@ $(document).ready(function() {
             $("#loader").addClass("hidden");
 
             // making the last week's results and picks info section (EXAMPLE: SWANSEA 1 - 0 SUNDERLAND /// PICK: SWANSEA)
-            for (var e = 0; e < response.fixtures.length; e++) {
-                if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
+            // for (var e = 0; e < response.fixtures.length; e++) {
+            //     if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
+                for (var e = 0; e < sortedArrayResults.length; e++) {
+                    if ((sortedArrayResults[e].matchday === gameWeek-1)) {
 
-                    var row = $("<tr>");
-                    var col = $("<td>");
+                            var row = $("<tr>");
+                            var col = $("<td>");
+                            var game_titles = $("<th>");
 
-                    var resultHomeDiv = $('<div class="result-cell">');
-                    var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
-                    var resultAwayDiv = $('<div class="result-cell">');
-                    var awayTeam = $('<span>' + response.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsAwayTeam + '</span>');
+                            var resultHomeDiv = $('<div class="result-cell">');
+                            var homeTeam = $('<span>' + sortedArrayResults[e].homeTeamName + '</span><span class="right floated"> ' + sortedArrayResults[e].result.goalsHomeTeam + '</span>');
+                            var resultAwayDiv = $('<div class="result-cell">');
+                            var awayTeam = $('<span>' + sortedArrayResults[e].awayTeamName + '</span><span class="right floated"> ' + sortedArrayResults[e].result.goalsAwayTeam + '</span>');
 
-                    resultHomeDiv.append(homeTeam);
-                    resultAwayDiv.append(awayTeam);
-                    col.append(resultHomeDiv);
-                    col.append(resultAwayDiv);
-                    row.append(col);
-                    $('#game-results').append(row);
+                            game_titles.append(sortedArrayResults[e].homeTeamName + " vs " + sortedArrayResults[e].awayTeamName);
+                            resultHomeDiv.append(homeTeam);
+                            resultAwayDiv.append(awayTeam);
+                            col.append(resultHomeDiv);
+                            col.append(resultAwayDiv);
+                            row.append(col);
+                            $('#game-results').append(row);
+                            $("#everyone-titles").append(game_titles);
+                    }
                 }
-            }
+                //}
 
             usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
@@ -200,6 +258,37 @@ $(document).ready(function() {
                 });
             });
 
+            console.log(first_game);
+
+
+            // EVERYONE'S PICKS
+
+            usersRef.orderByKey().once("value", function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var keyId = childSnapshot.val();
+                    var user_row = $("<tr>");
+                    var user_name = $("<td>");
+                    user_name.css("font-weight","bold");
+                    user_name.append(keyId.name);
+                    user_row.append(user_name);
+
+                    if (keyId.picksPerGameWeek[gameWeek - 2][0] === "undefined") {
+                        $("#yourPicks").html("No picks were selected last week");
+                    } else {
+                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+
+                            var pick = $("<td>");
+
+                            pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+
+                            user_row.append(pick);
+                            $("#everyone-table").append(user_row);
+
+                        }
+                    }
+                })
+            });
+
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
             startTime = moment(new Date(GWArray[x]));
             timeDiff = moment(startTime).diff(moment(), "hours");
@@ -219,26 +308,41 @@ $(document).ready(function() {
                 }
             }
 
+
             // OBTAINING RESULTS FROM LAST WEEK (E.G. DETERMINE WHO WON OR IF IT WAS A DRAW)
-            for (var f = 0; f < response.fixtures.length; f++) {
-                if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
+            for (var f = 0; f < sortedArrayResults.length; f++) {
+                // if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
+                    //if ((response.fixtures[f].matchday === gameWeek - 1)) {
 
                     // IF HOME TEAM WON
-                    if (response.fixtures[f].result.goalsHomeTeam > response.fixtures[f].result.goalsAwayTeam) {
-                        resultsLastWeek.push(response.fixtures[f].homeTeamName);
+                    // if (response.fixtures[f].result.goalsHomeTeam > response.fixtures[f].result.goalsAwayTeam) {
+                    //     resultsLastWeek.push(response.fixtures[f].homeTeamName);
+                    // }
+                    if (sortedArrayResults[f].result.goalsHomeTeam > sortedArrayResults[f].result.goalsAwayTeam) {
+                        resultsLastWeek.push(sortedArrayResults[f].homeTeamName);
                     }
 
                     // IF AWAY TEAM WON
-                    else if (response.fixtures[f].result.goalsHomeTeam < response.fixtures[f].result.goalsAwayTeam) {
-                        resultsLastWeek.push(response.fixtures[f].awayTeamName);
+                    // else if (response.fixtures[f].result.goalsHomeTeam < response.fixtures[f].result.goalsAwayTeam) {
+                    //     resultsLastWeek.push(response.fixtures[f].awayTeamName);
+                    // }
+                    else if (sortedArrayResults[f].result.goalsHomeTeam < sortedArrayResults[f].result.goalsAwayTeam) {
+                        resultsLastWeek.push(sortedArrayResults[f].awayTeamName);
                     }
 
                     // IF IT WAS A DRAW
-                    else if (response.fixtures[f].result.goalsHomeTeam === response.fixtures[f].result.goalsAwayTeam) {
-                        resultsLastWeek.push("DRAW");
+                    // else if (response.fixtures[f].result.goalsHomeTeam === response.fixtures[f].result.goalsAwayTeam) {
+                    //
+                    //     resultsLastWeek.push( "DRAW");
+                    //
+                    // }
+                    else if (sortedArrayResults[f].result.goalsHomeTeam === sortedArrayResults[f].result.goalsAwayTeam) {
+
+                        resultsLastWeek.push( "DRAW");
+
                     }
-                }
             }
+
 
             //// SETTING THE RESULTS AS AN ARRAY IN FIREBASE
             resultsRef.set({
@@ -833,6 +937,37 @@ $(document).ready(function() {
         });
     });
 
+    /// CHAT LOGIC
+
+
+    $(document).on("click","#send",function(event) {
+        event.preventDefault();
+
+        var message = $("#chatInput").val();
+        console.log(message);
+
+        $("#chatInput").val("");
+
+        chatRef.push({
+                message: message,
+                name: game.name,
+                date: moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
+        });
+    });
+
+
+    chatRef.orderByKey().on("child_added",function(snapshot) {
+
+        var sender = $("<p style='color: #2196f3'>").html(snapshot.val().name + ":");
+        var newMessage = $("<p>").html(snapshot.val().message);
+
+        $("#chat-content").append(sender);
+        $("#chat-content").append(newMessage);
+
+        $("#chat-content").scrollTop($("#chat-content")[0].scrollHeight);
+    });
+
+
 
     ////////// DEALING WITH THE RESPONSE TO CLICKING ON BUTTONS THAT PRODUCE MODALS ///////////
 
@@ -847,6 +982,20 @@ $(document).ready(function() {
     $("#lastWeeksResultsBtn").on('click', function () {
 
         $('#lastWeek-modal').iziModal('open', this); // Do not forget the "this"
+    });
+
+    $("#everyoneBtn").on('click', function () {
+
+        $('#everyone-modal').iziModal('open', this); // Do not forget the "this"
+    });
+
+    $("#chatBtn").on('click', function () {
+
+        $('#chat-modal').iziModal('open', this); // Do not forget the "this"
+
+        $("#chat-content").scrollTop($("#chat-content")[0].scrollHeight);
+
+
     });
 
     $("#currentPicksBtn").on('click', function () {
@@ -872,6 +1021,38 @@ $(document).ready(function() {
     $("#lastWeek-modal").iziModal({
         title: "Last week's results and picks",
         subtitle: "Gameweek: " + (gameWeek-1),
+        theme: '',
+        headerColor: '#2a339c',
+        overlayColor: 'rgba(0, 0, 0, 0.4)',
+        iconColor: '',
+        iconClass: null,
+        width: 600,
+        padding: 0,
+        overlayClose: true,
+        closeOnEscape: true,
+        bodyOverflow: false,
+        autoOpen: false
+    });
+
+    $("#everyone-modal").iziModal({
+        title: "Last week's everyone's picks",
+        subtitle: "Gameweek: " + (gameWeek-1),
+        theme: '',
+        headerColor: '#2a339c',
+        overlayColor: 'rgba(0, 0, 0, 0.4)',
+        iconColor: '',
+        iconClass: null,
+        width: 600,
+        padding: 0,
+        overlayClose: true,
+        closeOnEscape: true,
+        bodyOverflow: false,
+        autoOpen: false
+    });
+
+    $("#chat-modal").iziModal({
+        title: "Message Board",
+        //subtitle: "Gam",
         theme: '',
         headerColor: '#2a339c',
         overlayColor: 'rgba(0, 0, 0, 0.4)',
@@ -1313,3 +1494,6 @@ $(document).ready(function() {
     }
 
 });
+
+
+

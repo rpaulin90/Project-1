@@ -4,6 +4,24 @@ body {
   background-attachment: fixed;
 }
 
+/* table just added */
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
 /* HEADER NAVBAR */
 #top-navbar div.ui.container div.selectable {
   cursor: pointer;
@@ -192,6 +210,12 @@ h2.ui.sub.header {
 
 #rankings-modal {
   text-align: center;
+}
+
+#everyone-modal {
+    text-align: center;
+    margin-left: -550px !important;
+    max-width: 1100px !important;
 }
 
 #currentPicks-modal div.content {
